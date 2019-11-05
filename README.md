@@ -19,6 +19,124 @@ Se você quiser aprender mais sobre a API do Best Buy, veja os links abaixo:
 - [Best Buy API Documentation](https://bestbuyapis.github.io/api-documentation)
 - [Best Buy Query Builder](http://bestbuyapis.github.io/bby-query-builder)
 
+## Requisitos do projeto
+
+### 1. Salve a api key no **LocalStorage**
+
+**Não salve nem realize um _commit_ de sua _api key_!!!**
+
+Sua _api key_ é a sua chave para acessar a API do Best Buy, se você fizer um _commit_ com ela no código, qualquer pessoa poderá realizar chamadas à API do Best Buy como se fosse **você**.
+
+Para contornar esse problema, adicione sua _api key_ no **LocalStorage** utilizando o **Console** do **Google Chrome**
+
+Crie uma função para acessar o valor da _api key_.
+
+### 2. Salve o nome da pessoa
+
+Você deve salvar o nome da pessoa que utiliza a página na **SessionStorage**.
+A pessoa deve digitar o nome dela no campo `<input class="input-name" type="text">` (já presente na página).
+
+### 3. Salve se a pessoa concorda com os termos da sua página
+
+Salve se a pessoa concorda com os termos da sua página ou não nos **Cookies**.
+A pessoa deve marcar ou desmarcar o campo `<input class="input-terms" type="checkbox">` (já presente na página).
+
+### 4. Listagem de produtos
+
+Você deve criar uma listagem de produtos que devem ser consultados através da API do BestBuy.
+
+Você deve utilizar o _endpoint`:
+```javascript
+"https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${API_KEY}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank"
+```
+onde `${API_KEY}` deve ser o valor da sua `api_key`.
+
+O retorno deste _endpoint_ será algo no formato:
+```json
+{
+    "from": 1,
+    "to": 3,
+    "currentPage": 1,
+    "total": 1432,
+    "totalPages": 478,
+    "queryTime": "0.022",
+    "totalTime": "0.031",
+    "partial": false,
+    "canonicalUrl": "/v1/products(releaseDate>today&categoryPath.id in(cat02001))?show=sku,name,image,customerTopRated&sort=bestSellingRank&pageSize=3&format=json&apiKey=${API_KEY}",
+    "products": [
+        {
+            "sku": 20818637,
+            "name": "Curtains [LP] - VINYL",
+            "image": "https://pisces.bbystatic.com/image2/BestBuy_US/images/products/2081/20818637_sa.jpg",
+            "customerTopRated": false
+        },
+        {
+            "sku": 29837267,
+            "name": "The Ocean Blue [LP] - VINYL",
+            "image": "https://pisces.bbystatic.com/image2/BestBuy_US/images/products/2983/29837267_sa.jpg",
+            "customerTopRated": false
+        },
+        {
+            "sku": 29837276,
+            "name": "Cerulean [LP] - VINYL",
+            "image": "https://pisces.bbystatic.com/image2/BestBuy_US/images/products/2983/29837276_sa.jpg",
+            "customerTopRated": false
+        }
+    ]
+}
+```
+A lista de produtos que devem ser exibidos é o _array_ `products` no `JSON` acima.
+
+Você **deve** utilizar a função `createProductItemElement(product)` para criar os componentes _HTML_ referentes a um produto.
+
+Adicione o elemento retornado da função `createProductItemElement(product)` como filho do elemento `<section class="items">`.
+
+### 5. Adicione o produto ao carrinho de compras
+
+Cada produto na página _HTML_ possui um botão com o nome `Adicionar ao carrinho!`.
+
+Ao clicar nesse botão você deve realizar uma requisição para o _endpoint_:
+```javascript
+"https://api.bestbuy.com/v1/products(sku=${SKU})?apiKey=${API_KEY}&sort=sku.asc&show=sku,name,salePrice&format=json"
+```
+onde `${SKU}` deve ser o valor do `sku` do item clicado e `${API_KEY}` deve ser o valor da sua `api_key`
+
+O retorno deste _endpoint_ será algo no formato:
+```JSON
+{
+    "from": 1,
+    "to": 1,
+    "currentPage": 1,
+    "total": 1,
+    "totalPages": 1,
+    "queryTime": "2.695",
+    "totalTime": "2.703",
+    "partial": false,
+    "canonicalUrl": "/v1/products(sku=20818637)?show=sku,name,salePrice&sort=sku&format=json&apiKey=ICsbqGAthpKjJOtEq6cvgTht",
+    "products": [
+        {
+            "sku": 20818637,
+            "name": "Curtains [LP] - VINYL",
+            "salePrice": 29.99
+        }
+    ]
+}
+```
+Preste atenção que a lista `products` deve conter apenas **um** item.
+
+Você **deve** utilizar a função `createCartItemElement(product)` para criar os componentes _HTML_ referentes a um item do carrinho.
+
+Adicione o elemento retornado da função `createCartItemElement(product)` como filho do elemento `<ol class="cart__items">`.
+
+### 6. Remova o item do carrinho de compras ao clicar nele
+
+Ao clicar no **produto no carrinho de compra**, ele deve ser removido da lista.
+Para isso, uma função (já existente) chamada `cartItemClickListener(event)` deve ser implementada com a lógica necessária para realizar a remoção.
+
+### 7. Salve o carrinho de compras no **LocalStorage**
+
+O carrinho de compras deve ser salvo no **LocalStorage**, ou seja, todas as **adições** e **remoções** devem ser abordadas para que a lista atual seja salva.
+
 ## Instruções para entregar seu projeto:
 
 ### ANTES DE COMEÇAR A DESENVOLVER:
@@ -45,7 +163,9 @@ Se você quiser aprender mais sobre a API do Best Buy, veja os links abaixo:
       * `mkdir joaozinho`
       * `echo "Instruções a seguir:" > joaozinho/README.md`
 
-4. Adicione as mudanças ao _stage_ do Git e faça um `commit`
+4. Adicione ao diretória criado os arquivos `index.html`, `style.css` e `script.js` presentes na raiz desse repositório. Você utilizará esses arquivos como base.
+
+5. Adicione as mudanças ao _stage_ do Git e faça um `commit`
   * Verifique que as mudanças ainda não estão no _stage_
     * Exemplo: `git status` (deve aparecer listada a pasta _joaozinho_ em vermelho)
   * Adicione o novo arquivo ao _stage_ do Git
@@ -57,10 +177,10 @@ Se você quiser aprender mais sobre a API do Best Buy, veja os links abaixo:
         * `git commit -m 'iniciando o projeto. VAMOS COM TUDO :rocket:'` (fazendo o primeiro commit)
         * `git status` (deve aparecer uma mensagem tipo _nothing to commit_ )
 
-5. Adicione a sua branch com o novo `commit` ao repositório remoto
+6. Adicione a sua branch com o novo `commit` ao repositório remoto
   * Usando o exemplo anterior: `git push -u origin joaozinho-project-shopping-cart`
 
-6. Crie um novo `Pull Request` _(PR)_
+7. Crie um novo `Pull Request` _(PR)_
   * Vá até a página de _Pull Requests_ do [repositório no GitHub](https://github.com/tryber/sd-01-week9-project-shopping-cart/pulls)
   * Clique no botão verde _"New pull request"_
   * Clique na caixa de seleção _"Compare"_ e escolha a sua branch **com atenção**
