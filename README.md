@@ -6,6 +6,19 @@ Aqui você vai encontrar os detalhes de como estruturar o desenvolvimento do seu
 
 ---
 
+## Criação de conta no BestBuy
+
+Sua página _web_ consumirá dados da API do [Best Buy](https://www.bestbuy.com/) e para realizar chamadas que funcionem, você precisará de uma _API Key_.
+
+Siga as instruções da seção [Getting Started](https://bestbuyapis.github.io/api-documentation/?shell#getting-started) para criar uma conta e gerar uma _API Key_.
+
+Você usará o valor de _API Key_ em **todas** as requisições para o [Best Buy](https://www.bestbuy.com/).
+
+Se você quiser aprender mais sobre a API do Best Buy, veja os links abaixo:
+
+- [Best Buy API Documentation](https://bestbuyapis.github.io/api-documentation)
+- [Best Buy Query Builder](http://bestbuyapis.github.io/bby-query-builder)
+
 ## Instruções para entregar seu projeto:
 
 ### ANTES DE COMEÇAR A DESENVOLVER:
