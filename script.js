@@ -1,4 +1,4 @@
-window.onload = function() {}
+window.onload = function () {};
 
 function createProductItemElement({ sku, name, image }) {
   let section = document.createElement("section");

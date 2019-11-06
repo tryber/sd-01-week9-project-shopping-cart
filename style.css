@@ -32,6 +32,7 @@
 
 .item {
   border: 2px solid blue;
+  box-sizing: border-box;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
