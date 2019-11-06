@@ -38,12 +38,12 @@ Para contornar esse problema, adicione sua _api key_ no **LocalStorage** utiliza
 
 Crie uma função para acessar o valor da _api key_.
 
-### 2. Salve o nome da pessoa
+### 2. Salve o nome da pessoa no **SessionStorage**
 
 Você deve salvar o nome da pessoa que utiliza a página na **SessionStorage**.
 A pessoa deve digitar o nome dela no campo `<input class="input-name" type="text">` (já presente na página).
 
-### 3. Salve se a pessoa concorda com os termos da sua página
+### 3. Salve se a pessoa concorda com os termos da sua página nos **Cookies**
 
 Salve se a pessoa concorda com os termos da sua página ou não nos **Cookies**.
 A pessoa deve marcar ou desmarcar o campo `<input class="input-terms" type="checkbox">` (já presente na página).
@@ -119,7 +119,7 @@ O retorno deste _endpoint_ será algo no formato:
     "queryTime": "2.695",
     "totalTime": "2.703",
     "partial": false,
-    "canonicalUrl": "/v1/products(sku=20818637)?show=sku,name,salePrice&sort=sku&format=json&apiKey=ICsbqGAthpKjJOtEq6cvgTht",
+    "canonicalUrl": "/v1/products(sku=20818637)?show=sku,name,salePrice&sort=sku&format=json&apiKey=icSbqgAthpqJJ0tEqgcXgTht",
     "products": [
         {
             "sku": 20818637,
@@ -144,17 +144,19 @@ Para isso, uma função (já existente) chamada `cartItemClickListener(event)` d
 
 O carrinho de compras deve ser salvo no **LocalStorage**, ou seja, todas as **adições** e **remoções** devem ser abordadas para que a lista atual seja salva.
 
-O carrinho de compras deve ser populado ao carregar a página.
+### 8. Carregue o carrinho de compras através do **LocalStorage** ao iniciar a página
 
-### 8. (BÔNUS) Botão para limpar carrinho de compras
+Ao carregar a página, o estado atual do carrinho de compras deve ser carregado do **LocalStorage**
+
+### 9. (BÔNUS) Botão para limpar carrinho de compras
 
 Crie um botão para remover todos os itens do carrinho de compras
 
-### 9. (BÔNUS) Custo total do carrinho de compras
+### 10. (BÔNUS) Custo total do carrinho de compras
 
 Apresente o valor total do carrinho de compras
 
-### 10. (BÔNUS) "loading" durante uma requisição à API
+### 11. (BÔNUS) "loading" durante uma requisição à API
 
 Uma requisição à API gasta um tempo e durante ele, ficamos sem saber se está tudo certo ou se algo deu errado.
 Normalmente é utilizado alguma forma para mostrar que a requisição está em andamento.
