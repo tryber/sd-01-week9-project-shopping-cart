@@ -28,6 +28,8 @@ Você pode alterar estes arquivos, mas lembre-se de **não** alterar a hierarqui
 
 ## Requisitos do projeto
 
+⚠️ Lembre-se que o seu projeto só será avaliado se estiver passando pelos _checks_ do **CodeClimate** e do **TravisCI**
+
 ### 1. Salve a api key no **LocalStorage**
 
 **Não salve nem realize um _commit_ de sua _api key_!!!**
