@@ -14,7 +14,7 @@ Siga as instruções da seção [Getting Started](https://bestbuyapis.github.io/
 
 Você usará o valor de _API Key_ em **todas** as requisições para o [Best Buy](https://www.bestbuy.com/).
 
-Se você quiser aprender mais sobre a API do Best Buy, veja os links abaixo:
+Se você quiser aprender mais sobre a API do _Best Buy_, veja os links abaixo:
 
 - [Best Buy API Documentation](https://bestbuyapis.github.io/api-documentation)
 - [Best Buy Query Builder](http://bestbuyapis.github.io/bby-query-builder)
@@ -24,7 +24,7 @@ Se você quiser aprender mais sobre a API do Best Buy, veja os links abaixo:
 Você **não** deve alterar a lógica das funções implementadas no arquivo `script.js`.
 
 Os arquivos `index.html` e `style.css` serão alterados apenas se você decidir fazer os requisitos bônus.
-Você pode alterar estes arquivos, mas lembre-se de não alterar a hierarquia presente na estrutura.
+Você pode alterar estes arquivos, mas lembre-se de **não** alterar a hierarquia presente na estrutura.
 
 ## Requisitos do projeto
 
@@ -34,7 +34,7 @@ Você pode alterar estes arquivos, mas lembre-se de não alterar a hierarquia pr
 
 Sua _api key_ é a sua chave para acessar a API do Best Buy, se você fizer um _commit_ com ela no código, qualquer pessoa poderá realizar chamadas à API do Best Buy como se fosse **você**.
 
-Para contornar esse problema, adicione sua _api key_ no **LocalStorage** utilizando o **Console** do **Google Chrome**
+Para contornar esse problema, adicione sua _api key_ no **LocalStorage** utilizando o **Console** do **Google Chrome**.
 
 Crie uma função para acessar o valor da _api key_.
 
@@ -52,13 +52,13 @@ A pessoa deve marcar ou desmarcar o campo `<input class="input-terms" type="chec
 
 Você deve criar uma listagem de produtos que devem ser consultados através da API do BestBuy.
 
-Você deve utilizar o _endpoint`:
+Você deve utilizar o _endpoint_:
 ```javascript
 "https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${API_KEY}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank"
 ```
 onde `${API_KEY}` deve ser o valor da sua `api_key`.
 
-O retorno deste _endpoint_ será algo no formato:
+O retorno desse _endpoint_ será algo no formato:
 ```json
 {
     "from": 1,
@@ -106,9 +106,9 @@ Ao clicar nesse botão você deve realizar uma requisição para o _endpoint_:
 ```javascript
 "https://api.bestbuy.com/v1/products(sku=${SKU})?apiKey=${API_KEY}&sort=sku.asc&show=sku,name,salePrice&format=json"
 ```
-onde `${SKU}` deve ser o valor do `sku` do item clicado e `${API_KEY}` deve ser o valor da sua `api_key`
+onde `${SKU}` deve ser o valor do `sku` do item clicado e `${API_KEY}` deve ser o valor da sua `api_key`.
 
-O retorno deste _endpoint_ será algo no formato:
+O retorno desse _endpoint_ será algo no formato:
 ```JSON
 {
     "from": 1,
@@ -148,16 +148,16 @@ O carrinho de compras deve ser populado ao carregar a página.
 
 ### 8. (BÔNUS) Botão para limpar carrinho de compras
 
-Crie um botão para remover todos os itens do carrinho de compras
+Crie um botão para remover todos os itens do carrinho de compras.
 
 ### 9. (BÔNUS) Custo total do carrinho de compras
 
-Apresente o valor total do carrinho de compras
+Apresente o valor total do carrinho de compras.
 
 ### 10. (BÔNUS) "loading" durante uma requisição à API
 
 Uma requisição à API gasta um tempo e durante ele, ficamos sem saber se está tudo certo ou se algo deu errado.
-Normalmente é utilizado alguma forma para mostrar que a requisição está em andamento.
+Normalmente é utilizada alguma forma para mostrar que a requisição está em andamento.
 Mostre a palavra "loading..." em alguma lugar da página **apenas durante** a requisição à API.
 
 ## Instruções para entregar seu projeto:
