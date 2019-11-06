@@ -19,6 +19,13 @@ Se você quiser aprender mais sobre a API do Best Buy, veja os links abaixo:
 - [Best Buy API Documentation](https://bestbuyapis.github.io/api-documentation)
 - [Best Buy Query Builder](http://bestbuyapis.github.io/bby-query-builder)
 
+## Utilização dos templates (index.html, style.css e script.js)
+
+Você **não** deve alterar a lógica das funções implementadas no arquivo `script.js`.
+
+Os arquivos `index.html` e `style.css` serão alterados apenas se você decidir fazer os requisitos bônus.
+Você pode alterar estes arquivos, mas lembre-se de não alterar a hierarquia presente na estrutura.
+
 ## Requisitos do projeto
 
 ### 1. Salve a api key no **LocalStorage**
@@ -136,6 +143,22 @@ Para isso, uma função (já existente) chamada `cartItemClickListener(event)` d
 ### 7. Salve o carrinho de compras no **LocalStorage**
 
 O carrinho de compras deve ser salvo no **LocalStorage**, ou seja, todas as **adições** e **remoções** devem ser abordadas para que a lista atual seja salva.
+
+O carrinho de compras deve ser populado ao carregar a página.
+
+### 8. (BÔNUS) Botão para limpar carrinho de compras
+
+Crie um botão para remover todos os itens do carrinho de compras
+
+### 9. (BÔNUS) Custo total do carrinho de compras
+
+Apresente o valor total do carrinho de compras
+
+### 10. (BÔNUS) "loading" durante uma requisição à API
+
+Uma requisição à API gasta um tempo e durante ele, ficamos sem saber se está tudo certo ou se algo deu errado.
+Normalmente é utilizado alguma forma para mostrar que a requisição está em andamento.
+Mostre a palavra "loading..." em alguma lugar da página **apenas durante** a requisição à API.
 
 ## Instruções para entregar seu projeto:
 
