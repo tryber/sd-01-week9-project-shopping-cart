@@ -33,6 +33,9 @@ checks:
 plugins:
   csslint:
     enabled: true
+    checks:
+      box-sizing:
+        enabled: false
   editorconfig:
     enabled: true
   eslint:
