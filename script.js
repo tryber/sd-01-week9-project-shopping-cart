@@ -3,20 +3,20 @@ window.onload = function onload() {
   consumerName ()
 }
 
+  const changeItemClass = (classItem) => document.querySelector(`.${classItem}`)
   function API () {
     const API_KEY = `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${localStorage.api}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`
     fetch(API_KEY, {
       headers: { Accept: 'application/json'}
     })
     .then((response) => response.json())
-    .then((data) => data.products.map(product => console.log(product)))
+    .then((data) => data.products.forEach(element => changeItemClass('items').appendChild(createProductItemElement(element))))
   }
-
+  
   function consumerName () {
     const inputConsumer = document.querySelector('.input-name')
     inputConsumer.addEventListener('change', () => {
       sessionStorage.setItem('consumer',inputConsumer.value)
-      console.log(sessionStorage.consumer)
     })
   }
 
