@@ -17,6 +17,7 @@ window.onload = function onload() {
 
   storeName()
   termsAgreementCookies()
+  getListing()
 };
 
 function getAPI () {
@@ -28,6 +29,17 @@ function setCookie(name, value, exdays) {
   d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
   const expires = d.toUTCString()
   document.cookie = `${name}=${value};expires=${expires};path=/`
+}
+
+function getListing() {
+  const API_KEY = getAPI()
+  const API_URL = `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${API_KEY}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`
+  fetch (API_URL)
+    .then(response => response.json().then(object => object.products.forEach (item => {
+      const newItem = createProductItemElement(item)
+      const itemSection = document.querySelector('.items')
+      itemSection.appendChild(newItem)
+    })))
 }
 
 function createProductImageElement(imageSource) {
