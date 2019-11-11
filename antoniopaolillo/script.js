@@ -21,14 +21,17 @@ window.onload = function onload() {
       .then(data => data.products.forEach((product) => {
         const newProduct = createProductItemElement(product);
         document.getElementsByClassName("items")[0].appendChild(newProduct)
-        newProduct.lastChild.addEventListener("click", async function () {
-          await fetch(`https://api.bestbuy.com/v1/products(sku=${product.sku})?apiKey=${acessApiKey}&sort=sku.asc&show=sku,name,salePrice&format=json`)
-            .then(response => response.json())
-            .then(data => document.getElementsByClassName("cart__items")[0].appendChild(createCartItemElement(data.products[0])))
-        })
+        newProduct.lastChild.addEventListener("click", addProductToCart(newProduct, product, acessApiKey))
       }))
   })();
 
+  async function addProductToCart (newProduct, product, acessApiKey) {
+    newProduct.lastChild.addEventListener("click", async function () {
+      await fetch(`https://api.bestbuy.com/v1/products(sku=${product.sku})?apiKey=${acessApiKey}&sort=sku.asc&show=sku,name,salePrice&format=json`)
+        .then(response => response.json())
+        .then(data => document.getElementsByClassName("cart__items")[0].appendChild(createCartItemElement(data.products[0])))
+    })
+  }
 
   function createProductImageElement(imageSource) {
     const img = document.createElement('img');
@@ -61,7 +64,7 @@ window.onload = function onload() {
   }
 
   function cartItemClickListener(event) {
-    // coloque seu código aqui
+  event.target.remove()
   }
 
   function createCartItemElement({ sku, name, salePrice }) {
