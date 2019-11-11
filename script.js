@@ -31,6 +31,17 @@ function setCookie(name, value, exdays) {
   document.cookie = `${name}=${value};expires=${expires};path=/`
 }
 
+function addToCart(SKU) {
+  const API_KEY = getAPI(),
+        API_URL = `https://api.bestbuy.com/v1/products(sku=${SKU})?apiKey=${API_KEY}&sort=sku.asc&show=sku,name,salePrice&format=json`
+  fetch(API_URL)
+    .then(response => response.json().then(object => {
+      const newCarItem = createCartItemElement(object.products[0])
+      const cartList = document.querySelector('.cart__items')
+      cartList.appendChild(newCarItem)
+      }))
+}
+
 function getListing() {
   const API_KEY = getAPI()
   const API_URL = `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${API_KEY}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`
@@ -38,9 +49,11 @@ function getListing() {
     .then(response => response.json().then(object => object.products.forEach (item => {
       const newItem = createProductItemElement(item)
       const itemSection = document.querySelector('.items')
+      newItem.lastChild.addEventListener('click', () => addToCart(item.sku))
       itemSection.appendChild(newItem)
     })))
 }
+
 
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
