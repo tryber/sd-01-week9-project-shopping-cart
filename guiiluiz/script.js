@@ -3,6 +3,11 @@ window.onload = function onload() {
     return localStorage.apiKey
   }
   console.log(apiKey())
+
+  let inputName = document.getElementsByClassName("input-name")[0]
+  inputName.addEventListener("input", () =>{
+    sessionStorage.name = inputName.value
+  })
 };
 
 function createProductImageElement(imageSource) {
