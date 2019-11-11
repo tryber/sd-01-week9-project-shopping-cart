@@ -1,4 +1,9 @@
-window.onload = function onload() {};
+window.onload = function onload() {
+  function apiKey () {
+    return localStorage.apiKey
+  }
+  console.log(apiKey())
+};
 
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
