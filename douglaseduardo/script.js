@@ -7,6 +7,7 @@ window.onload = function onload() {
             })
             .then((response) => response.json())
             .then((array) => array.products.forEach(element => pgClss('items').appendChild(createProductItemElement(element))))
+
     }
     usarAPI()
 
@@ -62,9 +63,28 @@ window.onload = function onload() {
         return item.querySelector('span.item__sku').innerText;
     }
 
-    function cartItemClickListener(event) {
-        // coloque seu código aqui
+    async function teste() {
+        try {
+            const btn = document.getElementsByTagName('button')
+            console.log(btn.length)
+        } catch {
+            console.error('Falhou')
+                // 30
+        }
     }
+    teste()
+
+
+
+    function cartItemClickListener(event) {
+        const btn = document.getElementsByClassName(event)
+        for (let i of btn) {
+            i.addEventListener('click', () => {
+                console.log(teste)
+            })
+        }
+    }
+    cartItemClickListener('item__add')
 
     function createCartItemElement({ sku, name, salePrice }) {
         const li = document.createElement('li');
