@@ -1,5 +1,9 @@
 window.onload = function onload() {};
 
+function acessApiKey () {
+  return localStorage.getItem('apiKey');
+}
+
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
   img.className = 'item__image';
