@@ -51,7 +51,7 @@ window.onload = function onload() {
   }
 
   function cartItemClickListener(event) {
-
+    
   }
 
   function createCartItemElement({ sku, name, salePrice }) {
