@@ -1,4 +1,4 @@
-window.onload = function onload() {};
+window.onload = function onload() {
 
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
@@ -30,6 +30,13 @@ function getSkuFromProductItem(item) {
   return item.querySelector('span.item__sku').innerText;
 }
 
+
+let nomeDeEntrada = document.getElementsByClassName("input-name")[0]
+
+nomeDeEntrada.addEventListener('keyup', function() {
+  sessionStorage.setItem('Nome', this.value)
+})
+
 function cartItemClickListener(event) {
   // coloque seu código aqui
 }
@@ -41,3 +48,4 @@ function createCartItemElement({ sku, name, salePrice }) {
   li.addEventListener('click', cartItemClickListener);
   return li;
 }
+};
