@@ -22,10 +22,9 @@ window.onload = function onload() {
         const newProduct = createProductItemElement(product);
         document.getElementsByClassName("items")[0].appendChild(newProduct)
         newProduct.lastChild.addEventListener("click", async function () {
-          // await fetch(`https://api.bestbuy.com/v1/products(sku=${product.sku})?apiKey=${acessApiKey}&sort=sku.asc&show=sku,name,salePrice&format=json`)
-          //   .then(response => response.json())
-          //   .then(data => console.log(data))
-          console.log('teste')
+          await fetch(`https://api.bestbuy.com/v1/products(sku=${product.sku})?apiKey=${acessApiKey}&sort=sku.asc&show=sku,name,salePrice&format=json`)
+            .then(response => response.json())
+            .then(data => document.getElementsByClassName("cart__items")[0].appendChild(createCartItemElement(data.products[0])))
         })
       }))
   })();
