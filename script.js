@@ -1,8 +1,13 @@
-window.onload = function onload() {};
+window.onload = function onload() {
+  const nameInput = document.querySelector('.input-name')
+  nameInput.addEventListener('change', (event) => sessionStorage.setItem('name', event.target.value))
+};
 
 function getAPI () {
   return localStorage.getItem('API_KEY')
 }
+
+
 
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
