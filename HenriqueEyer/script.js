@@ -1,4 +1,4 @@
-window.onload = function onload() {};
+window.onload = function onload() {
 
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
@@ -40,4 +40,19 @@ function createCartItemElement({ sku, name, salePrice }) {
   li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
   li.addEventListener('click', cartItemClickListener);
   return li;
+}
+
+const getApi=()=>localStorage.getItem('api')
+
+const setKeyStorage=(nameKey,value)=>sessionStorage[nameKey]=value;
+
+const getNameUser=()=>document.querySelector('.input-name').value;
+
+function saveUser(){
+  setKeyStorage('user',getNameUser());
+}
+
+document.querySelector('.input-name').addEventListener('change', function(){
+  saveUser();
+})
 }
