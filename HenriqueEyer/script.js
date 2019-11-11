@@ -1,14 +1,14 @@
 window.onload = function onload() {
   const getApi = () => localStorage.getItem('api');
 
-  const setKeyStorage = (nameKey, value) => sessionStorage[nameKey] = value;
+  const setKeyStorage = (nameKey, value) => sessionStorage[nameKey] = value
 
-  const setKeyStorageCar = ({ sku }) => localStorage[localStorage.length - 1] = sku;
+  const setKeyStorageCar = ({ sku }) => localStorage[localStorage.length - 1] = sku
 
   const removeItemCar = value => Object.keys(localStorage)
     .find(num => localStorage[num] === `${value}`);
 
-  loadCar();
+
 
   function createProductImageElement(imageSource) {
     const img = document.createElement('img');
@@ -55,12 +55,14 @@ window.onload = function onload() {
   }
 
 
-  function saveUser() {
-    setKeyStorage('user', getNameUser());
+  function saveUser(value) {
+    setKeyStorage('user', value);
   }
 
-  document.querySelector('.input-name').addEventListener('change', function () {
-    saveUser();
+  const returnElementByClass = name => document.querySelector(`.${name}`);
+
+  returnElementByClass('input-name').addEventListener('change', () => {
+    saveUser(returnElementByClass('input-name').value);
   })
 
 
@@ -100,7 +102,7 @@ window.onload = function onload() {
       }
     }
   }
-
+  loadCar();
   const API_URL = `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${getApi()}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`;
   catchDados(API_URL)
     .then(response => {
@@ -118,6 +120,4 @@ window.onload = function onload() {
     const json = await response.json();
     return json;
   }
-
-
 }
