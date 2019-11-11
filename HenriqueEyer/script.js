@@ -68,9 +68,9 @@ window.onload = function onload() {
     const father = document.querySelector('.items')
     const ol = document.querySelector('.cart__items')
     json['products'].forEach(element => {
-      const child = createProductItemElement(element)
-      father.appendChild(child)
-      child.lastChild.addEventListener('click', function () {
+      const produto = createProductItemElement(element)
+      father.appendChild(produto)
+      produto.lastChild.addEventListener('click', function () {
         const url = `https://api.bestbuy.com/v1/products(sku=${getSkuFromProductItem(child)})?apiKey=${getApi()}&sort=sku.asc&show=sku,name,salePrice&format=json`
         catchDados(url)
           .then(response => {
