@@ -1,4 +1,17 @@
 window.onload = function onload() {
+    const apiKeyEx5 = (SKU) => {
+        const api = `https://api.bestbuy.com/v1/products(sku=${SKU})?apiKey=${api()}&sort=sku.asc&show=sku,name,salePrice&format=json`
+        return api
+    }
+    const criarElemento = (valoresParaCriar) => {
+        valoresParaCriar.forEach(element => {
+            const filho = createProductItemElement(element)
+            pgClss('items').appendChild(filho)
+            filho.lastChild.addEventListener('click', () => {
+                apiKeyEx5(products[0].sku)
+            })
+        })
+    }
     const usarAPI = () => {
         const api = () => localStorage.getItem("chave_API")
         const endPoint = () => `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${api()}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`
@@ -6,28 +19,31 @@ window.onload = function onload() {
                 headers: { Accept: "application/json" }
             })
             .then((response) => response.json())
-            .then((array) => array.products.forEach(element => pgClss('items').appendChild(createProductItemElement(element))))
+            .then((array) => criarElemento(array.products))
 
     }
     usarAPI()
 
+
     const pgClss = (classe) => document.querySelector(`.${classe}`)
 
     pgClss('input-name').addEventListener('blur', () => {
-            return localStorage.nome = inputName.value
+        return localStorage.nome = inputName.value
 
-        })
-        //     pgClss('input-terms').addEventListener('change', () => {
-        //       //document.cookie="chave=valor; expires=DATA PARA EXPIRAR; path=CAMINHO";
-        //     let valor = pgClss('input-terms').checked
-        //     let coockie = ""
-        //     if (valor) {
-        //       coockie = 
-        //     } else {
-        //       coockie =
-        //     }
-        //     return coockie
-        // })
+    })
+
+
+    //     pgClss('input-terms').addEventListener('change', () => {
+    //       //document.cookie="chave=valor; expires=DATA PARA EXPIRAR; path=CAMINHO";
+    //     let valor = pgClss('input-terms').checked
+    //     let coockie = ""
+    //     if (valor) {
+    //       coockie = 
+    //     } else {
+    //       coockie =
+    //     }
+    //     return coockie
+    // })
 
 
 
@@ -63,28 +79,14 @@ window.onload = function onload() {
         return item.querySelector('span.item__sku').innerText;
     }
 
-    async function teste() {
-        try {
-            const btn = document.getElementsByTagName('button')
-            console.log(btn.length)
-        } catch {
-            console.error('Falhou')
-                // 30
-        }
-    }
-    teste()
+
 
 
 
     function cartItemClickListener(event) {
-        const btn = document.getElementsByClassName(event)
-        for (let i of btn) {
-            i.addEventListener('click', () => {
-                console.log(teste)
-            })
-        }
+
     }
-    cartItemClickListener('item__add')
+
 
     function createCartItemElement({ sku, name, salePrice }) {
         const li = document.createElement('li');
