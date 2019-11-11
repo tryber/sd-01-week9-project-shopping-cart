@@ -1,4 +1,6 @@
-window.onload = function onload() {};
+window.onload = function onload() {
+  saveNameUserInBrowser()
+};
 
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
@@ -41,3 +43,18 @@ function createCartItemElement({ sku, name, salePrice }) {
   li.addEventListener('click', cartItemClickListener);
   return li;
 }
+
+function saveApiKey() {
+  return localStorage.getItem("APIKey")
+}
+
+function saveNameUserInBrowser() {
+  document.querySelector(".input-terms").addEventListener('click', () => {
+    const nameUser = document.querySelector('.input-name').value
+    sessionStorage.setItem("nameUser", nameUser)
+  })
+}
+
+
+
+
