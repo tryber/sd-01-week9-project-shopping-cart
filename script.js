@@ -38,6 +38,7 @@ function addToCart(SKU) {
     .then(response => response.json().then(object => {
       const newCarItem = createCartItemElement(object.products[0])
       const cartList = document.querySelector('.cart__items')
+      newCarItem.addEventListener('click', cartItemClickListener)
       cartList.appendChild(newCarItem)
       }))
 }
@@ -85,8 +86,8 @@ function getSkuFromProductItem(item) {
   return item.querySelector('span.item__sku').innerText;
 }
 
-function cartItemClickListener(event) {
-  // coloque seu código aqui
+function cartItemClickListener() {
+  event.target.remove();
 }
 
 function createCartItemElement({ sku, name, salePrice }) {
