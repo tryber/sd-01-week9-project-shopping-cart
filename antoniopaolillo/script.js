@@ -19,24 +19,17 @@ window.onload = function onload() {
     const response = await fetch(api)
       .then(response => response.json())
       .then(data => data.products.forEach((product) => {
-        document.getElementsByClassName("items")[0].appendChild(createProductItemElement(product))
+        const newProduct = createProductItemElement(product);
+        document.getElementsByClassName("items")[0].appendChild(newProduct)
+        newProduct.lastChild.addEventListener("click", async function () {
+          // await fetch(`https://api.bestbuy.com/v1/products(sku=${product.sku})?apiKey=${acessApiKey}&sort=sku.asc&show=sku,name,salePrice&format=json`)
+          //   .then(response => response.json())
+          //   .then(data => console.log(data))
+          console.log('teste')
+        })
       }))
-      .then(addProductsToCart())
   })();
 
-  function addProductsToCart() {
-    const products = document.getElementsByClassName("item__add");
-    console.log(products)
-    console.log(products[5])
-    for(let product of products) {
-      console.log(product)
-    }
-  }
-      // product.addEventListener("click", async function () {
-      //   await fetch(`https://api.bestbuy.com/v1/products(sku=${product.sku})?apiKey=${localStorage.apiKey}&sort=sku.asc&show=sku,name,salePrice&format=json"`)
-      //     .then(response => response.json())
-      //     .then(data => console.log(data))
-      // })
 
   function createProductImageElement(imageSource) {
     const img = document.createElement('img');
