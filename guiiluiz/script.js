@@ -1,12 +1,23 @@
-window.onload = function onload() {
-  function apiKey () {
-    return localStorage.apiKey
-  }
-  console.log(apiKey())
+var script = document.createElement('script');
 
-  let inputName = document.getElementsByClassName("input-name")[0]
-  inputName.addEventListener("input", () =>{
+script.src = "https://code.jquery.com/jquery-3.4.1.min.js"
+script.integrity = "sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+script.crossOrigin = "anonymous"
+document.getElementsByTagName('head')[0].appendChild(script);
+
+window.onload = function onload() {
+  const endPoint = `https://api.bestbuy.com/v1/products(releaseDate>today&
+categoryPath.id in(cat02001))?apiKey=${localStorage.apiKey}&format=json&
+pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`
+  const inputName = document.querySelector(".input-name")
+  const itemsSection = document.querySelector(".items")
+
+  inputName.addEventListener("input", () => {
     sessionStorage.name = inputName.value
+  })
+
+  $.getJSON(endPoint, (data) => {
+  data.products.forEach(product => itemsSection.appendChild(createProductItemElement(product)))
   })
 };
 
