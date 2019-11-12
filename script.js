@@ -62,9 +62,8 @@ function getSkuFromProductItem(item) {
 }
 
 function cartItemClickListener(event) {
-  const itemsCart = document.querySelectorAll('.cart__item')
-  const fullCart = document.querySelector('ol')
-  console.log(itemsCart,fullCart)
+  const LPSelected = event.target
+  LPSelected.parentNode.removeChild(LPSelected)
 }
 
 function createCartItemElement({ sku, name, salePrice }) {
