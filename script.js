@@ -1,6 +1,6 @@
 function storeName() {
   const nameInput = document.querySelector('.input-name');
-  nameInput.async = true
+  nameInput.async = true;
   nameInput.addEventListener('change', event => sessionStorage.setItem('name', event.target.value));
 }
 
