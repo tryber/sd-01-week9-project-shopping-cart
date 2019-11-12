@@ -35,7 +35,7 @@ window.onload = function onload() {
   }
 
   function addProductToCart(newProduct, product, acessApiKey) {
-    newProduct.lastChild.addEventListener("click", async function () {
+    newProduct.lastChild.addEventListener("click", function () {
       fetch(`https://api.bestbuy.com/v1/products(sku=${product.sku})?apiKey=${acessApiKey}&sort=sku.asc&show=sku,name,salePrice&format=json`)
         .then(response => response.json())
         .then(data => {
@@ -102,4 +102,27 @@ window.onload = function onload() {
     li.addEventListener('click', cartItemClickListener);
     return li;
   }
+
+  function clearStorage() {
+    const apiKey = localStorage.apiKey;
+    localStorage.clear();
+    localStorage['apiKey'] = apiKey;
+  }
+
+  function createDeleteCartButton() {
+    const cart = document.getElementsByClassName("cart")[0];
+    const newButton = document.createElement('button');
+    newButton.innerHTML = "Limpar Carrinho de Compras"
+    newButton.addEventListener('click', function () {
+      const cartDad = document.getElementsByClassName("cart__items");
+      Object.values(cartDad).forEach(cart => cart.remove())
+      clearStorage();
+    })
+    cart.appendChild(newButton);
+  }
+
+  createDeleteCartButton();
+
 }
+
+
