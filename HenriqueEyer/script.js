@@ -18,7 +18,8 @@ window.onload = function onload() {
 
   async function catchDados(url) {
     const response = await fetch(url, {
-      headers: { Accept: 'application/json' }
+      headers: { 
+        Accept: 'application/json' }
     });
     const json = await response.json();
     return json;
