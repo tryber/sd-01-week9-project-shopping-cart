@@ -51,11 +51,13 @@ window.onload = function onload() {
   (function loadLocalStorage() {
     const localStorageKeys = Object.keys(localStorage);
     localStorageKeys.forEach((localStorageNewPosition) => {
-      if (localStorageNewPosition != 'apiKey') {
+      if (localStorageNewPosition !== 'apiKey' && localStorageNewPosition !== 'price') {
         fetch(`https://api.bestbuy.com/v1/products(sku=${localStorage[localStorageNewPosition]})?apiKey=${localStorage['apiKey']}&sort=sku.asc&show=sku,name,salePrice&format=json`)
           .then(response => response.json())
           .then(data => {
             document.getElementsByClassName("cart__items")[0].appendChild(createCartItemElement(data.products[0]));
+            document.getElementsByClassName('cart__title')[0].innerText = `Carrinho de
+             compras, preço total: $${Math.round(localStorage.price * 100) / 100}`
           })
       }
     })
@@ -137,10 +139,11 @@ window.onload = function onload() {
     const scoreboard = document.getElementsByClassName('cart__title')[0];
     let scoreboardValuePosition = scoreboard.innerText.split('$')[1];
     let finalPrice = Number(scoreboardValuePosition) + Number(value);
-    if(finalPrice < 0) {
+    if (finalPrice < 0) {
       finalPrice = 0;
-    } 
+    }
     scoreboard.innerText = `Carrinho de compras, preço total: $${Math.round(finalPrice * 100) / 100}`;
+    localStorage.setItem('price', finalPrice);
   }
 }
 
