@@ -20,7 +20,21 @@ window.onload = function onload() {
   getListing()
   loadShoppingCart()
   cleanCart()
+  this.refreshTotalPrice()
 };
+
+function refreshTotalPrice() {
+  let totalPrice = 0
+  const priceField = document.querySelector('.total__price')
+  Object.keys(localStorage).forEach (key => {
+    if (key !== 'API_KEY') {
+      const actualItem = localStorage.getItem(key).split('$')
+      const actualPrice = parseFloat(actualItem[1])
+      totalPrice += actualPrice
+    }
+  })
+  priceField.innerText = `Valor Total: $${totalPrice.toFixed(2)}`
+}
 
 function getAPI () {
   return localStorage.getItem('API_KEY')
@@ -48,6 +62,8 @@ function refreshLocalStorage() {
       localStorage.removeItem(key)
     }
   })
+
+  refreshTotalPrice()
 }
 
 function loadShoppingCart() {
@@ -74,6 +90,7 @@ function addToCart(SKU) {
       const newCarItem = createCartItemElement(object.products[0])
       const cartList = document.querySelector('.cart__items')
       cartList.appendChild(newCarItem)
+      const {salePrice} = object.products[0]
       refreshLocalStorage()
       }))
 }
