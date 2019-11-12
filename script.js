@@ -61,14 +61,15 @@ window.onload = function onload() {
           return response.json();
         })
         .then((data) => {
-          console.log(skuNamePrice.appendChild(createCartItemElement(data.products[0])))
+          skuNamePrice.appendChild(createCartItemElement(data.products[0]))
         })
       })
     })
   })
   
   function cartItemClickListener(event) {
-    // coloque seu código aqui
+    event.target.parentNode.removeChild(event.target)
+    //event.target.remove
   }
   
   function createCartItemElement({ sku, name, salePrice }) {
