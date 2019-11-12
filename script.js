@@ -19,7 +19,7 @@ window.onload = function onload() {
   termsAgreementCookies()
   getListing()
   loadShoppingCart()
-  removeButton()
+  cleanCart()
 };
 
 function getAPI () {
@@ -41,7 +41,6 @@ function refreshLocalStorage() {
   for (let index = 0; index < cartChildren.length ; index++) {
     localStorage.setItem(index, cartChildren[index].innerText)
     usedIndexesArray.push(index.toString())
-    console.log(typeof usedIndexesArray[0])
   }
 
   Object.keys(localStorage).forEach(key => {
@@ -91,10 +90,10 @@ function getListing() {
     })))
 }
 
-function removeButton() {
-  const removeButton = document.querySelector('.remove__button')
-  const cartItems = document.querySelectorAll('.cart__item')
-  removeButton.addEventListener('click', () => {
+function cleanCart() {
+  const cleanCart = document.querySelector('.cleancart__button')
+  cleanCart.addEventListener('click', () => {
+    const cartItems = document.querySelectorAll('.cart__item')
     cartItems.forEach((item) => item.remove())
     refreshLocalStorage()
   })
