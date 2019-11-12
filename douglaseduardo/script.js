@@ -1,10 +1,9 @@
 window.onload = function onload() {
+    let contador = 0
     const api = () => localStorage.getItem("chave_API")
     const apiKeyEx5 = (SKU) => `https://api.bestbuy.com/v1/products(sku=${SKU})?apiKey=${api()}&sort=sku.asc&show=sku,name,salePrice&format=json`
     const criarListaElemento = (respostaJson) => {
-        respostaJson.forEach(element => {
-            pgClss("cart__items").appendChild(createCartItemElement(element))
-        })
+        respostaJson.forEach(element => pgClss("cart__items").appendChild(createCartItemElement(element)))
     }
 
     const criarElemento = (valoresParaCriar) => {
@@ -12,15 +11,42 @@ window.onload = function onload() {
             const filho = createProductItemElement(element)
             pgClss('items').appendChild(filho)
             filho.lastChild.addEventListener('click', () => {
-                fetch(apiKeyEx5(pgClss('item__sku').innerHTML), {
+
+                fetch(apiKeyEx5(filho.firstChild.innerHTML), {
                         headers: { Accept: "application/json" }
                     })
                     .then((response) => response.json())
                     .then((array) => criarListaElemento(array.products))
+                    .then(() => contador++)
+                    .then(() => modificarLista())
             })
         })
     }
 
+
+
+    function criadorKey() {
+        let listaUniversal = ''
+        const carrinho = document.getElementsByClassName("cart__item")
+        for (let i of carrinho) {
+            listaUniversal = `SKU_${i.innerText.substring(5, 13)}_Num_${contador}`
+        }
+        return listaUniversal
+    }
+
+    function pularProximo(num) {
+        while (localStorage[num]) {
+            num++;
+        }
+        return num
+
+    }
+
+
+    function modificarLista() {
+        localStorage[criadorKey()] = pgClss("cart__item").innerText.substring(5, 13)
+        return localStorage
+    }
 
 
     const usarAPI = () => {
@@ -35,30 +61,12 @@ window.onload = function onload() {
     }
     usarAPI()
 
-
     const pgClss = (classe) => document.querySelector(`.${classe}`)
 
     pgClss('input-name').addEventListener('blur', () => {
         return localStorage.nome = inputName.value
 
     })
-
-
-    //     pgClss('input-terms').addEventListener('change', () => {
-    //       //document.cookie="chave=valor; expires=DATA PARA EXPIRAR; path=CAMINHO";
-    //     let valor = pgClss('input-terms').checked
-    //     let coockie = ""
-    //     if (valor) {
-    //       coockie = 
-    //     } else {
-    //       coockie =
-    //     }
-    //     return coockie
-    // })
-
-
-
-
 
     function createProductImageElement(imageSource) {
         const img = document.createElement('img');
@@ -90,14 +98,11 @@ window.onload = function onload() {
         return item.querySelector('span.item__sku').innerText;
     }
 
-
-
-
-
     function cartItemClickListener(event) {
-
+        const teste = Object.keys(localStorage).find(item => localStorage[item] === event.target.innerText.substring(5, 13))
+        localStorage.removeItem(teste)
+        event.target.remove()
     }
-
 
     function createCartItemElement({ sku, name, salePrice }) {
         const li = document.createElement('li');
