@@ -1,20 +1,14 @@
 window.onload = function onload() {
   const getApi = () => localStorage.getItem('api');
 
-  class Carrinho {
-    constructor() {
-      this._preco = 0;
-    }
+  document.querySelector('.cart__title').innerText = `Carrinho de compras - Preço: R$${0}`;
 
-    atualizePreco(value = this._preco * -1) {
-      this._preco = this._preco + value;
-      const element = document.querySelector('.cart__title')
-      element.innerText = `Carrinho de compras - Preço: R$${Math.round(this._preco * 100) / 100}`
-      return this._preco;
-    }
-
+  function atualizePreco(value = 0) {
+    const element = document.querySelector('.cart__title')
+    let price = Number(element.innerText.split('$', 2)[1])
+    price = price + value;
+    element.innerText = `Carrinho de compras - Preço: R$${Math.round(price * 100) / 100}`
   }
-  const car = new Carrinho();
 
   const API_URL = `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${getApi()}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`;
 
@@ -75,7 +69,7 @@ window.onload = function onload() {
     const value = (event.target.innerText.substring(5, 13));
     localStorage.removeItem(removeItemCar(value));
     const price = event.target.innerText.split('$', 2)[1];
-    car.atualizePreco(Number(price) * -1)
+    atualizePreco(Number(price) * -1)
     event.target.remove()
 
   }
@@ -114,7 +108,7 @@ window.onload = function onload() {
           .then((response) => {
             setKeyStorageCar(response.products[0]);
             ol.appendChild(createCartItemElement(response.products[0]));
-            car.atualizePreco(Number(response.products[0].salePrice))
+            atualizePreco(Number(response.products[0].salePrice))
           })
           .catch((error) => {
             console.log('error');
@@ -143,7 +137,7 @@ window.onload = function onload() {
     const api = getApi()
     localStorage.clear();
     localStorage['api'] = api;
-    car.atualizePreco()
+    atualizePreco()
   }
 
   function loadCar() {
@@ -155,7 +149,7 @@ window.onload = function onload() {
         catchDados(url)
           .then((response) => {
             ol.appendChild(createCartItemElement(response.products[0]));
-            car.atualizePreco(Number(response.products[0].salePrice))
+            atualizePreco(Number(response.products[0].salePrice))
           })
           .catch((error) => {
             console.log('error');
