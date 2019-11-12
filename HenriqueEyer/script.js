@@ -3,11 +3,15 @@ window.onload = function onload() {
 
   document.querySelector('.cart__title').innerText = `Carrinho de compras - Preço: R$${0}`;
 
-  function atualizePreco(value = 0) {
+  function atualizePreco(value) {
     const element = document.querySelector('.cart__title')
     let price = Number(element.innerText.split('$', 2)[1])
+    if(value===0){
+      element.innerText = `Carrinho de compras - Preço: R$${0}`
+    }else {
     price = price + value;
     element.innerText = `Carrinho de compras - Preço: R$${Math.round(price * 100) / 100}`
+    }
   }
 
   const API_URL = `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${getApi()}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`;
@@ -137,7 +141,7 @@ window.onload = function onload() {
     const api = getApi()
     localStorage.clear();
     localStorage['api'] = api;
-    atualizePreco()
+    atualizePreco(value=0)
   }
 
   function loadCar() {
