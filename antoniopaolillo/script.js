@@ -26,13 +26,12 @@ window.onload = function onload() {
       }));
   })();
 
-  function gerateLocalStoragePosition () {
-    const localStorageLength = localStorage.length;
-    if(localStorage[localStorageLength]){
-      return localStorageLength + 1;
-    } else {
-    return localStorageLength;
+  function gerateLocalStoragePosition() {
+    let localStorageLength = localStorage.length;
+    while (localStorage[localStorageLength]) {
+      localStorageLength++;
     }
+    return localStorageLength;
   }
 
   function addProductToCart(newProduct, product, acessApiKey) {
