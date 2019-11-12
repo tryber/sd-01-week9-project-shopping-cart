@@ -1,7 +1,15 @@
 window.onload = function onload() {
-    let contador = 0
     const api = () => localStorage.getItem("chave_API")
     const apiKeyEx5 = (SKU) => `https://api.bestbuy.com/v1/products(sku=${SKU})?apiKey=${api()}&sort=sku.asc&show=sku,name,salePrice&format=json`
+    Object.keys(localStorage).forEach(chave => {
+        fetch(apiKeyEx5(chave), {
+                headers: { Accept: "application/json" }
+            })
+            .then((response) => response.json())
+            .then((array) => criarListaElemento(array.products))
+
+    })
+    let contador = 0
     const criarListaElemento = (respostaJson) => {
         respostaJson.forEach(element => pgClss("cart__items").appendChild(createCartItemElement(element)))
     }
@@ -34,23 +42,15 @@ window.onload = function onload() {
         return listaUniversal
     }
 
-    function pularProximo(num) {
-        while (localStorage[num]) {
-            num++;
-        }
-        return num
-
-    }
-
-
     function modificarLista() {
-        localStorage[criadorKey()] = pgClss("cart__item").innerText.substring(5, 13)
+        let olOrdenado = document.getElementsByClassName("cart__item")
+        for (let i = 0; i < olOrdenado.length; i++) {
+            localStorage[criadorKey()] = olOrdenado[i].innerText.substring(5, 13)
+        }
         return localStorage
     }
 
-
     const usarAPI = () => {
-
         const endPoint = () => `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${api()}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`
         fetch(endPoint(), {
                 headers: { Accept: "application/json" }
@@ -85,7 +85,6 @@ window.onload = function onload() {
     function createProductItemElement({ sku, name, image }) {
         const section = document.createElement('section');
         section.className = 'item';
-
         section.appendChild(createCustomElement('span', 'item__sku', sku));
         section.appendChild(createCustomElement('span', 'item__title', name));
         section.appendChild(createProductImageElement(image));
@@ -100,6 +99,7 @@ window.onload = function onload() {
 
     function cartItemClickListener(event) {
         const teste = Object.keys(localStorage).find(item => localStorage[item] === event.target.innerText.substring(5, 13))
+        console.log(teste)
         localStorage.removeItem(teste)
         event.target.remove()
     }
