@@ -95,10 +95,19 @@ window.onload = function onload() {
     });
   }
 
+
+  async function catchDados(url) {
+    const response = await fetch(url, {
+      headers: { 'Accept': "application/json" }
+    })
+    const json = await response.json();
+    return json;
+  }
+
   function loadCar() {
     const ol = document.querySelector('.cart__items');
     const keys = Object.keys(localStorage);
-    for (const key of keys) {
+    keys.forEach(key=>{
       if (key !== 'api') {
         const url = `https://api.bestbuy.com/v1/products(sku=${localStorage[key]})?apiKey=${getApi()}&sort=sku.asc&show=sku,name,salePrice&format=json`
         catchDados(url)
@@ -110,10 +119,10 @@ window.onload = function onload() {
             console.log(error);
           });
       }
-    }
-  }
+    })
+  };
+  loadCar()
 
-  loadCar();
   const API_URL = `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${getApi()}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`;
   catchDados(API_URL)
     .then((response) => {
@@ -124,13 +133,6 @@ window.onload = function onload() {
       console.log(error);
     });
 
-  async function catchDados(url) {
-    const response = await fetch(url, {
-      headers: { 'Accept': "application/json" }
-    })
-    const json = await response.json();
-    return json;
-  }
 
   async function catchDadosProduct(url) {
     const response = await fetch(url, {
