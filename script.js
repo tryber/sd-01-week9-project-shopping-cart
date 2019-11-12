@@ -15,11 +15,11 @@ function API() {
       changeItemClass('items').appendChild(fullElement)
 
       fullElement.lastChild.addEventListener('click', () => {
-          const cart = document.querySelector('.cart__items')
-          const NEW_API = `https://api.bestbuy.com/v1/products(sku=${element.sku})?apiKey=${localStorage.api}&sort=sku.asc&show=sku,name,salePrice&format=json`
-          fetch(NEW_API)
-            .then((responseNewAPI) => responseNewAPI.json())
-            .then((newData) => cart.appendChild(createCartItemElement(newData.products[0])))
+        const cart = document.querySelector('.cart__items')
+        const NEW_API = `https://api.bestbuy.com/v1/products(sku=${element.sku})?apiKey=${localStorage.api}&sort=sku.asc&show=sku,name,salePrice&format=json`
+        fetch(NEW_API)
+          .then((responseNewAPI) => responseNewAPI.json())
+          .then((newData) => cart.appendChild(createCartItemElement(newData.products[0])))
       })
     }))
 }
