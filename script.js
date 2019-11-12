@@ -18,6 +18,7 @@ window.onload = function onload() {
   storeName()
   termsAgreementCookies()
   getListing()
+  loadShoppingCart()
 };
 
 function getAPI () {
@@ -49,6 +50,22 @@ function refreshLocalStorage() {
   })
 }
 
+function loadShoppingCart() {
+  Object.keys(localStorage).forEach(key => {
+    if (key !== 'API_KEY') {
+      const itemArray = localStorage.getItem(key).split('|')
+      const newItemObj = {
+        sku : itemArray[0].slice(5,-2),
+        name : itemArray[1].slice(7,-1),
+        salePrice: itemArray[2].slice(9)
+      }
+      const newCarItem = createCartItemElement(newItemObj)
+      const cartList = document.querySelector('.cart__items')
+      cartList.appendChild(newCarItem)
+    }
+  })
+}
+
 function addToCart(SKU) {
   const API_KEY = getAPI(),
         API_URL = `https://cors-anywhere.herokuapp.com/https://api.bestbuy.com/v1/products(sku=${SKU})?apiKey=${API_KEY}&sort=sku.asc&show=sku,name,salePrice&format=json`
@@ -56,7 +73,6 @@ function addToCart(SKU) {
     .then(response => response.json().then(object => {
       const newCarItem = createCartItemElement(object.products[0])
       const cartList = document.querySelector('.cart__items')
-      newCarItem.addEventListener('click', cartItemClickListener)
       cartList.appendChild(newCarItem)
       refreshLocalStorage()
       }))
