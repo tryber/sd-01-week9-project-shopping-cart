@@ -6,18 +6,18 @@ window.onload = function onload() {
       this._preco = 0;
     }
 
-    atualizePreco(value=this._preco*-1){
-      this._preco=this._preco+value;
-      const element=document.querySelector('.cart__title')
-      element.innerText=`Carrinho de compras - Preço: R$${Math.round(this._preco * 100) / 100}`
+    atualizePreco(value = this._preco * -1) {
+      this._preco = this._preco + value;
+      const element = document.querySelector('.cart__title')
+      element.innerText = `Carrinho de compras - Preço: R$${Math.round(this._preco * 100) / 100}`
       return this._preco;
     }
-    
+
   }
   const car = new Carrinho();
 
   const API_URL = `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${getApi()}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`;
-  
+
   async function catchDados(url) {
     const response = await fetch(url, {
       headers: { 'Accept': "application/json" }
@@ -74,10 +74,10 @@ window.onload = function onload() {
   function cartItemClickListener(event) {
     const value = (event.target.innerText.substring(5, 13));
     localStorage.removeItem(removeItemCar(value));
-    const price=event.target.innerText.split('$', 2)[1];
-    car.atualizePreco(Number(price)*-1)
+    const price = event.target.innerText.split('$', 2)[1];
+    car.atualizePreco(Number(price) * -1)
     event.target.remove()
-    
+
   }
 
   function createCartItemElement({ sku, name, salePrice }) {
@@ -124,27 +124,28 @@ window.onload = function onload() {
     });
   }
 
-  function createButtonClean(){
+  function createButtonClean() {
     document.querySelector('.cart').appendChild(createCustomElement('button', 'btn-clean', 'Limpar o carrinho!'))
-    document.querySelector('.btn-clean').addEventListener('click', ()=>{
+    document.querySelector('.btn-clean').addEventListener('click', () => {
       removeAllItensCar();
     })
   }
 
-  function removeAllItensCar(){
+  function removeAllItensCar() {
     const lis = document.getElementsByClassName('cart__item');
     clearStorage();
-    Object.values(lis).forEach(item=>{
+    Object.values(lis).forEach(item => {
       item.remove()
-  })}
+    })
+  }
 
-  function clearStorage(){
-    const api=getApi()
+  function clearStorage() {
+    const api = getApi()
     localStorage.clear();
     localStorage['api'] = api;
     car.atualizePreco()
   }
-  
+
   function loadCar() {
     const ol = document.querySelector('.cart__items');
     const keys = Object.keys(localStorage);
