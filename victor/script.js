@@ -1,6 +1,7 @@
 window.onload = function onload() {
   saveNameUserInBrowser()
   getApiKeyValues()
+  addItemToShoppingCart()
 };
 
 function createProductImageElement(imageSource) {
@@ -25,7 +26,6 @@ function createProductItemElement({ sku, name, image }) {
   section.appendChild(createCustomElement('span', 'item__title', name));
   section.appendChild(createProductImageElement(image));
   section.appendChild(createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'));
-  document.querySelector('.items').appendChild(section)
   
   return section;
 }
@@ -46,10 +46,6 @@ function createCartItemElement({ sku, name, salePrice }) {
   return li;
 }
 
-function saveApiKey() {
-  return localStorage.getItem("APIKey")
-}
-
 function saveNameUserInBrowser() {
   document.querySelector(".input-terms").addEventListener('click', () => {
     const nameUser = document.querySelector('.input-name').value
@@ -58,12 +54,27 @@ function saveNameUserInBrowser() {
 }
 
 function getApiKeyValues() {
-  const API_KEY = saveApiKey()
+  const API_KEY = localStorage.getItem("APIKey")
   const API_URL = `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${API_KEY}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`
   
   fetch(API_URL, {
     headers: { Accept: "application/json" }
   })
-  .then((response) => response.json())
-  .then((data) => { data.products.map(products => createProductItemElement(products)) })
+  .then(response => response.json())
+  .then((data) => data.products.map(product => {
+    const addNewProduct = createProductItemElement(product);
+    document.querySelectorAll(".items")[0].appendChild(addNewProduct);
+    addNewProduct.addEventListener("click", addItemToShoppingCart(API_KEY, product, addNewProduct));
+  }))
+}
+
+function addItemToShoppingCart(API_KEY, product, addNewProduct) {
+  addNewProduct.addEventListener("click", () => {
+    API_URL = `https://api.bestbuy.com/v1/products(sku=${product.sku})?apiKey=${API_KEY}&sort=sku.asc&show=sku,name,salePrice&format=json`
+    fetch(API_URL, {
+      headers: { Accept: "application/json" }
+    })
+    .then(response => response.json())
+    .then(data => { document.querySelectorAll(".cart__items")[0].appendChild(createCartItemElement(data.products[0]))})
+  })
 }
