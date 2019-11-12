@@ -32,18 +32,27 @@ function setCookie(name, value, exdays) {
 }
 
 function refreshLocalStorage() {
-  const cartList = document.querySelector('.cart__items')
-  localStorage.clear()
-  for (const item of cartList.children) {
-    localStorage.setItem(cartList.indexOf(item), item.innerText)
+  const cartList = document.querySelectorAll('.cart__items')
+  const cartChildren = cartList[0].children
+  const usedIndexesArray = []
+
+  for (let index = 0; index < cartChildren.length ; index++) {
+    localStorage.setItem(index, cartChildren[index].innerText)
+    usedIndexesArray.push(index.toString())
+    console.log(typeof usedIndexesArray[0])
   }
+
+  Object.keys(localStorage).forEach(key => {
+    if (key !== 'API_KEY' && !usedIndexesArray.includes(key)) {
+      localStorage.removeItem(key)
+    }
+  })
 }
 
 function addToCart(SKU) {
   const API_KEY = getAPI(),
-        API_URL = `https://api.bestbuy.com/v1/products(sku=${SKU})?apiKey=${API_KEY}&sort=sku.asc&show=sku,name,salePrice&format=json`,
-        header = { mode : 'no-cors' }
-  fetch(API_URL, header)
+        API_URL = `https://cors-anywhere.herokuapp.com/https://api.bestbuy.com/v1/products(sku=${SKU})?apiKey=${API_KEY}&sort=sku.asc&show=sku,name,salePrice&format=json`
+  fetch(API_URL)
     .then(response => response.json().then(object => {
       const newCarItem = createCartItemElement(object.products[0])
       const cartList = document.querySelector('.cart__items')
@@ -54,11 +63,9 @@ function addToCart(SKU) {
 }
 
 function getListing() {
-  const API_KEY = getAPI()
-  const API_URL = `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${API_KEY}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`
-  header = { mode : 'no-cors' }
-
-  fetch (API_URL, header)
+  const API_KEY = getAPI(),
+        API_URL = `https://cors-anywhere.herokuapp.com/https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${API_KEY}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`
+        fetch (API_URL)
     .then(response => response.json().then(object => object.products.forEach (item => {
       const newItem = createProductItemElement(item)
       const itemSection = document.querySelector('.items')
