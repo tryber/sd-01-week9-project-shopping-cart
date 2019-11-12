@@ -1,7 +1,6 @@
 window.onload = function onload() {
   saveNameUserInBrowser()
   getApiKeyValues()
-  addItemToShoppingCart()
 };
 
 function createProductImageElement(imageSource) {
@@ -35,7 +34,7 @@ function getSkuFromProductItem(item) {
 }
 
 function cartItemClickListener(event) {
-  // coloque seu código aqui
+  document.querySelectorAll(".cart__items")[0].removeChild(event.target)
 }
 
 function createCartItemElement({ sku, name, salePrice }) {
@@ -62,19 +61,21 @@ function getApiKeyValues() {
   })
   .then(response => response.json())
   .then((data) => data.products.map(product => {
-    const addNewProduct = createProductItemElement(product);
-    document.querySelectorAll(".items")[0].appendChild(addNewProduct);
-    addNewProduct.addEventListener("click", addItemToShoppingCart(API_KEY, product, addNewProduct));
+    const addNewProduct = createProductItemElement(product)
+    document.querySelectorAll(".items")[0].appendChild(addNewProduct)
+    addNewProduct.addEventListener("click", addItemToShoppingCart(API_KEY, product.sku, addNewProduct))
   }))
 }
 
-function addItemToShoppingCart(API_KEY, product, addNewProduct) {
+function addItemToShoppingCart(API_KEY, sku, addNewProduct) {
   addNewProduct.addEventListener("click", () => {
-    API_URL = `https://api.bestbuy.com/v1/products(sku=${product.sku})?apiKey=${API_KEY}&sort=sku.asc&show=sku,name,salePrice&format=json`
+    API_URL = `https://api.bestbuy.com/v1/products(sku=${sku})?apiKey=${API_KEY}&sort=sku.asc&show=sku,name,salePrice&format=json`
     fetch(API_URL, {
       headers: { Accept: "application/json" }
     })
     .then(response => response.json())
-    .then(data => { document.querySelectorAll(".cart__items")[0].appendChild(createCartItemElement(data.products[0]))})
+    .then(data => { 
+      document.querySelectorAll(".cart__items")[0].appendChild(createCartItemElement(data.products[0])) 
+    })
   })
 }
