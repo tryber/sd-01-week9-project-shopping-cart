@@ -11,15 +11,6 @@ window.onload = function onload() {
     return json;
   }
 
-  catchDados(API_URL)
-    .then((response) => {
-      createProducts(response);
-    })
-    .catch((error) => {
-      console.log('error');
-      console.log(error);
-    });
-
   function gerateLocalStoragePosition() {
     let localStorageLength = localStorage.length;
     while (localStorage[localStorageLength]) {
@@ -68,7 +59,7 @@ window.onload = function onload() {
   function cartItemClickListener(event) {
     const value = (event.target.innerText.substring(5, 13));
     localStorage.removeItem(removeItemCar(value));
-    event.target.parentNode.removeChild(event.target);
+    event.target.remove()
   }
 
   function createCartItemElement({ sku, name, salePrice }) {
@@ -131,5 +122,16 @@ window.onload = function onload() {
       }
     });
   };
+
+  catchDados(API_URL)
+    .then((response) => {
+      createProducts(response);
+    })
+    .catch((error) => {
+      console.log('error');
+      console.log(error);
+    });
+
+
   loadCar();
 }
