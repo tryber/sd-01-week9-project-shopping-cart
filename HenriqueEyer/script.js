@@ -1,33 +1,17 @@
 window.onload = function onload() {
   const getApi = () => localStorage.getItem('api');
 
-  async function catchDados(url) {
-    const response = await fetch(url, {
-      headers: { Accept: 'application/json' }
-    });
-    const json = await response.json();
-    return json;
-  }
-
-  async function catchDadosProduct(url) {
-    const response = await fetch(url, {
-      headers: { Accept: 'application/json' }
-    });
-    const json = await response.json();
-    return json;
-  }
-
   function gerateLocalStoragePosition() {
     let localStorageLength = localStorage.length;
     while (localStorage[localStorageLength]) {
-      localStorageLength += 1;
+      localStorageLength+=1;
     }
     return localStorageLength;
   }
 
   const setKeyStorageCar = ({ sku }) => {
     localStorage[gerateLocalStoragePosition()] = sku;
-  };
+  }
 
   const removeItemCar = value => Object.keys(localStorage)
     .find(num => localStorage[num] === `${value}`);
@@ -114,9 +98,9 @@ window.onload = function onload() {
   function loadCar() {
     const ol = document.querySelector('.cart__items');
     const keys = Object.keys(localStorage);
-    keys.forEach = (key) => {
+    for (const key of keys) {
       if (key !== 'api') {
-        const url = `https://api.bestbuy.com/v1/products(sku=${localStorage[key]})?apiKey=${getApi()}&sort=sku.asc&show=sku,name,salePrice&format=json`;
+        const url = `https://api.bestbuy.com/v1/products(sku=${localStorage[key]})?apiKey=${getApi()}&sort=sku.asc&show=sku,name,salePrice&format=json`
         catchDados(url)
           .then((response) => {
             ol.appendChild(createCartItemElement(response.products[0]));
@@ -126,7 +110,7 @@ window.onload = function onload() {
             console.log(error);
           });
       }
-    };
+    }
   }
 
   loadCar();
@@ -139,4 +123,20 @@ window.onload = function onload() {
       console.log('error');
       console.log(error);
     });
-};
+
+  async function catchDados(url) {
+    const response = await fetch(url, {
+      headers: { 'Accept': "application/json" }
+    })
+    const json = await response.json();
+    return json;
+  }
+
+  async function catchDadosProduct(url) {
+    const response = await fetch(url, {
+      headers: { 'Accept': "application/json" }
+    })
+    const json = await response.json();
+    return json;
+  }
+}
