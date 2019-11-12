@@ -89,7 +89,7 @@
 }
 
 .lds-roller div:after {
-  background: rgb(221, 255, 204);
+  background: rgb( 221 , 255 , 204 );
   border-radius: 50%;
   content: ' ';
   display: block;
