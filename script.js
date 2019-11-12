@@ -95,7 +95,7 @@ function createLoader() {
 
 function addToCart(SKU) {
   const API_KEY = getAPI(),
-        API_URL = `https://api.bestbuy.com/v1/products(sku=${SKU})?apiKey=${API_KEY}&sort=sku.asc&show=sku,name,salePrice&format=json`
+        API_URL = `https://cors-anywhere.herokuapp.com/https://api.bestbuy.com/v1/products(sku=${SKU})?apiKey=${API_KEY}&sort=sku.asc&show=sku,name,salePrice&format=json`
   fetch(API_URL)
     .then(response => response.json().then(object => {
       const newCarItem = createCartItemElement(object.products[0])
@@ -112,7 +112,7 @@ function addToCart(SKU) {
 
 function getListing() {
   const API_KEY = getAPI(),
-        API_URL = `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${API_KEY}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`
+        API_URL = `https://cors-anywhere.herokuapp.com/https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${API_KEY}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`
   fetch (API_URL)
     .then(response => response.json().then(object => object.products.forEach (item => {
       const newItem = createProductItemElement(item)
