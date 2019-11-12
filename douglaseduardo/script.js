@@ -1,19 +1,30 @@
 window.onload = function onload() {
-    const apiKeyEx5 = (SKU) => {
-        const api = `https://api.bestbuy.com/v1/products(sku=${SKU})?apiKey=${api()}&sort=sku.asc&show=sku,name,salePrice&format=json`
-        return api
+    const api = () => localStorage.getItem("chave_API")
+    const apiKeyEx5 = (SKU) => `https://api.bestbuy.com/v1/products(sku=${SKU})?apiKey=${api()}&sort=sku.asc&show=sku,name,salePrice&format=json`
+    const criarListaElemento = (respostaJson) => {
+        respostaJson.forEach(element => {
+            pgClss("cart__items").appendChild(createCartItemElement(element))
+        })
     }
+
     const criarElemento = (valoresParaCriar) => {
         valoresParaCriar.forEach(element => {
             const filho = createProductItemElement(element)
             pgClss('items').appendChild(filho)
             filho.lastChild.addEventListener('click', () => {
-                apiKeyEx5(products[0].sku)
+                fetch(apiKeyEx5(pgClss('item__sku').innerHTML), {
+                        headers: { Accept: "application/json" }
+                    })
+                    .then((response) => response.json())
+                    .then((array) => criarListaElemento(array.products))
             })
         })
     }
+
+
+
     const usarAPI = () => {
-        const api = () => localStorage.getItem("chave_API")
+
         const endPoint = () => `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${api()}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`
         fetch(endPoint(), {
                 headers: { Accept: "application/json" }
