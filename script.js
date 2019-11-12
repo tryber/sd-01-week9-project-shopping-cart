@@ -1,64 +1,80 @@
 window.onload = function onload() {
   API()
-  consumerName ()
+  consumerName()
 }
 
-  const changeItemClass = (classItem) => document.querySelector(`.${classItem}`)
-  function API () {
-    const API_KEY = `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${localStorage.api}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`
-    fetch(API_KEY, {
-      headers: { Accept: 'application/json'}
-    })
+const changeItemClass = (classItem) => document.querySelector(`.${classItem}`)
+function API() {
+  const API_KEY = `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${localStorage.api}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`
+  fetch(API_KEY, {
+    headers: { Accept: 'application/json' }
+  })
     .then((response) => response.json())
-    .then((data) => data.products.forEach(element => changeItemClass('items').appendChild(createProductItemElement(element))))
-  }
-  
-  function consumerName () {
-    const inputConsumer = document.querySelector('.input-name')
-    inputConsumer.addEventListener('change', () => {
-      sessionStorage.setItem('consumer',inputConsumer.value)
-    })
-  }
+    .then((data) => data.products.forEach(element => {
+      const fullElement = createProductItemElement(element)
+      changeItemClass('items').appendChild(fullElement)
+      fullElement.lastChild.addEventListener('click', () => {
 
-  function createProductImageElement(imageSource) {
-    const img = document.createElement('img');
-    img.className = 'item__image';
-    img.src = imageSource;
-    return img;
-  }
+        function APINewData() {
+          const cart = document.querySelector('.cart__items')
+          const NEW_API = `https://api.bestbuy.com/v1/products(sku=${element.sku})?apiKey=${localStorage.api}&sort=sku.asc&show=sku,name,salePrice&format=json`
+          fetch(NEW_API)
+            .then((responseNewAPI) => responseNewAPI.json())
+            .then((newData) => cart.appendChild(createCartItemElement(newData.products[0])))
+        }
 
-  function createCustomElement(element, className, innerText) {
-    const e = document.createElement(element);
-    e.className = className;
-    e.innerText = innerText;
-    return e;
-  }
+        APINewData()
 
-  function createProductItemElement({ sku, name, image }) {
-    const section = document.createElement('section');
-    section.className = 'item';
+      })
+    }))
+}
 
-    section.appendChild(createCustomElement('span', 'item__sku', sku));
-    section.appendChild(createCustomElement('span', 'item__title', name));
-    section.appendChild(createProductImageElement(image));
-    section.appendChild(createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'));
+function consumerName() {
+  const inputConsumer = document.querySelector('.input-name')
+  inputConsumer.addEventListener('change', () => {
+    sessionStorage.setItem('consumer', inputConsumer.value)
+  })
+}
 
-    return section;
-  }
+function createProductImageElement(imageSource) {
+  const img = document.createElement('img');
+  img.className = 'item__image';
+  img.src = imageSource;
+  return img;
+}
 
-  function getSkuFromProductItem(item) {
-    return item.querySelector('span.item__sku').innerText;
-  }
+function createCustomElement(element, className, innerText) {
+  const e = document.createElement(element);
+  e.className = className;
+  e.innerText = innerText;
+  return e;
+}
 
-  function cartItemClickListener(event) {
-    
-  }
+function createProductItemElement({ sku, name, image }) {
+  const section = document.createElement('section');
+  section.className = 'item';
 
-  function createCartItemElement({ sku, name, salePrice }) {
-    const li = document.createElement('li');
-    li.className = 'cart__item';
-    li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
-    li.addEventListener('click', cartItemClickListener);
-    return li;
-  }
+  section.appendChild(createCustomElement('span', 'item__sku', sku));
+  section.appendChild(createCustomElement('span', 'item__title', name));
+  section.appendChild(createProductImageElement(image));
+  section.appendChild(createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'));
+
+  return section;
+}
+
+function getSkuFromProductItem(item) {
+  return item.querySelector('span.item__sku').innerText;
+}
+
+function cartItemClickListener(event) {
+
+}
+
+function createCartItemElement({ sku, name, salePrice }) {
+  const li = document.createElement('li');
+  li.className = 'cart__item';
+  li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
+  li.addEventListener('click', cartItemClickListener);
+  return li;
+}
 
