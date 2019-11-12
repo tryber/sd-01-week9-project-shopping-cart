@@ -4,13 +4,13 @@ window.onload = function onload() {
   document.querySelector('.cart__title').innerText = `Carrinho de compras - Preço: R$${0}`;
 
   function atualizePreco(value) {
-    const element = document.querySelector('.cart__title')
-    let price = Number(element.innerText.split('$', 2)[1])
-    if(value===0){
-      element.innerText = `Carrinho de compras - Preço: R$${0}`
-    }else {
-    price = price + value;
-    element.innerText = `Carrinho de compras - Preço: R$${Math.round(price * 100) / 100}`
+    const element = document.querySelector('.cart__title');
+    let price = Number(element.innerText.split('$', 2)[1]);
+    if (value === 0) {
+      element.innerText = `Carrinho de compras - Preço: R$${0}`;
+    } else {
+      price += value;
+      element.innerText = `Carrinho de compras - Preço: R$${Math.round(price * 100) / 100}`;
     }
   }
 
@@ -18,7 +18,7 @@ window.onload = function onload() {
 
   async function catchDados(url) {
     const response = await fetch(url, {
-      headers: { 'Accept': "application/json" }
+      headers: { Accept: 'application/json' }
     });
     const json = await response.json();
     return json;
@@ -34,7 +34,7 @@ window.onload = function onload() {
 
   const setKeyStorageCar = ({ sku }) => {
     localStorage[gerateLocalStoragePosition()] = sku;
-  }
+  };
 
   const removeItemCar = value => Object.keys(localStorage)
     .find(num => localStorage[num] === `${value}`);
@@ -73,9 +73,8 @@ window.onload = function onload() {
     const value = (event.target.innerText.substring(5, 13));
     localStorage.removeItem(removeItemCar(value));
     const price = event.target.innerText.split('$', 2)[1];
-    atualizePreco(Number(price) * -1)
-    event.target.remove()
-
+    atualizePreco(Number(price) * -1);
+    event.target.remove();
   }
 
   function createCartItemElement({ sku, name, salePrice }) {
@@ -97,22 +96,23 @@ window.onload = function onload() {
     saveUser(returnElementByClass('input-name').value);
   });
 
+  
+
   function createProducts(json) {
     const father = document.querySelector('.items');
     const ol = document.querySelector('.cart__items');
-    createButtonClean()
+    createButtonClean();
     json.products.forEach((element) => {
       const produto = createProductItemElement(element);
       father.appendChild(produto);
       produto.lastChild.addEventListener('click', (event) => {
-
-        console.log(event)
+        console.log(event);
         const url = `https://api.bestbuy.com/v1/products(sku=${getSkuFromProductItem(produto)})?apiKey=${getApi()}&sort=sku.asc&show=sku,name,salePrice&format=json`;
         catchDados(url)
           .then((response) => {
             setKeyStorageCar(response.products[0]);
             ol.appendChild(createCartItemElement(response.products[0]));
-            atualizePreco(Number(response.products[0].salePrice))
+            atualizePreco(Number(response.products[0].salePrice));
           })
           .catch((error) => {
             console.log('error');
@@ -121,27 +121,28 @@ window.onload = function onload() {
       });
     });
   }
-
-  function createButtonClean() {
-    document.querySelector('.cart').appendChild(createCustomElement('button', 'btn-clean', 'Limpar o carrinho!'))
-    document.querySelector('.btn-clean').addEventListener('click', () => {
-      removeAllItensCar();
-    })
+  
+  function clearStorage() {
+    const api = getApi();
+    localStorage.clear();
+    localStorage['api'] = api;
+    atualizePreco(value = 0)
   }
+  
 
   function removeAllItensCar() {
     const lis = document.getElementsByClassName('cart__item');
     clearStorage();
-    Object.values(lis).forEach(item => {
-      item.remove()
+    Object.values(lis).forEach((item) => {
+      item.remove();
     })
   }
 
-  function clearStorage() {
-    const api = getApi()
-    localStorage.clear();
-    localStorage['api'] = api;
-    atualizePreco(value=0)
+  function createButtonClean() {
+    document.querySelector('.cart').appendChild(createCustomElement('button', 'btn-clean', 'Limpar o carrinho!'));
+    document.querySelector('.btn-clean').addEventListener('click', () => {
+      removeAllItensCar();
+    })
   }
 
   function loadCar() {
@@ -161,7 +162,7 @@ window.onload = function onload() {
           });
       }
     });
-  };
+  }
 
   catchDados(API_URL)
     .then((response) => {
