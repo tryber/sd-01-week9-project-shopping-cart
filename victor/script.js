@@ -35,6 +35,7 @@ function getSkuFromProductItem(item) {
 
 function cartItemClickListener(event) {
   document.querySelectorAll(".cart__items")[0].removeChild(event.target)
+  // JSON.parse(localStorage.removeItem('itens'))
 }
 
 function createCartItemElement({ sku, name, salePrice }) {
@@ -74,8 +75,12 @@ function addItemToShoppingCart(API_KEY, sku, addNewProduct) {
       headers: { Accept: "application/json" }
     })
     .then(response => response.json())
-    .then(data => { 
-      document.querySelectorAll(".cart__items")[0].appendChild(createCartItemElement(data.products[0])) 
-    })
+    .then(data => document.querySelectorAll(".cart__items")[0].appendChild(createCartItemElement(data.products[0])))
   })
+}
+ 
+function addCartInLocalStorage() {
+  const itensArray = []
+  itensArray[0] = data.products[0].sku
+  localStorage.setItem('itens', JSON.stringify(itensArray))
 }
