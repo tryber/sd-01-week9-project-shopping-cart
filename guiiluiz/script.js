@@ -1,9 +1,9 @@
-const script = document.createElement('script')
+const script = document.createElement('script');
 
-script.src = 'https://code.jquery.com/jquery-3.4.1.min.js'
-script.integrity = 'sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo='
-script.crossOrigin = 'anonymous'
-document.getElementsByTagName('head')[0].appendChild(script)
+script.src = 'https://code.jquery.com/jquery-3.4.1.min.js';
+script.integrity = 'sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=';
+script.crossOrigin = 'anonymous';
+document.getElementsByTagName('head')[0].appendChild(script);
 
 window.onload = function onload() {
   const apiKey = localStorage.apiKey
