@@ -19,6 +19,7 @@ window.onload = function onload() {
   termsAgreementCookies()
   getListing()
   loadShoppingCart()
+  removeButton()
 };
 
 function getAPI () {
@@ -90,6 +91,14 @@ function getListing() {
     })))
 }
 
+function removeButton() {
+  const removeButton = document.querySelector('.remove__button')
+  const cartItems = document.querySelectorAll('.cart__item')
+  removeButton.addEventListener('click', () => {
+    cartItems.forEach((item) => item.remove())
+    refreshLocalStorage()
+  })
+}
 
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
