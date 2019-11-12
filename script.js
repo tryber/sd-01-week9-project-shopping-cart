@@ -41,7 +41,7 @@ window.onload = function onload() {
   })
   
   const elementosNoHtml = document.querySelector('.items')
-  const skuNamePrice = document.querySelector('cart__items')
+  const skuNamePrice = document.querySelector('.cart__items')
 
   
   const API_URL = `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${API_KEY()}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`
@@ -53,7 +53,6 @@ window.onload = function onload() {
     data.products.forEach(element => {
       const child = createProductItemElement(element)
       elementosNoHtml.appendChild(child)
-      console.log(child)
       
       child.lastChild.addEventListener('click', () => {
         const API_URL_PRODUCT = `https://api.bestbuy.com/v1/products(sku=${child.firstChild.textContent})?apiKey=${API_KEY()}&sort=sku.asc&show=sku,name,salePrice&format=json`
@@ -62,14 +61,11 @@ window.onload = function onload() {
           return response.json();
         })
         .then((data) => {
-          console.log(data)
-        
+          console.log(skuNamePrice.appendChild(createCartItemElement(data.products[0])))
         })
       })
     })
   })
-  
-  
   
   function cartItemClickListener(event) {
     // coloque seu código aqui
