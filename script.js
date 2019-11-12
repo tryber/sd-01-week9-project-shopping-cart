@@ -4,15 +4,15 @@ function storeName() {
 }
 
 function createLoader() {
-const cartList = document.querySelector('.cart__items');
-const loaderDiv = document.createElement('div');
-loaderDiv.className = 'lds-roller';
-loaderDiv.innerText = 'Loading...';
-for (let div = 0; div < 8; div += 1) {
-  const animationDiv = document.createElement('div');
-  loaderDiv.appendChild(animationDiv);
-}
-cartList.appendChild(loaderDiv);
+  const cartList = document.querySelector('.cart__items');
+  const loaderDiv = document.createElement('div');
+  loaderDiv.className = 'lds-roller';
+  loaderDiv.innerText = 'Loading...';
+  for (let div = 0; div < 8; div += 1) {
+    const animationDiv = document.createElement('div');
+    loaderDiv.appendChild(animationDiv);
+  }
+  cartList.appendChild(loaderDiv);
 }
 
 function setCookie(name, value, exdays) {
@@ -37,88 +37,11 @@ function termsAgreementCookies() {
   });
 }
 
-function addToCart(SKU) {
-  const API_KEY = getAPI()
-  const API_URL = `https://cors-anywhere.herokuapp.com/https://api.bestbuy.com/v1/products(sku=${SKU})?apiKey=${API_KEY}&sort=sku.asc&show=sku,name,salePrice&format=json`;
-  fetch(API_URL)
-    .then(response => response.json().then((object) => {
-      const newCarItem = createCartItemElement(object.products[0]);
-      const cartList = document.querySelector('.cart__items');
-      newCarItem.addEventListener('click', () => {
-        refreshLocalStorage();
-      });
-      cartList.appendChild(newCarItem);
-      refreshLocalStorage();
-    }))
-    .then(() => {
-      const loader = document.querySelector('.lds-roller');
-      loader.className = '';
-      loader.innerText = '';
-    });
-};
-
-function getListing() {
-  const API_KEY = getAPI()
-  const API_URL = `https://cors-anywhere.herokuapp.com/https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${API_KEY}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`;
-  fetch(API_URL)
-    .then(response => response.json().then(object => object.products.forEach((item) => {
-      const newItem = createProductItemElement(item);
-      const itemSection = document.querySelector('.items');
-      newItem.lastChild.addEventListener('click', () => {
-        createLoader();
-        addToCart(item.sku);
-      });
-      itemSection.appendChild(newItem);
-    })))
-    .then(() => {
-      const loader = document.querySelector('.lds-roller');
-      loader.className = '';
-      loader.innerText = '';
-    });
-};
-
-function cleanCart() {
-  const clearCart = document.querySelector('.cleancart__button');
-  clearCart.addEventListener('click', () => {
-    const cartItems = document.querySelectorAll('.cart__item');
-    cartItems.forEach(item => item.remove());
-    refreshLocalStorage();
-  });
-}
-
-function loadShoppingCart() {
-  Object.keys(localStorage).forEach((key) => {
-    if (key !== 'API_KEY') {
-      const itemArray = localStorage.getItem(key).split('|');
-      const newItemObj = {sku: itemArray[0].slice(5,-2), name: itemArray[1].slice(7,-1), salePrice: itemArray[2].slice(9)};
-      const newCarItem = createCartItemElement(newItemObj);
-      newCarItem.addEventListener('click', () => {
-        refreshLocalStorage();
-      });
-      const cartList = document.querySelector('.cart__items');
-      cartList.appendChild(newCarItem);
-    };
-  });
-}
-
-function refreshTotalPrice() {
-  let totalPrice = 0;
-  const priceField = document.querySelector('.total__price');
-  Object.keys(localStorage).forEach((key) => {
-    if (key !== 'API_KEY') {
-      const actualItem = localStorage.getItem(key).split('$');
-      const actualPrice = parseFloat(actualItem[1]);
-      totalPrice += actualPrice;;
-    };
-  });
-  priceField.innerText = `Valor Total: $${totalPrice.toFixed(2)}`;
-}
-
 function refreshLocalStorage() {
   const cartList = document.querySelectorAll('.cart__item');
   const usedIndexesArray = [];
 
-  for (let index = 0; index < cartList.length; index++) {
+  for (let index = 0; index < cartList.length; index += 1) {
     localStorage.setItem(index, cartList[index].innerText);
     usedIndexesArray.push(index.toString());
   }
@@ -130,6 +53,28 @@ function refreshLocalStorage() {
   });
 
   refreshTotalPrice();
+}
+
+function cleanCart() {
+  const clearCart = document.querySelector('.cleancart__button');
+  clearCart.addEventListener('click', () => {
+    const cartItems = document.querySelectorAll('.cart__item');
+    cartItems.forEach(item => item.remove());
+    refreshLocalStorage();
+  });
+}
+
+function refreshTotalPrice() {
+  let totalPrice = 0;
+  const priceField = document.querySelector('.total__price');
+  Object.keys(localStorage).forEach((key) => {
+    if (key !== 'API_KEY') {
+      const actualItem = localStorage.getItem(key).split('$');
+      const actualPrice = parseFloat(actualItem[1]);
+      totalPrice += actualPrice;
+    }
+  });
+  priceField.innerText = `Valor Total: $${totalPrice.toFixed(2)}`;
 }
 
 function createProductImageElement(imageSource) {
@@ -172,6 +117,65 @@ function createCartItemElement({ sku, name, salePrice }) {
   li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
   li.addEventListener('click', cartItemClickListener);
   return li;
+}
+
+function addToCart(SKU) {
+  const API_KEY = getAPI();
+  const API_URL = `https://cors-anywhere.herokuapp.com/https://api.bestbuy.com/v1/products(sku=${SKU})?apiKey=${API_KEY}&sort=sku.asc&show=sku,name,salePrice&format=json`;
+  fetch(API_URL)
+    .then(response => response.json().then((object) => {
+      const newCarItem = createCartItemElement(object.products[0]);
+      const cartList = document.querySelector('.cart__items');
+      newCarItem.addEventListener('click', () => {
+        refreshLocalStorage();
+      });
+      cartList.appendChild(newCarItem);
+      refreshLocalStorage();
+    }))
+    .then(() => {
+      const loader = document.querySelector('.lds-roller');
+      loader.className = '';
+      loader.innerText = '';
+    });
+}
+
+function getListing() {
+  const API_KEY = getAPI();
+  const API_URL = `https://cors-anywhere.herokuapp.com/https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${API_KEY}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`;
+  fetch(API_URL)
+    .then(response => response.json().then(object => object.products.forEach((item) => {
+      const newItem = createProductItemElement(item);
+      const itemSection = document.querySelector('.items');
+      newItem.lastChild.addEventListener('click', () => {
+        createLoader();
+        addToCart(item.sku);
+      });
+      itemSection.appendChild(newItem);
+    })))
+    .then(() => {
+      const loader = document.querySelector('.lds-roller');
+      loader.className = '';
+      loader.innerText = '';
+    });
+}
+
+function loadShoppingCart() {
+  Object.keys(localStorage).forEach((key) => {
+    if (key !== 'API_KEY') {
+      const itemArray = localStorage.getItem(key).split('|');
+      const newItemObj = {
+        sku: itemArray[0].slice(5, -2),
+        name: itemArray[1].slice(7, -1),
+        salePrice: itemArray[2].slice(9)
+      };
+      const newCarItem = createCartItemElement(newItemObj);
+      newCarItem.addEventListener('click', () => {
+        refreshLocalStorage();
+      });
+      const cartList = document.querySelector('.cart__items');
+      cartList.appendChild(newCarItem);
+    }
+  });
 }
 
 window.onload = function onload() {
