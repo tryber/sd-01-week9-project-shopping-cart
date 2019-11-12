@@ -20,7 +20,7 @@ window.onload = function onload() {
   getListing()
   loadShoppingCart()
   cleanCart()
-  this.refreshTotalPrice()
+  refreshTotalPrice()
 };
 
 function refreshTotalPrice() {
@@ -48,12 +48,11 @@ function setCookie(name, value, exdays) {
 }
 
 function refreshLocalStorage() {
-  const cartList = document.querySelectorAll('.cart__items')
-  const cartChildren = cartList[0].children
+  const cartList = document.querySelectorAll('.cart__item')
   const usedIndexesArray = []
 
-  for (let index = 0; index < cartChildren.length ; index++) {
-    localStorage.setItem(index, cartChildren[index].innerText)
+  for (let index = 0; index < cartList.length ; index++) {
+    localStorage.setItem(index, cartList[index].innerText)
     usedIndexesArray.push(index.toString())
   }
 
@@ -82,29 +81,53 @@ function loadShoppingCart() {
   })
 }
 
+function createLoader() {
+  const cartList = document.querySelector('.cart__items')
+  const loaderDiv = document.createElement('div')
+  loaderDiv.className = 'lds-roller'
+  loaderDiv.innerText = 'Loading...'
+  for (let div = 0; div < 8; div++) {
+    let animationDiv = document.createElement('div')
+    loaderDiv.appendChild(animationDiv)
+  }
+  cartList.appendChild(loaderDiv)
+}
+
 function addToCart(SKU) {
   const API_KEY = getAPI(),
-        API_URL = `https://cors-anywhere.herokuapp.com/https://api.bestbuy.com/v1/products(sku=${SKU})?apiKey=${API_KEY}&sort=sku.asc&show=sku,name,salePrice&format=json`
+        API_URL = `https://api.bestbuy.com/v1/products(sku=${SKU})?apiKey=${API_KEY}&sort=sku.asc&show=sku,name,salePrice&format=json`
   fetch(API_URL)
     .then(response => response.json().then(object => {
       const newCarItem = createCartItemElement(object.products[0])
       const cartList = document.querySelector('.cart__items')
       cartList.appendChild(newCarItem)
-      const {salePrice} = object.products[0]
       refreshLocalStorage()
       }))
+    .then(() => {
+      const loader = document.querySelector('.lds-roller')
+      loader.className = ''
+      loader.innerText = ''
+    })
 }
 
 function getListing() {
   const API_KEY = getAPI(),
-        API_URL = `https://cors-anywhere.herokuapp.com/https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${API_KEY}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`
-        fetch (API_URL)
+        API_URL = `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${API_KEY}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`
+  fetch (API_URL)
     .then(response => response.json().then(object => object.products.forEach (item => {
       const newItem = createProductItemElement(item)
       const itemSection = document.querySelector('.items')
-      newItem.lastChild.addEventListener('click', () => addToCart(item.sku))
+      newItem.lastChild.addEventListener('click', () => {
+        createLoader()
+        addToCart(item.sku)
+      })
       itemSection.appendChild(newItem)
     })))
+    .then(() => {
+      const loader = document.querySelector('.lds-roller')
+      loader.className = ''
+      loader.innerText = ''
+    })
 }
 
 function cleanCart() {
