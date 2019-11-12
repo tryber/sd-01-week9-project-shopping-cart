@@ -44,7 +44,7 @@ window.onload = function onload() {
           localStorage.setItem(`${gerateLocalStoragePosition()}`, data.products[0].sku);
           gerateTotalPrice(data.products[0].salePrice)
         })
-
+        .catch(error => console.log(error))
     })
   }
 
@@ -57,7 +57,7 @@ window.onload = function onload() {
           .then(data => {
             document.getElementsByClassName("cart__items")[0].appendChild(createCartItemElement(data.products[0]));
             document.getElementsByClassName('cart__title')[0].innerText = `Carrinho de
-             compras, preço total: $${Math.round(localStorage.price * 100) / 100}`
+            compras, preço total: $${Math.round(localStorage.price * 100) / 100}`
           })
       }
     })
@@ -120,8 +120,9 @@ window.onload = function onload() {
     const newButton = document.createElement('button');
     newButton.innerHTML = "Limpar Carrinho de Compras"
     newButton.addEventListener('click', function () {
-      const cartDad = document.getElementsByClassName("cart__items");
-      Object.values(cartDad).forEach(cart => cart.remove())
+      const productsArray = document.getElementsByClassName("cart__item");
+      Object.values(productsArray).forEach(product => product.remove())
+      document.getElementsByClassName('cart__title')[0].innerText = `Carrinho de compras, preço total: $0`
       clearStorage();
     })
     cart.appendChild(newButton);
