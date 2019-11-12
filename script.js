@@ -1,5 +1,6 @@
 function storeName() {
   const nameInput = document.querySelector('.input-name');
+  nameInput.async = true
   nameInput.addEventListener('change', event => sessionStorage.setItem('name', event.target.value));
 }
 
@@ -37,6 +38,19 @@ function termsAgreementCookies() {
   });
 }
 
+function refreshTotalPrice() {
+  let totalPrice = 0;
+  const priceField = document.querySelector('.total__price');
+  Object.keys(localStorage).forEach((key) => {
+    if (key !== 'API_KEY') {
+      const actualItem = localStorage.getItem(key).split('$');
+      const actualPrice = parseFloat(actualItem[1]);
+      totalPrice += actualPrice;
+    }
+  });
+  priceField.innerText = `Valor Total: $${totalPrice.toFixed(2)}`;
+}
+
 function refreshLocalStorage() {
   const cartList = document.querySelectorAll('.cart__item');
   const usedIndexesArray = [];
@@ -62,19 +76,6 @@ function cleanCart() {
     cartItems.forEach(item => item.remove());
     refreshLocalStorage();
   });
-}
-
-function refreshTotalPrice() {
-  let totalPrice = 0;
-  const priceField = document.querySelector('.total__price');
-  Object.keys(localStorage).forEach((key) => {
-    if (key !== 'API_KEY') {
-      const actualItem = localStorage.getItem(key).split('$');
-      const actualPrice = parseFloat(actualItem[1]);
-      totalPrice += actualPrice;
-    }
-  });
-  priceField.innerText = `Valor Total: $${totalPrice.toFixed(2)}`;
 }
 
 function createProductImageElement(imageSource) {
@@ -166,7 +167,7 @@ function loadShoppingCart() {
       const newItemObj = {
         sku: itemArray[0].slice(5, -2),
         name: itemArray[1].slice(7, -1),
-        salePrice: itemArray[2].slice(9)
+        salePrice: itemArray[2].slice(9),
       };
       const newCarItem = createCartItemElement(newItemObj);
       newCarItem.addEventListener('click', () => {
@@ -185,4 +186,4 @@ window.onload = function onload() {
   loadShoppingCart();
   cleanCart();
   refreshTotalPrice();
-}
+};

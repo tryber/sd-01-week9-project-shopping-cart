@@ -89,7 +89,7 @@
 }
 
 .lds-roller div:after {
-  background: #dfc;
+  background: #ddffcc;
   border-radius: 50%;
   content: ' ';
   display: block;
