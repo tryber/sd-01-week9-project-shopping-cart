@@ -1,3 +1,11 @@
+function createCartItemElement({ sku, name, salePrice }) {
+  const li = document.createElement('li');
+  li.className = 'cart__item';
+  li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
+  li.addEventListener('click', cartItemClickListener);
+  return li;
+}
+
 const changeItemClass = (classItem) => document.querySelector(`.${classItem}`)
 function API() {
   const API_KEY = `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${localStorage.api}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`
@@ -13,11 +21,11 @@ function API() {
         const cart = document.querySelector('.cart__items')
         const NEW_API = `https://api.bestbuy.com/v1/products(sku=${element.sku})?apiKey=${localStorage.api}&sort=sku.asc&show=sku,name,salePrice&format=json`
         fetch(NEW_API)
-          .then((responseNewAPI) => responseNewAPI.json())
-          .then((newData) => {
-            const addLocalStorage = createCartItemElement(newData.products[0])
-            localStorage.setItem('archive', addLocalStorage.innerHTML)
-            cart.appendChild(addLocalStorage)
+          .then(responseNewAPI => responseNewAPI.json())
+          .then(newData => {
+            const addLocalStorage = createCartItemElement(newData.products[0]);
+            localStorage.setItem('archive', addLocalStorage.innerHTML);
+            cart.appendChild(addLocalStorage);
           })
       })
     }))
@@ -65,13 +73,7 @@ function cartItemClickListener(event) {
   LPSelected.parentNode.removeChild(LPSelected)
 }
 
-function createCartItemElement({ sku, name, salePrice }) {
-  const li = document.createElement('li');
-  li.className = 'cart__item';
-  li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
-  li.addEventListener('click', cartItemClickListener);
-  return li;
-}
+
 
 window.onload = function onload() {
   API()
