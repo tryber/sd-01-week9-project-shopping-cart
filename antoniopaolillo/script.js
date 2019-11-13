@@ -9,7 +9,7 @@ function setCookie() {
   const days = 7;
   inputTermsAgree.addEventListener('change', () => {
     const expires = new Date(Date.now() + (days * 864e5)).toUTCString();
-    document.cookie = `terms-agree =${encodeURIComponent(inputTermsAgree.checked)}; expires= ${expires}; path=/`
+    document.cookie = `terms-agree =${encodeURIComponent(inputTermsAgree.checked)}; expires= ${expires}; path=/`;
   });
 }
 
