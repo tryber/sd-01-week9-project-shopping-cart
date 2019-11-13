@@ -13,6 +13,20 @@ function sumPrice() {
   document.getElementById('price').innerHTML = `Preço total: $${sum}`;
 }
 
+function cartItemClickListener(event) {
+  let ind = 0;
+  document.getElementsByClassName('cart__items')[0].removeChild(event.target);
+  Object.keys(localStorage).forEach((key) => {
+    if (localStorage.getItem(key) === event.target.outerHTML && ind === 0) {
+      localStorage.removeItem(key);
+      ind += 1;
+    }
+  });
+  setTimeout(() => {
+    sumPrice();
+  }, 1000);
+}
+
 function createCartItemElement({ sku, name, salePrice }) {
   const li = document.createElement('li');
   li.className = 'cart__item';
@@ -68,20 +82,6 @@ function createProductItemElement({ sku, name, image }) {
   return section;
 }
 
-function cartItemClickListener(event) {
-  let ind = 0;
-  document.getElementsByClassName('cart__items')[0].removeChild(event.target);
-  Object.keys(localStorage).forEach((key) => {
-    if (localStorage.getItem(key) === event.target.outerHTML && ind === 0) {
-      localStorage.removeItem(key);
-      ind += 1;
-    }
-  });
-  setTimeout(() => {
-    sumPrice();
-  }, 1000);
-}
-
 function restoreValues() {
   document.getElementsByClassName('input-name')[0].value = sessionStorage.getItem('user_name');
   document.getElementsByClassName('input-terms')[0].checked = (convertArrayToObject(document.cookie.split(';')).checked === 'true');
@@ -99,7 +99,7 @@ function createCookies(name, value, expires) {
 }
 
 function storeCheckbox() {
-  document.getElementsByClassName('input-terms')[0].addEventListener('change', event => {
+  document.getElementsByClassName('input-terms')[0].addEventListener('change', (event) => {
     event.target.checked ? createCookies('checked', true, ' Tue, 01 Jan 2115 12:00:00 UTC') : createCookies('checked', false, 'Tue, 01 Jan 2115 12:00:00 UTC');
   });
 }
@@ -121,7 +121,7 @@ function generateProduct() {
 function buttonListener() {
   const buttons = document.getElementsByClassName('item__add');
   for (i = 0; i < buttons.length; i++) {
-    buttons[i].addEventListener('click', event => {
+    buttons[i].addEventListener('click', (event) => {
       addShoppingCar(event.target.parentNode.firstElementChild.innerText);
       setTimeout(() => {
         sumPrice();
@@ -161,7 +161,7 @@ function clean() {
     document.getElementsByClassName('cart__items')[0].removeChild(document.getElementsByClassName('cart__item')[i]);
   }
   const array = Object.keys(localStorage).filter(key => (key !== 'APIkey') && (key !== 'ind'));
-  array.forEach((key) => localStorage.removeItem(key));
+  array.forEach(key => localStorage.removeItem(key));
   setTimeout(() => {
     sumPrice();
   }, 1000);
