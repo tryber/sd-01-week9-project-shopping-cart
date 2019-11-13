@@ -151,7 +151,7 @@ function loadCar() {
         });
     }
   });
-};
+}
 
 window.onload = function onload() {
   document.querySelector('.cart__title').innerText = `Carrinho de compras - Preço: R$${0}`;
