@@ -1,6 +1,7 @@
 window.onload = function onload() {
   saveNameUserInBrowser()
   getApiKeyValues()
+  removeCartInLocalStorage()
 };
 
 function createProductImageElement(imageSource) {
@@ -35,7 +36,6 @@ function getSkuFromProductItem(item) {
 
 function cartItemClickListener(event) {
   document.querySelectorAll(".cart__items")[0].removeChild(event.target)
-  // JSON.parse(localStorage.removeItem('itens'))
 }
 
 function createCartItemElement({ sku, name, salePrice }) {
@@ -76,11 +76,20 @@ function addItemToShoppingCart(API_KEY, sku, addNewProduct) {
     })
     .then(response => response.json())
     .then(data => document.querySelectorAll(".cart__items")[0].appendChild(createCartItemElement(data.products[0])))
+    .then(addCartInLocalStorage(sku))
+    .then(removeCartInLocalStorage(sku))
   })
 }
- 
-function addCartInLocalStorage() {
-  const itensArray = []
-  itensArray[0] = data.products[0].sku
+
+const itensArray = []
+
+function addCartInLocalStorage(sku) {
+  itensArray.push(sku)
   localStorage.setItem('itens', JSON.stringify(itensArray))
+  console.log(itensArray)
+}
+
+function removeCartInLocalStorage() {
+  const teste2 = JSON.parse(localStorage.getItem("itens"))
+  console.log(itensArray)
 }
