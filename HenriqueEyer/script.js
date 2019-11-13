@@ -1,7 +1,7 @@
-window.onload = function onload() {
+
   const getApi = () => localStorage.getItem('api');
 
-  document.querySelector('.cart__title').innerText = `Carrinho de compras - Preço: R$${0}`;
+  const valueInitCar=()=>document.querySelector('.cart__title').innerText = `Carrinho de compras - Preço: R$${0}`;
 
   function atualizePreco(value) {
     const element = document.querySelector('.cart__title');
@@ -93,12 +93,6 @@ window.onload = function onload() {
 
   const returnElementByClass = name => document.querySelector(`.${name}`);
 
-  returnElementByClass('input-name').addEventListener('change', () => {
-    saveUser(returnElementByClass('input-name').value);
-  });
-
-  
-
   function createProducts(json) {
     const father = document.querySelector('.items');
     const ol = document.querySelector('.cart__items');
@@ -165,6 +159,12 @@ window.onload = function onload() {
     });
   }
 
+window.onload = function onload() {
+  valueInitCar()
+  returnElementByClass('input-name').addEventListener('change', () => {
+    saveUser(returnElementByClass('input-name').value);
+  });
+  loadCar();
   catchDados(API_URL)
     .then((response) => {
       createProducts(response);
@@ -173,5 +173,4 @@ window.onload = function onload() {
       console.log('error');
       console.log(error);
     });
-  loadCar();
 }
