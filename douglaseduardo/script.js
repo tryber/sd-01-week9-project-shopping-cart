@@ -1,4 +1,7 @@
 window.onload = function onload() {};
+const criarListaElemento = respostaJson => {
+  respostaJson.forEach(element => pgClss('cart__items').appendChild(createCartItemElement(element)));
+}
 document.querySelector('.limparCarrinho').addEventListener('click', () => {
   const pai = document.querySelectorAll('.cart__item');
   pai.forEach(item => item.remove());
@@ -32,7 +35,8 @@ function createProductItemElement({ sku, name, image }) {
 }
 
 function cartItemClickListener(event) {
-  const chave = Object.keys(localStorage).find(item => localStorage[item] === event.target.innerText.substring(5, 13));
+  const chave = Object.keys(localStorage)
+    .find(item => localStorage[item] === event.target.innerText.substring(5, 13));
   localStorage.removeItem(chave);
   event.target.remove();
 }
@@ -49,7 +53,7 @@ const pgClss = classe => document.querySelector(`.${classe}`);
 
 const api = () => localStorage.getItem('chave_API');
 
-const apiKeyEx5 = (SKU) => `https://api.bestbuy.com/v1/products(sku=${SKU})?apiKey=${api()}&sort=sku.asc&show=sku,name,salePrice&format=json`;
+const apiKeyEx5 = SKU => `https://api.bestbuy.com/v1/products(sku=${SKU})?apiKey=${api()}&sort=sku.asc&show=sku,name,salePrice&format=json`;
 
 Object.keys(localStorage).forEach(chave => {
   fetch(apiKeyEx5(Number(localStorage.getItem(chave))), { headers: { Accept: 'application/json' } })
@@ -59,9 +63,7 @@ Object.keys(localStorage).forEach(chave => {
 
 let contador = 0;
 
-const criarListaElemento = respostaJson => {
-  respostaJson.forEach(element => pgClss('cart__items').appendChild(createCartItemElement(element)));
-}
+
 
 const criarElemento = (valoresParaCriar) => {
   valoresParaCriar.forEach(element => {
