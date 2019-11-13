@@ -1,3 +1,11 @@
+// const addLoading = () => document.getElementsByClassName("top-bar")[0].innerHTML = 'Carregando';
+function addLoading() {
+  newSpan = document.createElement('span');
+  newSpan.innerHTML = 'Carregando...';
+  document.getElementsByClassName('top-bar')[0].appendChild(newSpan);
+}
+
+const removeLoading = () => document.getElementsByClassName('top-bar')[0].lastChild.remove();
 
 function saveName() {
   const inputName = document.getElementsByClassName('input-name')[0];
@@ -98,9 +106,9 @@ async function gerateProducts() {
       document.getElementsByClassName('items')[0].appendChild(newProduct);
       newProduct.lastChild.addEventListener('click', addProductToCart(newProduct, product, acessApiKey));
     }))
+    .then(() => removeLoading())
     .catch(error => console.log(error));
 }
-
 
 function loadLocalStorage() {
   const localStorageKeys = Object.keys(localStorage);
@@ -153,6 +161,7 @@ function customCartTitle() {
 }
 
 window.onload = function onload() {
+  addLoading();
   saveName();
   setCookie();
   gerateProducts();
