@@ -1,8 +1,3 @@
-window.onload = function onload() {
-  API()
-  consumerName()
-}
-
 const changeItemClass = (classItem) => document.querySelector(`.${classItem}`)
 function API() {
   const API_KEY = `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${localStorage.api}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`
@@ -78,3 +73,7 @@ function createCartItemElement({ sku, name, salePrice }) {
   return li;
 }
 
+window.onload = function onload() {
+  API()
+  consumerName()
+}
