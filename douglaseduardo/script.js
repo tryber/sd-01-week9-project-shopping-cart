@@ -2,6 +2,11 @@ window.onload = function onload() {};
 const limparCarrinho = () => {
   const pai = document.querySelectorAll('.cart__item');
   pai.forEach(item => item.remove());
+  Object.keys(localStorage).forEach((chave) => {
+    if (chave !== 'chave_API') {
+      localStorage.removeItem(chave);
+    }
+  });
 };
 
 function createProductImageElement(imageSource) {
