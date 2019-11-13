@@ -49,7 +49,7 @@ function saveNameUserInBrowser() {
   document.querySelector('.input-terms').addEventListener('click', () => {
     const nameUser = document.querySelector('.input-name').value;
     sessionStorage.setItem('nameUser', nameUser);
-  })
+  });
 }
 
 function getApiKeyValues() {
