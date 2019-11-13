@@ -23,7 +23,7 @@ function createCartItemElement({ sku, name, salePrice }) {
 
 function addShoppingCar(SKU) {
   return new Promise(
-    (resolve) => {
+    () => {
       $.getJSON(
         `https://api.bestbuy.com/v1/products(sku=${SKU})?apiKey=${localStorage.getItem('APIkey')}&sort=sku.asc&show=sku,name,salePrice&format=json`,
         (data) => {
@@ -95,8 +95,8 @@ function storeInput() {
 
 function storeCheckbox() {
   document.getElementsByClassName('input-terms')[0].addEventListener('change', event => {
-    event.target.checked ? createCookies('checked', true, " Tue, 01 Jan 2115 12:00:00 UTC") : createCookies("checked", false, "Tue, 01 Jan 2115 12:00:00 UTC");
-  })
+    event.target.checked ? createCookies('checked', true, ' Tue, 01 Jan 2115 12:00:00 UTC') : createCookies('checked', false, 'Tue, 01 Jan 2115 12:00:00 UTC');
+  });
 }
 
 function createCookies(name, value, expires) {
@@ -106,20 +106,20 @@ function createCookies(name, value, expires) {
 
 function generateProduct() {
   return new Promise(
-    (resolve) => {
+    () => {
       $.getJSON(
         `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${localStorage.getItem('APIkey')}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`,
         (data) => {
-          data.products.forEach((elm_obj) => {
-            document.getElementsByClassName('items')[0].appendChild(createProductItemElement(elm_obj));
-          })
+          data.products.forEach((elm) => {
+            document.getElementsByClassName('items')[0].appendChild(createProductItemElement(elm));
+          });
         }
-      )
-    })
+      );
+    });
 }
 
 function buttonListener() {
-  let buttons = document.getElementsByClassName('item__add');
+  const buttons = document.getElementsByClassName('item__add');
   for (i = 0; i < buttons.length; i++) {
     buttons[i].addEventListener('click', event => {
       addShoppingCar(event.target.parentNode.firstElementChild.innerText);
