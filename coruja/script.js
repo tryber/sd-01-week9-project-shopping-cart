@@ -34,11 +34,11 @@ const setKeyStorageCar = ({ sku }) => {
   localStorage[gerateLocalStoragePosition()] = sku;
 };
 
-const API_KEY = () => {
-  return localStorage.getItem("API_KEY")
-}
+function API_KEY() {
+  return localStorage.getItem('API_KEY');
+};
 function saveNameInPage() {
-  let nomeDeEntrada = document.getElementsByClassName("input-name")[0]
+  const nomeDeEntrada = document.getElementsByClassName("input-name")[0]
   nomeDeEntrada.addEventListener('keyup', function () {
     sessionStorage.setItem('Nome', this.value)
   })
