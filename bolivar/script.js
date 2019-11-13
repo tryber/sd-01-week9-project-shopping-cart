@@ -53,7 +53,7 @@ function addShoppingCar(SKU) {
 function convertArrayToObject(array) {
   return array.reduce((obj, item) => {
     const keyValue = item.split('=');
-    keyValue[0].charAt(0) === " " ? obj[keyValue[0].substring(1)] = keyValue[1] : obj[keyValue[0]] = keyValue[1];
+    keyValue[0].charAt(0) === ' ' ? obj[keyValue[0].substring(1)] = keyValue[1] : obj[keyValue[0]] = keyValue[1];
     return obj;
   }, {});
 }
@@ -88,14 +88,14 @@ function restoreValues() {
 }
 
 function storeInput() {
-  document.getElementsByClassName('input-name')[0].addEventListener('change', event => {
+  document.getElementsByClassName('input-name')[0].addEventListener('change', (event) => {
     sessionStorage.setItem('user_name', event.target.value);
   });
 }
 
 function createCookies(name, value, expires) {
-  const date_expires = `expires= ${expires}`;
-  document.cookie = name + '=' + value + '; ' + date_expires;
+  const dateExpires = `expires= ${expires}`;
+  document.cookie = name + '=' + value + '; ' + dateExpires;
 }
 
 function storeCheckbox() {
