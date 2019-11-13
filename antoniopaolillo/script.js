@@ -1,20 +1,22 @@
 window.onload = function onload() {
 
-  (function saveName() {
+  function saveName() {
     const inputName = document.getElementsByClassName("input-name")[0];
     inputName.addEventListener("blur", () => sessionStorage.setItem('name', inputName.value));
-  })();
+  }
+  saveName();
 
-  (function setCookie() {
+  function setCookie() {
     const inputTermsAgree = document.getElementsByClassName("input-terms")[0];
     const days = 7;
     inputTermsAgree.addEventListener("change", function settingCookie() {
       const expires = new Date(Date.now() + days * 864e5).toUTCString();
       document.cookie = "terms-agree" + '=' + encodeURIComponent(inputTermsAgree.checked) + '; expires=' + expires + '; path=' + '/';
-    })
-  })();
+    });
+  }
+  setCookie();
 
-  (async function gerateProducts() {
+  async function gerateProducts() {
     const acessApiKey = localStorage.getItem('apiKey');
     const api = `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${acessApiKey}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`;
     await fetch(api)
@@ -23,9 +25,10 @@ window.onload = function onload() {
         const newProduct = createProductItemElement(product);
         document.getElementsByClassName("items")[0].appendChild(newProduct);
         newProduct.lastChild.addEventListener("click", addProductToCart(newProduct, product, acessApiKey));
-
-      }));
-  })();
+      }))
+      .catch(error => console.log(error));
+  }
+  gerateProducts();
 
   function gerateLocalStoragePosition() {
     let localStorageLength = localStorage.length;
@@ -42,13 +45,13 @@ window.onload = function onload() {
         .then(data => {
           document.getElementsByClassName("cart__items")[0].appendChild(createCartItemElement(data.products[0]));
           localStorage.setItem(`${gerateLocalStoragePosition()}`, data.products[0].sku);
-          gerateTotalPrice(data.products[0].salePrice)
+          gerateTotalPrice(data.products[0].salePrice);
         })
-        .catch(error => console.log(error))
+        .catch(error => console.log(error));
     })
   }
 
-  (function loadLocalStorage() {
+  function loadLocalStorage() {
     const localStorageKeys = Object.keys(localStorage);
     localStorageKeys.forEach((localStorageNewPosition) => {
       if (localStorageNewPosition !== 'apiKey' && localStorageNewPosition !== 'price') {
@@ -57,11 +60,13 @@ window.onload = function onload() {
           .then(data => {
             document.getElementsByClassName("cart__items")[0].appendChild(createCartItemElement(data.products[0]));
             document.getElementsByClassName('cart__title')[0].innerText = `Carrinho de
-            compras, preço total: $${Math.round(localStorage.price * 100) / 100}`
+            compras, preço total: $${Math.round(localStorage.price * 100) / 100}`;
           })
+          .catch(error => console.log(error));
       }
-    })
-  })();
+    });
+  }
+  loadLocalStorage();
 
   function createProductImageElement(imageSource) {
     const img = document.createElement('img');
@@ -89,9 +94,9 @@ window.onload = function onload() {
     return section;
   }
 
-  function getSkuFromProductItem(item) {
-    return item.querySelector('span.item__sku').innerText;
-  }
+  // function getSkuFromProductItem(item) {
+  //   return item.querySelector('span.item__sku').innerText;
+  // }
 
   function cartItemClickListener(event) {
     const objectSku = event.target.innerText.substring(5, 13);
@@ -118,17 +123,24 @@ window.onload = function onload() {
   function createDeleteCartButton() {
     const cart = document.getElementsByClassName("cart")[0];
     const newButton = document.createElement('button');
-    newButton.innerHTML = "Limpar Carrinho de Compras"
+    newButton.innerHTML = "Limpar Carrinho de Compras";
     newButton.addEventListener('click', function () {
       const productsArray = document.getElementsByClassName("cart__item");
-      Object.values(productsArray).forEach(product => product.remove())
-      document.getElementsByClassName('cart__title')[0].innerText = `Carrinho de compras, preço total: $0`
+      Object.values(productsArray).forEach(product => product.remove());
+      document.getElementsByClassName('cart__title')[0].innerText = `Carrinho de compras, preço total: $0`;
       clearStorage();
     })
     cart.appendChild(newButton);
   }
 
   createDeleteCartButton();
+
+  function createPriceStorage() {
+    if (!localStorage.price) {
+      localStorage.setItem('price', 0);
+    }
+  }
+  createPriceStorage();
 
   function customCartTitle() {
     const scoreboard = document.getElementsByClassName('cart__title')[0];
@@ -147,5 +159,4 @@ window.onload = function onload() {
     localStorage.setItem('price', finalPrice);
   }
 }
-
 
