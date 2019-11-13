@@ -69,9 +69,9 @@ let contador = 0;
 
 
 const criarElemento = (valoresParaCriar) => {
-  valoresParaCriar.forEach(element => {
-    const filho = createProductItemElement(element)
-    pgClss('items').appendChild(filho)
+  valoresParaCriar.forEach((element) => {
+    const filho = createProductItemElement(element);
+    pgClss('items').appendChild(filho);
     filho.lastChild.addEventListener('click', () => {
       fetch(apiKeyEx5(filho.firstChild.innerHTML), { headers: { Accept: 'application/json' } })
         .then(response => response.json())
