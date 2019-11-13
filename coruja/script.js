@@ -48,33 +48,32 @@ function saveNameInPage() {
 function listOfElementsAtpage() {
   const elementosNoHtml = document.querySelector('.items');
   const skuNamePrice = document.querySelector('.cart__items');
-  const API_URL = `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${API_KEY()}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`
+  const API_URL = `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${API_KEY()}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`;
   fetch(API_URL)
-  .then((response) => {
+  .then(response => {
     return response.json();
   })
   .then((data) => {
-    data.products.forEach(element => {
-      const child = createProductItemElement(element)
-      elementosNoHtml.appendChild(child)
-      
+    data.products.forEach((element) => {
+      const child = createProductItemElement(element);
+      elementosNoHtml.appendChild(child);
       child.lastChild.addEventListener('click', () => {
-        const API_URL_PRODUCT = `https://api.bestbuy.com/v1/products(sku=${child.firstChild.textContent})?apiKey=${API_KEY()}&sort=sku.asc&show=sku,name,salePrice&format=json`
+        const API_URL_PRODUCT = `https://api.bestbuy.com/v1/products(sku=${child.firstChild.textContent})?apiKey=${API_KEY()}&sort=sku.asc&show=sku,name,salePrice&format=json`;
         fetch(API_URL_PRODUCT)
-        .then((response) => {
+        .then(response => {
           return response.json();
         })
-        .then((data) => {
-          skuNamePrice.appendChild(createCartItemElement(data.products[0]))
-          setKeyStorageCar(data.products[0])
-        })
-      })
-    })
-  })
+        .then((dados) => {
+          skuNamePrice.appendChild(createCartItemElement(dados.products[0]));
+          setKeyStorageCar(dados.products[0]);
+        });
+      });
+    });
+  });
 }
 
 function cartItemClickListener(event) {
-  event.target.remove()
+  event.target.remove();
 }
 
 function createCartItemElement({ sku, name, salePrice }) {
