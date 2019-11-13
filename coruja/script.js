@@ -60,7 +60,8 @@ function listOfElementsAtpage() {
         fetch(API_URL_PRODUCT)
         .then(response => response.json())
         .then((dados) => {
-          skuNamePrice.appendChild(createCartItemElement(dados.products[0]));
+          const newCarItem = createCartItemElement(dados.products[0]);
+          skuNamePrice.appendChild(newCarItem);
           setKeyStorageCar(dados.products[0]);
         });
       });
