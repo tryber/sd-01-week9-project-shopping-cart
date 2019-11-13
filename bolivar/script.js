@@ -49,6 +49,9 @@ function cartItemClickListener(event) {
             ind += 1
         }
     })
+    setTimeout(() => {
+        sumPrice();
+    }, 1000);
 }
 
 function createCartItemElement({ sku, name, salePrice }) {
@@ -108,7 +111,12 @@ function generateProduct() {
 function buttonListener() {
     let buttons = document.getElementsByClassName("item__add");
     for (i = 0; i < buttons.length; i++) {
-        buttons[i].addEventListener("click", event => addShoppingCar(event.target.parentNode.firstElementChild.innerText))
+        buttons[i].addEventListener("click", event => {
+            addShoppingCar(event.target.parentNode.firstElementChild.innerText);
+            setTimeout(() => {
+                sumPrice();
+            }, 1000);
+        })
     }
 }
 
@@ -148,4 +156,34 @@ function displayList() {
     for (i = 0; i < document.getElementsByClassName("cart__item").length; i++) {
         document.getElementsByClassName("cart__item")[i].addEventListener("click", cartItemClickListener)
     }
+    setTimeout(() => {
+        sumPrice();
+    }, 1000);
+}
+
+function clean() {
+    let range = document.getElementsByClassName("cart__item").length
+    for (i = range - 1; i >= 0; i--) {
+        document.getElementsByClassName("cart__items")[0].removeChild(document.getElementsByClassName("cart__item")[i])
+    }
+    const array = Object.keys(localStorage).filter((key) => (key != "APIkey") && (key != "ind"))
+    array.forEach((key) => localStorage.removeItem(key))
+    setTimeout(() => {
+        sumPrice();
+    }, 1000);
+}
+
+function sumPrice() {
+    const array = Object.keys(localStorage).filter((key) => (key != "APIkey") && (key != "ind"))
+    const newArray = new Array;
+    array.forEach((key) =>
+        newArray.push(
+            localStorage.getItem(key).charAt(localStorage.getItem(key).length - 10) +
+            localStorage.getItem(key).charAt(localStorage.getItem(key).length - 9) +
+            localStorage.getItem(key).charAt(localStorage.getItem(key).length - 8) +
+            localStorage.getItem(key).charAt(localStorage.getItem(key).length - 7) +
+            localStorage.getItem(key).charAt(localStorage.getItem(key).length - 6)
+        ))
+    const sum = newArray.reduce((total, price) => Number(total) + Number(price), 0).toFixed(2)
+    document.getElementById("price").innerHTML = `Preço total: $${sum}`
 }
