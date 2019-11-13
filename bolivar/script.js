@@ -1,6 +1,6 @@
 function sumPrice() {
-  const array = Object.keys(localStorage).filter((key) => (key !== 'APIkey') && (key !== 'ind'));
-  const newArray = new Array;
+  const array = Object.keys(localStorage).filter((key) => key !== 'APIkey' && key !== 'ind');
+  const newArray = [];
   array.forEach((key) =>
     newArray.push(
       localStorage.getItem(key).charAt(localStorage.getItem(key).length - 10) +
@@ -142,7 +142,7 @@ function addShoppingCar(SKU) {
 }
 
 function displayList() {
-  const newArray = new Array;
+  const newArray = [];
   for (i = 0; i < Object.keys(localStorage).length; i++) {
     if (localStorage.getItem(Object.keys(localStorage)[i]).charAt(0) == "<") {
       newArray.push(Object.keys(localStorage)[i]);
