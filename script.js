@@ -40,15 +40,8 @@ function createProductItemElement({ sku, name, image }) {
 }
 async function catchApi() {
   const response = await fetch(urlAPI);
-  const json = await response.json()
-  console.log(json)
+  const json = await response.json();
   return json;
-}
-listBtn = () => {
-  btn = document.querySelector('.item__add')
-  btn.addEventListener('click', function(){
-    console.log("oi")
-  })
 }
 
 catchApi()
