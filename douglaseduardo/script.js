@@ -1,5 +1,19 @@
 window.onload = function onload() {};
 
+const pgClss = classe => document.querySelector(`.${classe}`);
+
+const api = () => localStorage.getItem('chave_API');
+
+const apiKeyEx5 = SKU => `https://api.bestbuy.com/v1/products(sku=${SKU})?apiKey=${api()}&sort=sku.asc&show=sku,name,salePrice&format=json`;
+
+function createCartItemElement({ sku, name, salePrice }) {
+  const li = document.createElement('li');
+  li.className = 'cart__item';
+  li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
+  li.addEventListener('click', cartItemClickListener);
+  return li;
+}
+
 function criarListaElemento(respostaJson) {
   respostaJson.forEach(element => pgClss('cart__items').appendChild(createCartItemElement(element)));
 }
@@ -43,19 +57,6 @@ function cartItemClickListener(event) {
   event.target.remove();
 }
 
-function createCartItemElement({ sku, name, salePrice }) {
-  const li = document.createElement('li');
-  li.className = 'cart__item';
-  li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
-  li.addEventListener('click', cartItemClickListener);
-  return li;
-}
-
-const pgClss = classe => document.querySelector(`.${classe}`);
-
-const api = () => localStorage.getItem('chave_API');
-
-const apiKeyEx5 = SKU => `https://api.bestbuy.com/v1/products(sku=${SKU})?apiKey=${api()}&sort=sku.asc&show=sku,name,salePrice&format=json`;
 
 Object.keys(localStorage).forEach(chave => {
   fetch(apiKeyEx5(Number(localStorage.getItem(chave))), { headers: { Accept: 'application/json' } })
