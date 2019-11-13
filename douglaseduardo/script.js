@@ -6,6 +6,14 @@ const api = () => localStorage.getItem('chave_API');
 
 const apiKeyEx5 = SKU => `https://api.bestbuy.com/v1/products(sku=${SKU})?apiKey=${api()}&sort=sku.asc&show=sku,name,salePrice&format=json`;
 
+function modificarLista() {
+  const olOrdenado = document.getElementsByClassName('cart__item');
+  for (let i = 0; i < olOrdenado.length; i++) {
+    localStorage[criadorKey()] = olOrdenado[i].innerText.substring(5, 13)
+  };
+  return localStorage;
+}
+
 function createCartItemElement({ sku, name, salePrice }) {
   const li = document.createElement('li');
   li.className = 'cart__item';
@@ -57,7 +65,6 @@ function cartItemClickListener(event) {
   event.target.remove();
 }
 
-
 Object.keys(localStorage).forEach(chave => {
   fetch(apiKeyEx5(Number(localStorage.getItem(chave))), { headers: { Accept: 'application/json' } })
     .then(response => response.json())
@@ -65,8 +72,6 @@ Object.keys(localStorage).forEach(chave => {
 });
 
 let contador = 0;
-
-
 
 const criarElemento = (valoresParaCriar) => {
   valoresParaCriar.forEach((element) => {
@@ -89,14 +94,6 @@ function criadorKey() {
     listaUniversal = `SKU_${i.innerText.substring(5, 13)}_Num_${contador}`
   };
   return listaUniversal;
-}
-
-function modificarLista() {
-  const olOrdenado = document.getElementsByClassName('cart__item');
-  for (let i = 0; i < olOrdenado.length; i++) {
-    localStorage[criadorKey()] = olOrdenado[i].innerText.substring(5, 13)
-  };
-  return localStorage;
 }
 
 const usarAPI = () => {
