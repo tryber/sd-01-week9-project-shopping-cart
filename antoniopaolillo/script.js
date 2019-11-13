@@ -12,7 +12,7 @@ window.onload = function onload() {
     inputTermsAgree.addEventListener('change', function settingCookie() {
       const expires = new Date(Date.now() + (days * 864e5)).toUTCString();
       document.cookie = 'terms-agree =' + encodeURIComponent(inputTermsAgree.checked) + '; expires=' + expires + '; path=' + '/';
-    });
+    });;
   }
   setCookie();
 
