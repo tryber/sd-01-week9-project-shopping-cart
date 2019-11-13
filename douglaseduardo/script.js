@@ -1,5 +1,6 @@
 window.onload = function onload() {};
-const criarListaElemento = respostaJson => {
+
+function criarListaElemento(respostaJson) {
   respostaJson.forEach(element => pgClss('cart__items').appendChild(createCartItemElement(element)));
 }
 
