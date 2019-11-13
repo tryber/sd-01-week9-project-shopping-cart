@@ -4,8 +4,8 @@ document.querySelector('.limparCarrinho').addEventListener('click', () => {
   pai.forEach(item => item.remove());
   Object.keys(localStorage).forEach((chave) => {
     if (chave !== 'chave_API') localStorage.removeItem(chave);
-  })
-})
+  });
+});
 
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
@@ -55,7 +55,7 @@ Object.keys(localStorage).forEach(chave => {
   fetch(apiKeyEx5(Number(localStorage.getItem(chave))), { headers: { Accept: 'application/json' } })
     .then(response => response.json())
     .then(array => criarListaElemento(array.products));
-})
+});
 
 let contador = 0;
 
@@ -73,8 +73,8 @@ const criarElemento = (valoresParaCriar) => {
         .then(array => criarListaElemento(array.products))
         .then(() => contador++)
         .then(() => modificarLista())
-    })
-  })
+    });
+  });
 }
 
 function criadorKey() {
@@ -105,4 +105,4 @@ usarAPI();
 
 pgClss('input-name').addEventListener('blur', () => {
   return localStorage.nome = inputName.value
-})
+});
