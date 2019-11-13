@@ -102,8 +102,6 @@ const usarAPI = () => {
 
 usarAPI()
 
-
-
 pgClss('input-name').addEventListener('blur', () => {
   return localStorage.nome = inputName.value
 })
