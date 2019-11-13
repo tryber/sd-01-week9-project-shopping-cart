@@ -1,6 +1,6 @@
 function cartItemClickListener(event) {
-  const LPSelected = event.target
-  LPSelected.parentNode.removeChild(LPSelected)
+  const LPSelected = event.target;
+  LPSelected.parentNode.removeChild(LPSelected);
 }
 
 function createCartItemElement({ sku, name, salePrice }) {
@@ -37,10 +37,10 @@ function API() {
 }
 
 function consumerName() {
-  const inputConsumer = document.querySelector('.input-name')
+  const inputConsumer = document.querySelector('.input-name');
   inputConsumer.addEventListener('change', () => {
-    sessionStorage.setItem('consumer', inputConsumer.value)
-  })
+    sessionStorage.setItem('consumer', inputConsumer.value);
+  });
 }
 
 function createProductImageElement(imageSource) {
