@@ -34,8 +34,8 @@ function getSkuFromProductItem(item) {
   return item.querySelector('span.item__sku').innerText;
 }
 
-function cartItemClickListener(event) {
-  document.querySelectorAll(".cart__items")[0].removeChild(event.target);
+function cartItemClickListener() {
+  document.querySelectorAll('.cart__items')[0].removeChild(event.target);
 }
 
 function createCartItemElement({ sku, name, salePrice }) {
@@ -47,35 +47,35 @@ function createCartItemElement({ sku, name, salePrice }) {
 }
 
 function saveNameUserInBrowser() {
-  document.querySelector(".input-terms").addEventListener('click', () => {
+  document.querySelector('.input-terms').addEventListener('click', () => {
     const nameUser = document.querySelector('.input-name').value;
-    sessionStorage.setItem("nameUser", nameUser);
+    sessionStorage.setItem('nameUser', nameUser);
   })
 }
 
 function getApiKeyValues() {
-  const API_KEY = localStorage.getItem("APIKey");
+  const API_KEY = localStorage.getItem('APIKey');
   const API_URL = `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${API_KEY}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`;
 
   fetch(API_URL, {
-    headers: { Accept: "application/json" }
+    headers: { Accept: 'application/json' }
   })
   .then(response => response.json())
   .then((data) => data.products.map(product => {
     const addNewProduct = createProductItemElement(product);
-    document.querySelectorAll(".items")[0].appendChild(addNewProduct);
-    addNewProduct.addEventListener("click", addItemToShoppingCart(API_KEY, product.sku, addNewProduct));
+    document.querySelectorAll('.items')[0].appendChild(addNewProduct);
+    addNewProduct.addEventListener('click', addItemToShoppingCart(API_KEY, product.sku, addNewProduct));
   }))
 }
 
 function addItemToShoppingCart(API_KEY, sku, addNewProduct) {
-  addNewProduct.addEventListener("click", () => {
+  addNewProduct.addEventListener('click', () => {
     API_URL = `https://api.bestbuy.com/v1/products(sku=${sku})?apiKey=${API_KEY}&sort=sku.asc&show=sku,name,salePrice&format=json`;
     fetch(API_URL, {
-      headers: { Accept: "application/json" }
+      headers: { Accept: 'application/json' }
     })
     .then(response => response.json())
-    .then(data => document.querySelectorAll(".cart__items")[0].appendChild(createCartItemElement(data.products[0])))
+    .then(data => document.querySelectorAll('.cart__items')[0].appendChild(createCartItemElement(data.products[0])))
     .then(addCartInLocalStorage(sku))
     .then(removeCartInLocalStorage(sku))
   })
@@ -90,6 +90,6 @@ function addCartInLocalStorage(sku) {
 }
 
 function removeCartInLocalStorage() {
-  const teste2 = JSON.parse(localStorage.getItem("itens"));
+  const teste2 = JSON.parse(localStorage.getItem('itens'));
   console.log(itensArray);
 }
