@@ -1,6 +1,6 @@
 function addLoading() {
   newSpan = document.createElement('span');
-  newSpan.innerHTML = 'Carregando...';
+  newSpan.innerHTML = 'Loading...';
   document.getElementsByClassName('top-bar')[0].appendChild(newSpan);
 }
 
