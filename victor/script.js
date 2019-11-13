@@ -1,7 +1,6 @@
 window.onload = function onload() {
   saveNameUserInBrowser();
   getApiKeyValues();
-  removeCartInLocalStorage();
 };
 
 function createProductImageElement(imageSource) {
@@ -61,7 +60,7 @@ function getApiKeyValues() {
     headers: { Accept: 'application/json' }
   })
   .then(response => response.json())
-  .then((data) => data.products.map(product => {
+  .then(data => data.products.map(product => {
     const addNewProduct = createProductItemElement(product);
     document.querySelectorAll('.items')[0].appendChild(addNewProduct);
     addNewProduct.addEventListener('click', addItemToShoppingCart(API_KEY, product.sku, addNewProduct));
