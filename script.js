@@ -7,11 +7,11 @@ nameInputChange = () => {
   nameInput.addEventListener('input', () => {
     sessionStorage.name = nameInput.value;
   });
-}
+};
 
 saveName = (key) => {
   sessionStorage.key = key;
-}
+};
 
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
@@ -43,26 +43,32 @@ async function catchApi() {
   const json = await response.json();
   return json;
 }
-
+function createCartItemElement({ sku, name, salePrice }) {
+  const li = document.createElement('li');
+  li.className = 'cart__item';
+  li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
+  li.addEventListener('click', cartItemClickListener);
+  return li;
+}
 catchApi()
   .then((response) => {
     console.log('yay');
     response.products.forEach((el) => {
       const product = createProductItemElement(el);
       document.querySelector('.items').appendChild(product);
-      product.lastChild.addEventListener('click', function(){
+      product.lastChild.addEventListener('click', () => {
         fetch(`https://api.bestbuy.com/v1/products(sku=${el.sku})?apiKey=${API_KEY}&sort=sku.asc&show=sku,name,salePrice&format=json`)
           .then(result => result.json())
           .then((data) => {
             document.getElementsByClassName('cart__items')[0].appendChild(createCartItemElement(data.products[0]));
-          })
-      })
-    })
+          });
+      });
+    });
   })
   .catch((error) => {
     console.log('error');
     console.error(error);
-  })
+  });
 
 function getSkuFromProductItem(item) {
   return item.querySelector('span.item__sku').innerText;
@@ -71,14 +77,6 @@ function getSkuFromProductItem(item) {
 
 function cartItemClickListener(event) {
   event.target.remove();
-}
-
-function createCartItemElement({ sku, name, salePrice }) {
-  const li = document.createElement('li');
-  li.className = 'cart__item';
-  li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
-  li.addEventListener('click', cartItemClickListener);
-  return li;
 }
 
 window.onload = function onload() {
@@ -91,4 +89,4 @@ window.onload = function onload() {
   createCartItemElement();
   cartItemClickListener();
   catchCart();
-}
+};
