@@ -13,9 +13,17 @@ function sumPrice() {
   document.getElementById('price').innerHTML = `Preço total: $${sum}`;
 }
 
+function createCartItemElement({ sku, name, salePrice }) {
+  const li = document.createElement('li');
+  li.className = 'cart__item';
+  li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
+  li.addEventListener('click', cartItemClickListener);
+  return li;
+}
+
 function addShoppingCar(SKU) {
   return new Promise(
-    (resolve, reject) => {
+    (resolve) => {
       $.getJSON(
         `https://api.bestbuy.com/v1/products(sku=${SKU})?apiKey=${localStorage.getItem('APIkey')}&sort=sku.asc&show=sku,name,salePrice&format=json`,
         (data) => {
@@ -72,14 +80,6 @@ function cartItemClickListener(event) {
   setTimeout(() => {
     sumPrice();
   }, 1000);
-}
-
-function createCartItemElement({ sku, name, salePrice }) {
-  const li = document.createElement('li');
-  li.className = 'cart__item';
-  li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
-  li.addEventListener('click', cartItemClickListener);
-  return li;
 }
 
 function restoreValues() {
