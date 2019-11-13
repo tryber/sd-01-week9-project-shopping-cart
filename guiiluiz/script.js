@@ -31,9 +31,9 @@ function createProductItemElement({ sku, name, image }) {
   return section;
 }
 
-function getSkuFromProductItem(item) {
-  return item.querySelector('span.item__sku').innerText;
-}
+// function getSkuFromProductItem(item) {
+//   return item.querySelector('span.item__sku').innerText;
+// }
 
 function cartItemClickListener(event) {
   event.target.parentNode.removeChild(event.target);
@@ -64,11 +64,9 @@ pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`;
       let cont = index;
       itemsSection.appendChild(createProductItemElement(product));
       document.getElementsByClassName('item__add')[cont].addEventListener('click', () => {
-        if (localStorage.shopList === undefined) {
-          localStorage.shopList = JSON.stringify(product.sku);
-        } else {
-          localStorage.shopList += JSON.stringify(product.sku);
-        }
+        if (localStorage.shopList === undefined) localStorage.shopList = JSON.stringify(product.sku);
+        else localStorage.shopList += JSON.stringify(product.sku);
+
         $.getJSON(`https://api.bestbuy.com/v1/products(sku=${product.sku})?apiKey=${apiKey}&sort=sku.asc&show=sku,name,salePrice&format=json`, (selected) => {
           document.querySelector('.cart__items').appendChild(createCartItemElement(selected.products[0]));
         });
