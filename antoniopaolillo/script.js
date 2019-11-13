@@ -7,7 +7,7 @@ function saveName() {
 function setCookie() {
   const inputTermsAgree = document.getElementsByClassName('input-terms')[0];
   const days = 7;
-  inputTermsAgree.addEventListener('change', function settingCookie() {
+  inputTermsAgree.addEventListener('change', () => {
     const expires = new Date(Date.now() + (days * 864e5)).toUTCString();
     document.cookie = 'terms-agree =' + encodeURIComponent(inputTermsAgree.checked) + '; expires=' + expires + '; path=' + '/';
   });
@@ -76,7 +76,7 @@ function gerateLocalStoragePosition() {
 }
 
 function addProductToCart(newProduct, product, acessApiKey) {
-  newProduct.lastChild.addEventListener('click', function () {
+  newProduct.lastChild.addEventListener('click', () => {
     fetch(`https://api.bestbuy.com/v1/products(sku=${product.sku})?apiKey=${acessApiKey}&sort=sku.asc&show=sku,name,salePrice&format=json`)
       .then(response => response.json())
       .then((data) => {
@@ -93,7 +93,7 @@ async function gerateProducts() {
   const api = `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${acessApiKey}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`;
   await fetch(api)
     .then(response => response.json())
-    .then((data) => data.products.forEach((product) => {
+    .then(data => data.products.forEach((product) => {
       const newProduct = createProductItemElement(product);
       document.getElementsByClassName('items')[0].appendChild(newProduct);
       newProduct.lastChild.addEventListener('click', addProductToCart(newProduct, product, acessApiKey));
@@ -106,7 +106,7 @@ function loadLocalStorage() {
   const localStorageKeys = Object.keys(localStorage);
   localStorageKeys.forEach((localStorageNewPosition) => {
     if (localStorageNewPosition !== 'apiKey' && localStorageNewPosition !== 'price') {
-      fetch(`https://api.bestbuy.com/v1/products(sku=${localStorage[localStorageNewPosition]})?apiKey=${localStorage['apiKey']}&sort=sku.asc&show=sku,name,salePrice&format=json`)
+      fetch(`https://api.bestbuy.com/v1/products(sku=${localStorage[localStorageNewPosition]})?apiKey=${localStorage.apiKey}&sort=sku.asc&show=sku,name,salePrice&format=json`)
         .then(response => response.json())
         .then((data) => {
           document.getElementsByClassName('cart__items')[0].appendChild(createCartItemElement(data.products[0]));
@@ -132,7 +132,7 @@ function createDeleteCartButton() {
   const cart = document.getElementsByClassName('cart')[0];
   const newButton = document.createElement('button');
   newButton.innerHTML = 'Limpar Carrinho de Compras';
-  newButton.addEventListener('click', function () {
+  newButton.addEventListener('click', () => {
     const productsArray = document.getElementsByClassName('cart__item');
     Object.values(productsArray).forEach(product => product.remove());
     document.getElementsByClassName('cart__title')[0].innerText = 'Carrinho de compras, preço total: $0';
@@ -160,5 +160,5 @@ window.onload = function onload() {
   createDeleteCartButton();
   createPriceStorage();
   customCartTitle();
-}
+};
 
