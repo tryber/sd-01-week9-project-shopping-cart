@@ -39,10 +39,10 @@ function addShoppingCar(SKU) {
 function convertArrayToObject(array) {
   return array.reduce((obj, item) => {
     const keyValue = item.split('=');
-    keyValue[0].charAt(0) == " " ? obj[keyValue[0].substring(1)] = keyValue[1] : obj[keyValue[0]] = keyValue[1];
+    keyValue[0].charAt(0) === " " ? obj[keyValue[0].substring(1)] = keyValue[1] : obj[keyValue[0]] = keyValue[1];
     return obj;
   }, {});
-};
+}
 
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
@@ -84,24 +84,24 @@ function cartItemClickListener(event) {
 
 function restoreValues() {
   document.getElementsByClassName('input-name')[0].value = sessionStorage.getItem('user_name');
-  document.getElementsByClassName('input-terms')[0].checked = (convertArrayToObject(document.cookie.split(";")).checked == 'true');
+  document.getElementsByClassName('input-terms')[0].checked = (convertArrayToObject(document.cookie.split(';')).checked === 'true');
 }
 
 function storeInput() {
   document.getElementsByClassName('input-name')[0].addEventListener('change', event => {
     sessionStorage.setItem('user_name', event.target.value);
-  })
-}
-
-function storeCheckbox() {
-  document.getElementsByClassName('input-terms')[0].addEventListener('change', event => {
-    event.target.checked ? createCookies('checked', true, ' Tue, 01 Jan 2115 12:00:00 UTC') : createCookies('checked', false, 'Tue, 01 Jan 2115 12:00:00 UTC');
   });
 }
 
 function createCookies(name, value, expires) {
   const date_expires = `expires= ${expires}`;
   document.cookie = name + '=' + value + '; ' + date_expires;
+}
+
+function storeCheckbox() {
+  document.getElementsByClassName('input-terms')[0].addEventListener('change', event => {
+    event.target.checked ? createCookies('checked', true, ' Tue, 01 Jan 2115 12:00:00 UTC') : createCookies('checked', false, 'Tue, 01 Jan 2115 12:00:00 UTC');
+  });
 }
 
 function generateProduct() {
