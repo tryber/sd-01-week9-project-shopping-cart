@@ -10,8 +10,16 @@ function sumPrice() {
       localStorage.getItem(key).charAt(localStorage.getItem(key).length - 6)
     ));
   const sum = newArray.reduce((total, price) => Number(total) + Number(price), 0).toFixed(2);
-  document.getElementById("price").innerHTML = `Preço total: $${sum}`;
+  document.getElementById('price').innerHTML = `Preço total: $${sum}`;
 }
+
+function convertArrayToObject(array) {
+  return array.reduce((obj, item) => {
+    const keyValue = item.split("=");
+    keyValue[0].charAt(0) == " " ? obj[keyValue[0].substring(1)] = keyValue[1] : obj[keyValue[0]] = keyValue[1];
+    return obj;
+  }, {});
+};
 
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
@@ -80,16 +88,6 @@ function createCookies(name, value, expires) {
   const date_expires = `expires= ${expires}`;
   document.cookie = name + "=" + value + "; " + date_expires;
 }
-
-
-function convertArrayToObject(array) {
-  return array.reduce((obj, item) => {
-    const keyValue = item.split("=");
-    keyValue[0].charAt(0) == " " ? obj[keyValue[0].substring(1)] = keyValue[1] : obj[keyValue[0]] = keyValue[1];
-    return obj;
-  }, {});
-};
-
 
 function generateProduct() {
   return new Promise(
