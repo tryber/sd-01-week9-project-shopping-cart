@@ -73,6 +73,6 @@ function getSkuFromProductItem(item) {
 
 
 window.onload = function onload() {
-  API()
-  consumerName()
+  API();
+  consumerName();
 }
