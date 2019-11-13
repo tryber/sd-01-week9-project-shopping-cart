@@ -88,29 +88,29 @@ function saveUser(value) {
 
 const returnElementByClass = name => document.querySelector(`.${name}`);
 
-// function createProducts(json) {
-//   const father = document.querySelector('.items');
-//   const ol = document.querySelector('.cart__items');
-//   createButtonClean();
-//   json.products.forEach((element) => {
-//     const produto = createProductItemElement(element);
-//     father.appendChild(produto);
-//     produto.lastChild.addEventListener('click', (event) => {
-//       console.log(event);
-//       const url = `https://api.bestbuy.com/v1/products(sku=${getSkuFromProductItem(produto)})?apiKey=${getApi()}&sort=sku.asc&show=sku,name,salePrice&format=json`;
-//       catchDados(url)
-//         .then((response) => {
-//           setKeyStorageCar(response.products[0]);
-//           ol.appendChild(createCartItemElement(response.products[0]));
-//           atualizePreco(Number(response.products[0].salePrice));
-//         })
-//         .catch((error) => {
-//           console.log('error');
-//           console.log(error);
-//         });
-//     });
-//   });
-// }
+function createProducts(json) {
+  const father = document.querySelector('.items');
+  const ol = document.querySelector('.cart__items');
+  createButtonClean();
+  json.products.forEach((element) => {
+    const produto = createProductItemElement(element);
+    father.appendChild(produto);
+    produto.lastChild.addEventListener('click', (event) => {
+      console.log(event);
+      const url = `https://api.bestbuy.com/v1/products(sku=${getSkuFromProductItem(produto)})?apiKey=${getApi()}&sort=sku.asc&show=sku,name,salePrice&format=json`;
+      catchDados(url)
+        .then((response) => {
+          setKeyStorageCar(response.products[0]);
+          ol.appendChild(createCartItemElement(response.products[0]));
+          atualizePreco(Number(response.products[0].salePrice));
+        })
+        .catch((error) => {
+          console.log('error');
+          console.log(error);
+        });
+    });
+  });
+}
 
 function clearStorage() {
   const api = getApi();
@@ -162,22 +162,7 @@ window.onload = function onload() {
   loadCar();
   catchDados(API_URL)
     .then((response) => {
-      response.products.forEach((element) => {
-        const produto = createProductItemElement(element);
-        document.querySelector('.items').appendChild(produto);
-        produto.lastChild.addEventListener('click', () => {
-          catchDados(`https://api.bestbuy.com/v1/products(sku=${getSkuFromProductItem(produto)})?apiKey=${getApi()}&sort=sku.asc&show=sku,name,salePrice&format=json`)
-            .then((response) => {
-              setKeyStorageCar(response.products[0]);
-              document.querySelector('.cart__items').appendChild(createCartItemElement(response.products[0]));
-              atualizePreco(Number(response.products[0].salePrice));
-            })
-            .catch((error) => {
-              console.log('error');
-              console.log(error);
-            });
-        });
-      });
+      createProducts(response);
     })
     .catch((error) => {
       console.log('error');
