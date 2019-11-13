@@ -1,6 +1,6 @@
 const API_KEY = localStorage.token;
 const urlAPI = `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${API_KEY}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`;
-// const urlCart = `"https://api.bestbuy.com/v1/products(sku=${SKU})?apiKey=${API_KEY}&sort=sku.asc&show=sku,name,salePrice&format=json"`;
+// const urlCart = `https://api.bestbuy.com/v1/products(sku=${SKU})?apiKey=${API_KEY}&sort=sku.asc&show=sku,name,salePrice&format=json`;
 
 nameInputChange = () => {
   const nameInput = document.querySelector('.input-name');
@@ -41,14 +41,29 @@ function createProductItemElement({ sku, name, image }) {
 async function catchApi() {
   const response = await fetch(urlAPI);
   const json = await response.json()
-  .then()
+  console.log(json)
   return json;
 }
+listBtn = () => {
+  btn = document.querySelector('.item__add')
+  btn.addEventListener('click', function(){
+    console.log("oi")
+  })
+}
+
 catchApi()
   .then((response) => {
     console.log('yay');
     response.products.forEach((el) => {
-      document.querySelector('.items').appendChild(createProductItemElement(el));
+      const product = createProductItemElement(el);
+      document.querySelector('.items').appendChild(product);
+      product.lastChild.addEventListener('click', function(){
+        fetch(`https://api.bestbuy.com/v1/products(sku=${el.sku})?apiKey=${API_KEY}&sort=sku.asc&show=sku,name,salePrice&format=json`)
+          .then(result => result.json())
+          .then((data) => {
+            document.getElementsByClassName('cart__items')[0].appendChild(createCartItemElement(data.products[0]));
+          })
+      })
     })
   })
   .catch((error) => {
@@ -60,26 +75,9 @@ function getSkuFromProductItem(item) {
   return item.querySelector('span.item__sku').innerText;
 }
 
-async function catchCart() {
-  const response2 = await fetch(urlCart)
-  const json = await response2.json();
-  response2.products[0].sku
-  return json;
-}
-catchCart()
-  .then((response2) => {
-    console.log('yay2');
-    console.log(response2);
-    console.log(SKU);
-  })
-  .catch((error2) => {
-    console.log('error');
-    console.error(error2);
-  })
-
 
 function cartItemClickListener(event) {
-  // coloque seu código aqui
+  event.target.remove();
 }
 
 function createCartItemElement({ sku, name, salePrice }) {
