@@ -2,6 +2,7 @@ window.onload = function onload() {};
 const criarListaElemento = respostaJson => {
   respostaJson.forEach(element => pgClss('cart__items').appendChild(createCartItemElement(element)));
 }
+
 document.querySelector('.limparCarrinho').addEventListener('click', () => {
   const pai = document.querySelectorAll('.cart__item');
   pai.forEach(item => item.remove());
