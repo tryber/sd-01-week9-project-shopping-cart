@@ -50,9 +50,7 @@ function listOfElementsAtpage() {
   const skuNamePrice = document.querySelector('.cart__items');
   const API_URL = `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${API_KEY()}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`;
   fetch(API_URL)
-  .then(response => {
-    return response.json();
-  })
+  .then(response => response.json())
   .then((data) => {
     data.products.forEach((element) => {
       const child = createProductItemElement(element);
@@ -60,9 +58,7 @@ function listOfElementsAtpage() {
       child.lastChild.addEventListener('click', () => {
         const API_URL_PRODUCT = `https://api.bestbuy.com/v1/products(sku=${child.firstChild.textContent})?apiKey=${API_KEY()}&sort=sku.asc&show=sku,name,salePrice&format=json`;
         fetch(API_URL_PRODUCT)
-        .then(response => {
-          return response.json();
-        })
+        .then(response => response.json())
         .then((dados) => {
           skuNamePrice.appendChild(createCartItemElement(dados.products[0]));
           setKeyStorageCar(dados.products[0]);
