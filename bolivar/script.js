@@ -53,7 +53,11 @@ function addShoppingCar(SKU) {
 function convertArrayToObject(array) {
   return array.reduce((obj, item) => {
     const keyValue = item.split('=');
-    keyValue[0].charAt(0) === ' ' ? obj[keyValue[0].substring(1)] = keyValue[1] : obj[keyValue[0]] = keyValue[1];
+    if (keyValue[0].charAt(0) === ' '){
+      obj[keyValue[0].substring(1)] = keyValue[1];
+    } else {
+      obj[keyValue[0]] = keyValue[1];
+    }
     return obj;
   }, {});
 }
@@ -100,7 +104,11 @@ function createCookies(name, value, expires) {
 
 function storeCheckbox() {
   document.getElementsByClassName('input-terms')[0].addEventListener('change', (event) => {
-    event.target.checked ? createCookies('checked', true, ' Tue, 01 Jan 2115 12:00:00 UTC') : createCookies('checked', false, 'Tue, 01 Jan 2115 12:00:00 UTC');
+    if (event.target.checked){
+      createCookies('checked', true, ' Tue, 01 Jan 2115 12:00:00 UTC');
+    } else {
+      createCookies('checked', false, 'Tue, 01 Jan 2115 12:00:00 UTC');
+    }
   });
 }
 
