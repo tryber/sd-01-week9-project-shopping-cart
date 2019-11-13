@@ -54,11 +54,9 @@ function convertArrayToObject(array) {
   return array.reduce((obj, item) => {
     const keyValue = item.split('=');
     if (keyValue[0].charAt(0) === ' ') {
-      const keyI = keyValue[0].substring(1);
-      obj[keyI] = keyValue[1];
+      obj[keyValue[0].substring(1)] = keyValue[1];
     } else {
-      const keyII = keyValue[0];
-      obj[keyII] = keyValue[1];
+      obj[keyValue[0]] = keyValue[1];
     }
     return obj;
   }, {});
