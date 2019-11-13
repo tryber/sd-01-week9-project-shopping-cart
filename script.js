@@ -1,5 +1,6 @@
 const API_KEY = localStorage.token;
 const urlAPI = `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${API_KEY}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`;
+// const urlCart = `"https://api.bestbuy.com/v1/products(sku=${SKU})?apiKey=${API_KEY}&sort=sku.asc&show=sku,name,salePrice&format=json"`;
 
 nameInputChange = () => {
   const nameInput = document.querySelector('.input-name');
@@ -9,7 +10,7 @@ nameInputChange = () => {
 }
 
 saveName = (key) => {
-  sessionStorage.key = key
+  sessionStorage.key = key;
 }
 
 function createProductImageElement(imageSource) {
@@ -38,8 +39,9 @@ function createProductItemElement({ sku, name, image }) {
   return section;
 }
 async function catchApi() {
-  const response = await fetch(urlAPI)
-  const json = await response.json();
+  const response = await fetch(urlAPI);
+  const json = await response.json()
+  .then()
   return json;
 }
 catchApi()
@@ -57,23 +59,24 @@ catchApi()
 function getSkuFromProductItem(item) {
   return item.querySelector('span.item__sku').innerText;
 }
-catchCart()
-  .then(response => {
-    console.log('yay2')
-    console.log(response)
-    console.log(SKU)
-  })
-  .catch(error => {
-    console.log('error')
-    console.error(error)
-  })
 
 async function catchCart() {
-  const response = await fetch(urlCart)
-  const json = await response.json();
-  response.products[0].sku
+  const response2 = await fetch(urlCart)
+  const json = await response2.json();
+  response2.products[0].sku
   return json;
 }
+catchCart()
+  .then((response2) => {
+    console.log('yay2');
+    console.log(response2);
+    console.log(SKU);
+  })
+  .catch((error2) => {
+    console.log('error');
+    console.error(error2);
+  })
+
 
 function cartItemClickListener(event) {
   // coloque seu código aqui
