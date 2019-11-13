@@ -1,11 +1,7 @@
 window.onload = function onload() {};
 const limparCarrinho = () => {
-  localStorage.clear();
-  const pai = document.getElementsByClassName('cart__items');
-  const filhos = document.getElementsByClassName('cart__item');
-  for (let i = 0; i < filhos.length; i++) {
-    pai.removeChild(pai.childNodes[i])
-  };
+  const pai = document.querySelectorAll('.cart__item');
+  pai.forEach(item => item.remove());
 };
 
 function createProductImageElement(imageSource) {
