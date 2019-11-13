@@ -154,12 +154,11 @@ function loadCar() {
 }
 
 function createLoading() {
-  const item = createCustomElement('span', 'load', 'Loading...')
+  const item = createCustomElement('span', 'load', 'Loading...');
   document.querySelector('.top-bar').appendChild(item);
 }
 
 function removeLoading() {
-  console.log('foi')
   document.querySelector('.load').remove();
 }
 
