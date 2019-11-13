@@ -1,3 +1,18 @@
+function sumPrice() {
+  const array = Object.keys(localStorage).filter((key) => (key !== 'APIkey') && (key !== 'ind'));
+  const newArray = new Array;
+  array.forEach((key) =>
+    newArray.push(
+      localStorage.getItem(key).charAt(localStorage.getItem(key).length - 10) +
+      localStorage.getItem(key).charAt(localStorage.getItem(key).length - 9) +
+      localStorage.getItem(key).charAt(localStorage.getItem(key).length - 8) +
+      localStorage.getItem(key).charAt(localStorage.getItem(key).length - 7) +
+      localStorage.getItem(key).charAt(localStorage.getItem(key).length - 6)
+    ));
+  const sum = newArray.reduce((total, price) => Number(total) + Number(price), 0).toFixed(2);
+  document.getElementById("price").innerHTML = `Preço total: $${sum}`;
+}
+
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
   img.className = 'item__image';
@@ -30,7 +45,7 @@ function cartItemClickListener(event) {
       localStorage.removeItem(key);
       ind += 1;
     }
-  })
+  });
   setTimeout(() => {
     sumPrice();
   }, 1000);
@@ -155,21 +170,6 @@ function clean() {
   }, 1000);
 }
 
-function sumPrice() {
-  const array = Object.keys(localStorage).filter((key) => (key !== 'APIkey') && (key !== 'ind'));
-  const newArray = new Array;
-  array.forEach((key) =>
-    newArray.push(
-      localStorage.getItem(key).charAt(localStorage.getItem(key).length - 10) +
-      localStorage.getItem(key).charAt(localStorage.getItem(key).length - 9) +
-      localStorage.getItem(key).charAt(localStorage.getItem(key).length - 8) +
-      localStorage.getItem(key).charAt(localStorage.getItem(key).length - 7) +
-      localStorage.getItem(key).charAt(localStorage.getItem(key).length - 6)
-    ));
-  const sum = newArray.reduce((total, price) => Number(total) + Number(price), 0).toFixed(2);
-  document.getElementById("price").innerHTML = `Preço total: $${sum}`;
-}
-
 window.onload = function onload() {
   if (typeof Storage !== "undefined") {
     restoreValues();
@@ -180,4 +180,4 @@ window.onload = function onload() {
   } else {
     console.log("No web storage support");
   }
-}
+};
