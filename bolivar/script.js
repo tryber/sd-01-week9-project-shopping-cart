@@ -2,13 +2,7 @@ function sumPrice() {
   const array = Object.keys(localStorage).filter(key => key !== 'APIkey' && key !== 'ind');
   const newArray = [];
   array.forEach(key =>
-    newArray.push(
-      localStorage.getItem(key).charAt(localStorage.getItem(key).length - 10) +
-      localStorage.getItem(key).charAt(localStorage.getItem(key).length - 9) +
-      localStorage.getItem(key).charAt(localStorage.getItem(key).length - 8) +
-      localStorage.getItem(key).charAt(localStorage.getItem(key).length - 7) +
-      localStorage.getItem(key).charAt(localStorage.getItem(key).length - 6)
-    ));
+    newArray.push(localStorage.getItem(key).split("$")[1].split("<")[0]));
   const sum = newArray.reduce((total, price) => Number(total) + Number(price), 0).toFixed(2);
   document.getElementById('price').innerHTML = `Preço total: $${sum}`;
 }
