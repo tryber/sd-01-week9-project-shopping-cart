@@ -1,15 +1,3 @@
-window.onload = function onload() {
-    if (typeof(Storage) != "undefined") {
-        restoreValues();
-        storeInput();
-        storeCheckbox();
-        displayFunctions();
-        displayList();
-    } else {
-        console.log("No web storage support")
-    }
-}
-
 function createProductImageElement(imageSource) {
     const img = document.createElement('img');
     img.className = 'item__image';
@@ -27,12 +15,10 @@ function createCustomElement(element, className, innerText) {
 function createProductItemElement({ sku, name, image }) {
     const section = document.createElement('section');
     section.className = 'item';
-
     section.appendChild(createCustomElement('span', 'item__sku', sku));
     section.appendChild(createCustomElement('span', 'item__title', name));
     section.appendChild(createProductImageElement(image));
     section.appendChild(createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'));
-
     return section;
 }
 
@@ -184,6 +170,18 @@ function sumPrice() {
             localStorage.getItem(key).charAt(localStorage.getItem(key).length - 7) +
             localStorage.getItem(key).charAt(localStorage.getItem(key).length - 6)
         ))
-    const sum = newArray.reduce((total, price) => Number(total) + Number(price), 0).toFixed(2)
-    document.getElementById("price").innerHTML = `Preço total: $${sum}`
+    const sum = newArray.reduce((total, price) => Number(total) + Number(price), 0).toFixed(2);
+    document.getElementById("price").innerHTML = `Preço total: $${sum}`;
+}
+
+window.onload = function onload() {
+if (typeof Storage !== "undefined") {
+    restoreValues();
+    storeInput();
+    storeCheckbox();
+    displayFunctions();
+    displayList();
+} else {
+    console.log("No web storage support");
+}
 }
