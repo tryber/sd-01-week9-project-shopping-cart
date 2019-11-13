@@ -94,14 +94,14 @@ function removeAllItensCar() {
   clearStorage();
   Object.values(lis).forEach((item) => {
     item.remove();
-  })
+  });
 }
 
 function createButtonClean() {
   document.querySelector('.cart').appendChild(createCustomElement('button', 'btn-clean', 'Limpar o carrinho!'));
   document.querySelector('.btn-clean').addEventListener('click', () => {
     removeAllItensCar();
-  })
+  });
 }
 
 function saveUser(value) {
@@ -132,13 +132,6 @@ function createProducts(json) {
         });
     });
   });
-}
-
-function clearStorage() {
-  const api = getApi();
-  localStorage.clear();
-  localStorage.setItem('api', api);
-  atualizePreco(value = 0);
 }
 
 function loadCar() {
