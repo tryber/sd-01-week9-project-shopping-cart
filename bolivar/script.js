@@ -1,7 +1,7 @@
 function sumPrice() {
-  const array = Object.keys(localStorage).filter((key) => key !== 'APIkey' && key !== 'ind');
+  const array = Object.keys(localStorage).filter(key => key !== 'APIkey' && key !== 'ind');
   const newArray = [];
-  array.forEach((key) =>
+  array.forEach(key =>
     newArray.push(
       localStorage.getItem(key).charAt(localStorage.getItem(key).length - 10) +
       localStorage.getItem(key).charAt(localStorage.getItem(key).length - 9) +
@@ -146,7 +146,7 @@ function displayList() {
       newArray.sort((a, b) => a - b);
     }
   }
-  newArray.forEach((key) => document.getElementsByClassName('cart__items')[0].innerHTML += localStorage.getItem(key));
+  newArray.forEach(key => document.getElementsByClassName('cart__items')[0].innerHTML += localStorage.getItem(key));
   for (i = 0; i < document.getElementsByClassName('cart__item').length; i++) {
     document.getElementsByClassName('cart__item')[i].addEventListener('click', cartItemClickListener);
   }
@@ -160,7 +160,7 @@ function clean() {
   for (i = range - 1; i >= 0; i--) {
     document.getElementsByClassName('cart__items')[0].removeChild(document.getElementsByClassName('cart__item')[i]);
   }
-  const array = Object.keys(localStorage).filter((key) => (key !== 'APIkey') && (key !== 'ind'));
+  const array = Object.keys(localStorage).filter(key => (key !== 'APIkey') && (key !== 'ind'));
   array.forEach((key) => localStorage.removeItem(key));
   setTimeout(() => {
     sumPrice();
