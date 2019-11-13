@@ -81,6 +81,12 @@ function createCartItemElement({ sku, name, salePrice }) {
   return li;
 }
 
+function createButtonClean() {
+  document.querySelector('.cart').appendChild(createCustomElement('button', 'btn-clean', 'Limpar o carrinho!'));
+  document.querySelector('.btn-clean').addEventListener('click', () => {
+    removeAllItensCar();
+  })
+}
 
 function saveUser(value) {
   sessionStorage.user = value;
@@ -115,10 +121,9 @@ function createProducts(json) {
 function clearStorage() {
   const api = getApi();
   localStorage.clear();
-  localStorage['api'] = api;
-  atualizePreco(value = 0)
+  localStorage.setItem('api',api);
+  atualizePreco(value = 0);
 }
-
 
 function removeAllItensCar() {
   const lis = document.getElementsByClassName('cart__item');
@@ -128,23 +133,16 @@ function removeAllItensCar() {
   })
 }
 
-function createButtonClean() {
-  document.querySelector('.cart').appendChild(createCustomElement('button', 'btn-clean', 'Limpar o carrinho!'));
-  document.querySelector('.btn-clean').addEventListener('click', () => {
-    removeAllItensCar();
-  })
-}
-
 function loadCar() {
   const ol = document.querySelector('.cart__items');
   const keys = Object.keys(localStorage);
-  keys.forEach(key => {
+  keys.forEach((key) => {
     if (key !== 'api') {
-      const url = `https://api.bestbuy.com/v1/products(sku=${localStorage[key]})?apiKey=${getApi()}&sort=sku.asc&show=sku,name,salePrice&format=json`
+      const url = `https://api.bestbuy.com/v1/products(sku=${localStorage[key]})?apiKey=${getApi()}&sort=sku.asc&show=sku,name,salePrice&format=json`;
       catchDados(url)
         .then((response) => {
           ol.appendChild(createCartItemElement(response.products[0]));
-          atualizePreco(Number(response.products[0].salePrice))
+          atualizePreco(Number(response.products[0].salePrice));
         })
         .catch((error) => {
           console.log('error');
@@ -152,7 +150,7 @@ function loadCar() {
         });
     }
   });
-}
+};
 
 window.onload = function onload() {
   document.querySelector('.cart__title').innerText = `Carrinho de compras - Preço: R$${0}`;
@@ -168,4 +166,4 @@ window.onload = function onload() {
       console.log('error');
       console.log(error);
     });
-}
+};
