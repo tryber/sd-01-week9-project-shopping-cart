@@ -174,6 +174,7 @@ window.onload = function onload() {
     storeCheckbox();
     displayFunctions();
     displayList();
+    document.getElementById('button-clean').addEventListener('click', clean)
   } else {
     console.log('No web storage support');
   }
