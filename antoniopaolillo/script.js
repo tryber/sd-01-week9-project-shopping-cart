@@ -1,4 +1,3 @@
-// const addLoading = () => document.getElementsByClassName("top-bar")[0].innerHTML = 'Carregando';
 function addLoading() {
   newSpan = document.createElement('span');
   newSpan.innerHTML = 'Carregando...';
@@ -73,7 +72,6 @@ function createCartItemElement({ sku, name, salePrice }) {
   li.addEventListener('click', cartItemClickListener);
   return li;
 }
-
 
 function gerateLocalStoragePosition() {
   let localStorageLength = localStorage.length;
