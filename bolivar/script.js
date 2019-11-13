@@ -150,7 +150,10 @@ function displayList() {
       newArray.sort((a, b) => a - b);
     }
   }
-  newArray.forEach(key => document.getElementsByClassName('cart__items')[0].innerHTML += localStorage.getItem(key));
+  newArray.forEach((key) => {
+    document.getElementsByClassName('cart__items')[0].innerHTML += localStorage.getItem(key);
+    return 0;
+  });
   for (i = 0; i < document.getElementsByClassName('cart__item').length; i += 1) {
     document.getElementsByClassName('cart__item')[i].addEventListener('click', cartItemClickListener);
   }
