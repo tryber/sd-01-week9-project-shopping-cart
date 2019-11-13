@@ -36,11 +36,12 @@ const setKeyStorageCar = ({ sku }) => {
 
 function API_KEY() {
   return localStorage.getItem('API_KEY');
-};
+}
+
 function saveNameInPage() {
-  const nomeDeEntrada = document.getElementsByClassName("input-name")[0]
+  const nomeDeEntrada = document.getElementsByClassName('input-name')[0];
   nomeDeEntrada.addEventListener('keyup', function () {
-    sessionStorage.setItem('Nome', this.value)
+    sessionStorage.setItem('Nome', this.value);
   })
 }
 function listOfElementsAtpage() {
@@ -71,6 +72,7 @@ function listOfElementsAtpage() {
     })
   })
 }
+
 function cartItemClickListener(event) {
   event.target.remove()
 }
