@@ -120,7 +120,7 @@ function generateProduct() {
 
 function buttonListener() {
   const buttons = document.getElementsByClassName('item__add');
-  for (i = 0; i < buttons.length; i++) {
+  for (i = 0; i < buttons.length; i += 1) {
     buttons[i].addEventListener('click', (event) => {
       addShoppingCar(event.target.parentNode.firstElementChild.innerText);
       setTimeout(() => {
@@ -140,14 +140,14 @@ function displayFunctions() {
 
 function displayList() {
   const newArray = [];
-  for (i = 0; i < Object.keys(localStorage).length; i++) {
+  for (i = 0; i < Object.keys(localStorage).length; i += 1) {
     if (localStorage.getItem(Object.keys(localStorage)[i]).charAt(0) === '<') {
       newArray.push(Object.keys(localStorage)[i]);
       newArray.sort((a, b) => a - b);
     }
   }
   newArray.forEach(key => document.getElementsByClassName('cart__items')[0].innerHTML += localStorage.getItem(key));
-  for (i = 0; i < document.getElementsByClassName('cart__item').length; i++) {
+  for (i = 0; i < document.getElementsByClassName('cart__item').length; i += 1) {
     document.getElementsByClassName('cart__item')[i].addEventListener('click', cartItemClickListener);
   }
   setTimeout(() => {
@@ -157,7 +157,7 @@ function displayList() {
 
 function clean() {
   const range = document.getElementsByClassName('cart__item').length;
-  for (i = range - 1; i >= 0; i--) {
+  for (i = range - 1; i >= 0; i -= 1) {
     document.getElementsByClassName('cart__items')[0].removeChild(document.getElementsByClassName('cart__item')[i]);
   }
   const array = Object.keys(localStorage).filter(key => (key !== 'APIkey') && (key !== 'ind'));
@@ -174,7 +174,7 @@ window.onload = function onload() {
     storeCheckbox();
     displayFunctions();
     displayList();
-    document.getElementById('button-clean').addEventListener('click', clean)
+    document.getElementById('button-clean').addEventListener('click', clean);
   } else {
     console.log('No web storage support');
   }
