@@ -153,15 +153,31 @@ function loadCar() {
   });
 }
 
+function createLoading() {
+  const item = createCustomElement('span', 'load', 'Loading...')
+  document.querySelector('.top-bar').appendChild(item);
+}
+
+function removeLoading() {
+  console.log('foi')
+  document.querySelector('.load').remove();
+}
+
 window.onload = function onload() {
+  createLoading();
   document.querySelector('.cart__title').innerText = `Carrinho de compras - Preço: R$${0}`;
   returnElementByClass('input-name').addEventListener('change', () => {
     saveUser(returnElementByClass('input-name').value);
   });
-  loadCar();
   catchDados(API_URL)
     .then((response) => {
       createProducts(response);
+    })
+    .then(() => {
+      loadCar();
+    })
+    .then(() => {
+      removeLoading();
     })
     .catch((error) => {
       console.log('error');
