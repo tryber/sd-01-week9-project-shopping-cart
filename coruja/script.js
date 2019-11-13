@@ -40,14 +40,14 @@ function API_KEY() {
 
 function saveNameInPage() {
   const nomeDeEntrada = document.getElementsByClassName('input-name')[0];
-  nomeDeEntrada.addEventListener('keyup', function () {
+  nomeDeEntrada.addEventListener('keyup', function addName() {
     sessionStorage.setItem('Nome', this.value);
-  })
+  });
 }
+
 function listOfElementsAtpage() {
-  const elementosNoHtml = document.querySelector('.items')
-  const skuNamePrice = document.querySelector('.cart__items')
-  
+  const elementosNoHtml = document.querySelector('.items');
+  const skuNamePrice = document.querySelector('.cart__items');
   const API_URL = `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${API_KEY()}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`
   fetch(API_URL)
   .then((response) => {
