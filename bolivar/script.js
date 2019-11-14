@@ -182,12 +182,6 @@ function clean() {
   }, 1000);
 }
 
-
-
-function countLoad() {
-  return 0
-}
-
 window.onload = function onload() {
   if (typeof Storage !== 'undefined') {
     resetInd();
