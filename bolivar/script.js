@@ -1,3 +1,10 @@
+function resetInd() {
+  let ind = Number(localStorage.getItem('ind'));
+  if (!ind) {
+    localStorage.setItem('ind', 0);
+  }
+}
+
 function sumPrice() {
   const array = Object.keys(localStorage).filter(key => key !== 'APIkey' && key !== 'ind');
   const newArray = [];
@@ -126,6 +133,7 @@ function buttonListener() {
   const buttons = document.getElementsByClassName('item__add');
   for (i = 0; i < buttons.length; i += 1) {
     buttons[i].addEventListener('click', (event) => {
+      console.log(event.target.parentNode.firstElementChild.innerText)
       addShoppingCar(event.target.parentNode.firstElementChild.innerText);
       setTimeout(() => {
         sumPrice();
@@ -174,14 +182,23 @@ function clean() {
   }, 1000);
 }
 
+
+
+function countLoad() {
+  return 0
+}
+
 window.onload = function onload() {
   if (typeof Storage !== 'undefined') {
-    restoreValues();
-    storeInput();
-    storeCheckbox();
-    displayFunctions();
-    displayList();
-    document.getElementById('button-clean').addEventListener('click', clean);
+    resetInd();
+    setTimeout(() => {
+      restoreValues();
+      storeInput();
+      storeCheckbox();
+      displayFunctions();
+      displayList();
+      document.getElementById('button-clean').addEventListener('click', clean);
+    }, 1000);
   } else {
     console.log('No web storage support');
   }
