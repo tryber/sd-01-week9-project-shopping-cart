@@ -7,12 +7,29 @@ const api = () => localStorage.getItem('chave_API');
 const apiKeyEx5 = SKU =>
   `https://api.bestbuy.com/v1/products(sku=${SKU})?apiKey=${api()}&sort=sku.asc&show=sku,name,salePrice&format=json`;
 
+function criadorKey() {
+  let listaUniversal = '';
+  const carrinho = document.getElementsByClassName('cart__item');
+  for (let i of carrinho) {
+    listaUniversal = `SKU_${i.innerText.substring(5, 13)}_Num_${contador}`;
+  }
+  return listaUniversal;
+}
+
 function modificarLista() {
   const olOrdenado = document.getElementsByClassName('cart__item');
-  for (let i = 0; i < olOrdenado.length; i++) {
+  for (let i = 0; i < olOrdenado.length; i += 1) {
     localStorage[criadorKey()] = olOrdenado[i].innerText.substring(5, 13);
   }
   return localStorage;
+}
+
+function cartItemClickListener(event) {
+  const chave = Object.keys(localStorage).find(
+    item => localStorage[item] === event.target.innerText.substring(5, 13)
+  );
+  localStorage.removeItem(chave);
+  event.target.remove();
 }
 
 function createCartItemElement({ sku, name, salePrice }) {
@@ -63,14 +80,6 @@ function createProductItemElement({ sku, name, image }) {
   return section;
 }
 
-function cartItemClickListener(event) {
-  const chave = Object.keys(localStorage).find(
-    item => localStorage[item] === event.target.innerText.substring(5, 13)
-  );
-  localStorage.removeItem(chave);
-  event.target.remove();
-}
-
 Object.keys(localStorage).forEach(chave => {
   fetch(apiKeyEx5(Number(localStorage.getItem(chave))), {
     headers: { Accept: 'application/json' },
@@ -96,15 +105,6 @@ const criarElemento = valoresParaCriar => {
     });
   });
 };
-
-function criadorKey() {
-  let listaUniversal = '';
-  const carrinho = document.getElementsByClassName('cart__item');
-  for (let i of carrinho) {
-    listaUniversal = `SKU_${i.innerText.substring(5, 13)}_Num_${contador}`;
-  }
-  return listaUniversal;
-}
 
 const usarAPI = () => {
   const endPoint = () =>
