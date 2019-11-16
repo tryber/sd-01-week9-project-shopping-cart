@@ -7,12 +7,18 @@ const api = () => localStorage.getItem('chave_API');
 const apiKeyEx5 = SKU =>
   `https://api.bestbuy.com/v1/products(sku=${SKU})?apiKey=${api()}&sort=sku.asc&show=sku,name,salePrice&format=json`;
 
+let contador = 0;
+
 function criadorKey() {
   let listaUniversal = '';
   const carrinho = document.getElementsByClassName('cart__item');
-  for (let i of carrinho) {
-    listaUniversal = `SKU_${i.innerText.substring(5, 13)}_Num_${contador}`;
-  }
+  carrinho.map(
+    select =>
+      (listaUniversal = `SKU_${select.innerText.substring(
+        5,
+        13
+      )}_Num_${contador}`)
+  );
   return listaUniversal;
 }
 
@@ -88,8 +94,6 @@ Object.keys(localStorage).forEach(chave => {
     .then(array => criarListaElemento(array.products));
 });
 
-let contador = 0;
-
 const criarElemento = valoresParaCriar => {
   valoresParaCriar.forEach(element => {
     const filho = createProductItemElement(element);
@@ -100,7 +104,7 @@ const criarElemento = valoresParaCriar => {
       })
         .then(response => response.json())
         .then(array => criarListaElemento(array.products))
-        .then(() => contador++)
+        .then(() => (contador += 1))
         .then(() => modificarLista());
     });
   });
@@ -116,6 +120,7 @@ const usarAPI = () => {
 
 usarAPI();
 
-pgClss('input-name').addEventListener('blur', () => {
-  return (localStorage.nome = inputName.value);
-});
+pgClss('input-name').addEventListener(
+  'blur',
+  () => (localStorage.nome = inputName.value)
+);
