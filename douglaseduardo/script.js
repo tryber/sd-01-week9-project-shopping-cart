@@ -2,7 +2,7 @@ window.onload = function onload() {};
 
 const pgClss = classe => document.querySelector(`.${classe}`);
 
-const api = () => localStorage.getItem('chave_API');
+const api = () => localStorage.getItem("chave_API");
 
 const apiKeyEx5 = SKU =>
   `https://api.bestbuy.com/v1/products(sku=${SKU})?apiKey=${api()}&sort=sku.asc&show=sku,name,salePrice&format=json`;
@@ -14,11 +14,8 @@ function criadorKey() {
   const carrinho = document.getElementsByClassName('cart__item');
   carrinho.map(
     select =>
-      (listaUniversal = `SKU_${select.innerText.substring(
-        5,
-        13
-      )}_Num_${contador}`)
-  );
+      (listaUniversal = `SKU_${select.innerText.substring(5, 13)}_Num_${contador}`));
+
   return listaUniversal;
 }
 
@@ -48,14 +45,14 @@ function createCartItemElement({ sku, name, salePrice }) {
 
 function criarListaElemento(respostaJson) {
   respostaJson.forEach(element =>
-    pgClss('cart__items').appendChild(createCartItemElement(element))
+    pgClss('cart__items').appendChild(createCartItemElement(element)),
   );
 }
 
 document.querySelector('.limparCarrinho').addEventListener('click', () => {
   const pai = document.querySelectorAll('.cart__item');
   pai.forEach(item => item.remove());
-  Object.keys(localStorage).forEach(chave => {
+  Object.keys(localStorage).forEach((chave) => {
     if (chave !== 'chave_API') localStorage.removeItem(chave);
   });
 });
@@ -81,12 +78,12 @@ function createProductItemElement({ sku, name, image }) {
   section.appendChild(createCustomElement('span', 'item__title', name));
   section.appendChild(createProductImageElement(image));
   section.appendChild(
-    createCustomElement('button', 'item__add', 'Adicionar ao carrinho!')
+    createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'),
   );
   return section;
 }
 
-Object.keys(localStorage).forEach(chave => {
+Object.keys(localStorage).forEach((chave) => {
   fetch(apiKeyEx5(Number(localStorage.getItem(chave))), {
     headers: { Accept: 'application/json' },
   })
@@ -94,8 +91,8 @@ Object.keys(localStorage).forEach(chave => {
     .then(array => criarListaElemento(array.products));
 });
 
-const criarElemento = valoresParaCriar => {
-  valoresParaCriar.forEach(element => {
+const criarElemento = (valoresParaCriar) => {
+  valoresParaCriar.forEach((element) => {
     const filho = createProductItemElement(element);
     pgClss('items').appendChild(filho);
     filho.lastChild.addEventListener('click', () => {
@@ -122,5 +119,4 @@ usarAPI();
 
 pgClss('input-name').addEventListener(
   'blur',
-  () => (localStorage.nome = inputName.value)
-);
+  () => (localStorage.nome = inputName.value));
