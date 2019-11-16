@@ -12,13 +12,7 @@ let contador = 0;
 function criadorKey() {
   let listaUniversal = '';
   const carrinho = document.getElementsByClassName('cart__item');
-  carrinho.map(
-    select =>
-      (listaUniversal = `SKU_${select.innerText.substring(
-        5,
-        13
-      )}_Num_${contador}`)
-  );
+  carrinho.map(select =>(listaUniversal = `SKU_${select.innerText.substring(5,13)}_Num_${contador}`));
   return listaUniversal;
 }
 
@@ -120,7 +114,4 @@ const usarAPI = () => {
 
 usarAPI();
 
-pgClss('input-name').addEventListener(
-  'blur',
-  () => (localStorage.nome = inputName.value)
-);
+pgClss('input-name').addEventListener('blur',() => (localStorage.nome = inputName.value));
