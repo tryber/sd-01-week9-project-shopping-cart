@@ -12,7 +12,8 @@ let contador = 0;
 function criadorKey() {
   let listaUniversal = '';
   const carrinho = document.getElementsByClassName('cart__item');
-  carrinho.map(select =>(listaUniversal = `SKU_${select.innerText.substring(5,13)}_Num_${contador}`));
+  carrinho.map(select => 
+  (listaUniversal = `SKU_${select.innerText.substring(5,13)}_Num_${contador}`));
   return listaUniversal;
 }
 
@@ -26,7 +27,7 @@ function modificarLista() {
 
 function cartItemClickListener(event) {
   const chave = Object.keys(localStorage).find(
-    item => localStorage[item] === event.target.innerText.substring(5, 13)
+    item => localStorage[item] === event.target.innerText.substring(5, 13),
   );
   localStorage.removeItem(chave);
   event.target.remove();
@@ -42,14 +43,14 @@ function createCartItemElement({ sku, name, salePrice }) {
 
 function criarListaElemento(respostaJson) {
   respostaJson.forEach(element =>
-    pgClss('cart__items').appendChild(createCartItemElement(element))
+    pgClss('cart__items').appendChild(createCartItemElement(element)),
   );
 }
 
 document.querySelector('.limparCarrinho').addEventListener('click', () => {
   const pai = document.querySelectorAll('.cart__item');
   pai.forEach(item => item.remove());
-  Object.keys(localStorage).forEach(chave => {
+  Object.keys(localStorage).forEach((chave) => {
     if (chave !== 'chave_API') localStorage.removeItem(chave);
   });
 });
@@ -75,12 +76,12 @@ function createProductItemElement({ sku, name, image }) {
   section.appendChild(createCustomElement('span', 'item__title', name));
   section.appendChild(createProductImageElement(image));
   section.appendChild(
-    createCustomElement('button', 'item__add', 'Adicionar ao carrinho!')
+    createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'),
   );
   return section;
 }
 
-Object.keys(localStorage).forEach(chave => {
+Object.keys(localStorage).forEach((chave) => {
   fetch(apiKeyEx5(Number(localStorage.getItem(chave))), {
     headers: { Accept: 'application/json' },
   })
@@ -88,8 +89,8 @@ Object.keys(localStorage).forEach(chave => {
     .then(array => criarListaElemento(array.products));
 });
 
-const criarElemento = valoresParaCriar => {
-  valoresParaCriar.forEach(element => {
+const criarElemento = (valoresParaCriar) => {
+  valoresParaCriar.forEach((element) => {
     const filho = createProductItemElement(element);
     pgClss('items').appendChild(filho);
     filho.lastChild.addEventListener('click', () => {
@@ -114,4 +115,6 @@ const usarAPI = () => {
 
 usarAPI();
 
-pgClss('input-name').addEventListener('blur',() => (localStorage.nome = inputName.value));
+pgClss('input-name').addEventListener(
+  'blur',
+  () => (localStorage.nome = inputName.value));
