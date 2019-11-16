@@ -2,7 +2,7 @@ window.onload = function onload() {};
 
 const pgClss = classe => document.querySelector(`.${classe}`);
 
-const api = () => localStorage.getItem('chave_API');
+const api = () => localStorage.getItem("chave_API");
 
 const apiKeyEx5 = SKU =>
   `https://api.bestbuy.com/v1/products(sku=${SKU})?apiKey=${api()}&sort=sku.asc&show=sku,name,salePrice&format=json`;
@@ -14,8 +14,8 @@ function criadorKey() {
   const carrinho = document.getElementsByClassName('cart__item');
   carrinho.map(
     select =>
-      (listaUniversal = `SKU_${select.innerText.substring(5,13)}_Num_${contador}`));
-  
+      (listaUniversal = `SKU_${select.innerText.substring(5, 13)}_Num_${contador}`));
+
   return listaUniversal;
 }
 
@@ -29,7 +29,7 @@ function modificarLista() {
 
 function cartItemClickListener(event) {
   const chave = Object.keys(localStorage).find(
-    item => localStorage[item] === event.target.innerText.substring(5, 13),
+    item => localStorage[item] === event.target.innerText.substring(5, 13)
   );
   localStorage.removeItem(chave);
   event.target.remove();
