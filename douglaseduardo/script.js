@@ -12,8 +12,10 @@ let contador = 0;
 function criadorKey() {
   let listaUniversal = '';
   const carrinho = document.getElementsByClassName('cart__item');
-  carrinho.map(select => 
-  (listaUniversal = `SKU_${select.innerText.substring(5,13)}_Num_${contador}`));
+  carrinho.map(
+    select =>
+      (listaUniversal = `SKU_${select.innerText.substring(5,13)}_Num_${contador}`));
+  
   return listaUniversal;
 }
 
