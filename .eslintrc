@@ -1,8 +1,0 @@
-{
-  "plugins": ["prettier"],
-  "extends": "airbnb",
-  "rules": {
-    "no-console": "off",
-    "prettier/prettier": "error"
-  }
-}
