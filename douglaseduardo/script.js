@@ -12,7 +12,7 @@ let contador = 0;
 function criadorKey() {
   let listaUniversal = '';
   const carrinho = global.document.getElementsByClassName('cart__item');
-  carrinho.map(select => {
+  carrinho.map((select) => {
     listaUniversal = `SKU_${select.innerText.substring(5, 13)}_Num_${contador}`;
     return listaUniversal;
   });
@@ -30,7 +30,7 @@ function modificarLista() {
 
 function cartItemClickListener(event) {
   const chave = Object.keys(global.localStorage).find(
-    item => global.localStorage[item] === event.target.innerText.substring(5, 13)
+    item => global.localStorage[item] === event.target.innerText.substring(5, 13),
   );
   global.localStorage.removeItem(chave);
   event.target.remove();
@@ -46,14 +46,14 @@ function createCartItemElement({ sku, name, salePrice }) {
 
 function criarListaElemento(respostaJson) {
   respostaJson.forEach(element =>
-    pgClss('cart__items').appendChild(createCartItemElement(element))
+    pgClss('cart__items').appendChild(createCartItemElement(element)),
   );
 }
 
 global.document.querySelector('.limparCarrinho').addEventListener('click', () => {
   const pai = global.document.querySelectorAll('.cart__item');
   pai.forEach(item => item.remove());
-  Object.keys(global.localStorage).forEach(chave => {
+  Object.keys(global.localStorage).forEach((chave) => {
     if (chave !== 'chave_API') global.localStorage.removeItem(chave);
   });
 });
@@ -82,21 +82,21 @@ function createProductItemElement({ sku, name, image }) {
   return section;
 }
 
-Object.keys(global.localStorage).forEach(chave => {
+Object.keys(global.localStorage).forEach((chave) => {
   fetch(apiKeyEx5(Number(global.localStorage.getItem(chave))), {
-    headers: { Accept: 'application/json' }
+    headers: { Accept: 'application/json' },
   })
     .then(response => response.json())
     .then(array => criarListaElemento(array.products));
 });
 
-const criarElemento = valoresParaCriar => {
-  valoresParaCriar.forEach(element => {
+const criarElemento = (valoresParaCriar) => {
+  valoresParaCriar.forEach((element) => {
     const filho = createProductItemElement(element);
     pgClss('items').appendChild(filho);
     filho.lastChild.addEventListener('click', () => {
       fetch(apiKeyEx5(filho.firstChild.innerHTML), {
-        headers: { Accept: 'application/json' }
+        headers: { Accept: 'application/json' },
       })
         .then(response => response.json())
         .then(array => criarListaElemento(array.products))
