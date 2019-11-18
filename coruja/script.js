@@ -22,7 +22,7 @@ function createProductItemElement({ sku, name, image }) {
   return section;
 }
 
-function gerateLocalStoragePosition() {
+function generateLocalStoragePosition() {
   let localStorageLength = localStorage.length;
   while (localStorage[localStorageLength]) {
     localStorageLength += 1;
@@ -31,7 +31,7 @@ function gerateLocalStoragePosition() {
 }
 
 const setKeyStorageCar = ({ sku }) => {
-  localStorage[gerateLocalStoragePosition()] = sku;
+  localStorage[generateLocalStoragePosition()] = sku;
 };
 
 function API_KEY() {
@@ -53,20 +53,19 @@ function clearCarItem() {
   const button = document.getElementsByTagName('button')[0];
   button.addEventListener('click', () => {
     const elementOfCarItem = document.getElementsByClassName('cart__item');
-    for(let index = 0; index < elementOfCarItem.length; index = index) {
-      elementOfCarItem[0].remove()
+    for (let index = 0; index < elementOfCarItem.length; index = 0) {
+      elementOfCarItem[0].remove();
     }
-  })
+  });
 }
 
 let carTotal = 0;
 const paragrath = document.createElement('p');
 function valueOfProduts(salePrice) {
-    carTotal += salePrice
-    paragrath.innerText = `${carTotal.toFixed(2)}`
+  carTotal += salePrice;
+  paragrath.innerText = `${carTotal.toFixed(2)}`;
   return paragrath
 }
-
 
 function createCartItemElement({ sku, name, salePrice }) {
   const li = document.createElement('li');
