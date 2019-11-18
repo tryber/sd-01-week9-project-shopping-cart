@@ -49,6 +49,25 @@ function cartItemClickListener(event) {
   event.target.remove();
 }
 
+function clearCarItem() {
+  const button = document.getElementsByTagName('button')[0];
+  button.addEventListener('click', () => {
+    const elementOfCarItem = document.getElementsByClassName('cart__item');
+    for(let index = 0; index < elementOfCarItem.length; index = index) {
+      elementOfCarItem[0].remove()
+    }
+  })
+}
+
+let carTotal = 0;
+const paragrath = document.createElement('p');
+function valueOfProduts(salePrice) {
+    carTotal += salePrice
+    paragrath.innerText = `${carTotal.toFixed(2)}`
+  return paragrath
+}
+
+
 function createCartItemElement({ sku, name, salePrice }) {
   const li = document.createElement('li');
   li.className = 'cart__item';
@@ -60,6 +79,7 @@ function createCartItemElement({ sku, name, salePrice }) {
 function listOfElementsAtpage() {
   const elementosNoHtml = document.querySelector('.items');
   const skuNamePrice = document.querySelector('.cart__items');
+  const salePriceCar = document.getElementsByClassName('cart__title')[0];
   const API_URL = `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${API_KEY()}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`;
   fetch(API_URL)
   .then(response => response.json())
@@ -73,6 +93,7 @@ function listOfElementsAtpage() {
         .then(response => response.json())
         .then((dados) => {
           skuNamePrice.appendChild(createCartItemElement(dados.products[0]));
+          salePriceCar.appendChild(valueOfProduts(dados.products[0].salePrice));
           setKeyStorageCar(dados.products[0]);
         });
       });
@@ -84,4 +105,5 @@ window.onload = function onload() {
   API_KEY();
   saveNameInPage();
   listOfElementsAtpage();
+  clearCarItem();
 };
