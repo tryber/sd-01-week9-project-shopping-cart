@@ -165,7 +165,7 @@ function loadShoppingCart() {
     if (key !== 'API_KEY') {
       const itemArray = localStorage.getItem(key).split('|');
       const newItemObj = {
-        sku: itemArray[0].slice(5, -2),
+        sku: itemArray[0].slice(5, -1),
         name: itemArray[1].slice(7, -1),
         salePrice: itemArray[2].slice(9),
       };
