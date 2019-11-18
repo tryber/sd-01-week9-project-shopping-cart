@@ -64,7 +64,7 @@ const paragrath = document.createElement('p');
 function valueOfProduts(salePrice) {
   carTotal += salePrice;
   paragrath.innerText = `${carTotal.toFixed(2)}`;
-  return paragrath
+  return paragrath;
 }
 
 function createCartItemElement({ sku, name, salePrice }) {
