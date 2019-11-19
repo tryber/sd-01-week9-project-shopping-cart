@@ -1,6 +1,6 @@
 function setInd() {
   return new Promise((resolve) => {
-   const ind = Number(localStorage.getItem('ind'));
+    const ind = Number(localStorage.getItem('ind'));
     if (!ind) {
       localStorage.setItem('ind', 0);
       resolve('Index stored with sucess');
@@ -211,8 +211,6 @@ async function asyncCall() {
   displayList().then(() => sumPrice());
   document.getElementById('button-clean').addEventListener('click', clean);
 }
-
-
 
 window.onload = function onload() {
   if (typeof Storage !== 'undefined') {
