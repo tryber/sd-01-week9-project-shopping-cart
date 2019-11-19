@@ -69,7 +69,7 @@ function addItemToShoppingCart(API_KEY, sku, addNewProduct) {
     .then(response => response.json())
     .then(data => document.querySelectorAll('.cart__items')[0].appendChild(createCartItemElement(data.products[0])))
     .then(addCartInLocalStorage(sku))
-    .then(removeCartInLocalStorage(sku))
+    .then(removeCartInLocalStorage(sku));
   });
 }
 
