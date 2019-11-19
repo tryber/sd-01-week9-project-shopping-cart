@@ -25,23 +25,23 @@ function addItemToShoppingCart(API_KEY, sku, addNewProduct) {
     fetch(API_URL, { headers: { Accept: 'application/json' } })
     .then(response => response.json())
     .then(data => document.querySelectorAll('.cart__items')[0].appendChild(createCartItemElement(data.products[0])))
-    .then(addCartInLocalStorage(sku))
-    .then(removeCartInLocalStorage(sku));
+    // .then(addCartInLocalStorage(sku))
+    // .then(removeCartInLocalStorage(sku));
   });
 }
 
 const itensArray = [];
 
-function addCartInLocalStorage(sku) {
-  itensArray.push(sku);
-  localStorage.setItem('itens', JSON.stringify(itensArray));
-  console.log(itensArray);
-}
+// function addCartInLocalStorage(sku) {
+//   itensArray.push(sku);
+//   localStorage.setItem('itens', JSON.stringify(itensArray));
+//   console.log(itensArray);
+// }
 
-function removeCartInLocalStorage() {
-  JSON.parse(localStorage.getItem('itens'));
-  console.log(itensArray);
-}
+// function removeCartInLocalStorage() {
+//   JSON.parse(localStorage.getItem('itens'));
+//   console.log(itensArray);
+// }
 
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
