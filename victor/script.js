@@ -58,7 +58,8 @@ function getApiKeyValues() {
     const addNewProduct = createProductItemElement(product);
     document.querySelectorAll('.items')[0].appendChild(addNewProduct);
     addNewProduct.addEventListener('click', addItemToShoppingCart(API_KEY, product.sku, addNewProduct));
-  }));
+  }))
+  .catch(error => console.log(error));
 }
 
 function addItemToShoppingCart(API_KEY, sku, addNewProduct) {
@@ -72,7 +73,7 @@ function addItemToShoppingCart(API_KEY, sku, addNewProduct) {
   });
 }
 
-const itensArray = []
+const itensArray = [];
 
 function addCartInLocalStorage(sku) {
   itensArray.push(sku);
