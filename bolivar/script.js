@@ -1,13 +1,13 @@
 function setInd() {
   return new Promise((resolve) => {
-    let ind = Number(localStorage.getItem('ind'));
+   const ind = Number(localStorage.getItem('ind'));
     if (!ind) {
       localStorage.setItem('ind', 0);
       resolve('Index stored with sucess');
     } else {
       resolve('Index in local stored');
     }
-  })
+  });
 }
 
 function storeInput() {
@@ -81,10 +81,10 @@ function generateProduct() {
         `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${localStorage.getItem('APIkey')}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`,
         (data) => {
           data.products.forEach((elm) => {
-            document.getElementById('loading').innerHTML = "loading...";
+            document.getElementById('loading').innerHTML = 'loading...';
             setTimeout(() => {
               document.getElementsByClassName('items')[0].appendChild(createProductItemElement(elm));
-              resolve("Done");
+              resolve();
             }, 3000);
           });
         },
@@ -103,7 +103,7 @@ function sumPrice() {
 }
 
 function cleanLoading() {
-  document.getElementById('loading').innerHTML = "";
+  document.getElementById('loading').innerHTML = '';
 }
 
 function cartItemClickListener(event) {
@@ -145,12 +145,12 @@ function addShoppingCar(SKU) {
 
 function promiseButton(event) {
   return new Promise((resolve) => {
-    document.getElementById('loading').innerHTML = "loading...";
+    document.getElementById('loading').innerHTML = 'loading...';
     addShoppingCar(event.target.parentNode.firstElementChild.innerText);
     setTimeout(() => {
       resolve();
     }, 1000);
-  })
+  });
 }
 
 function buttonListener() {
@@ -166,7 +166,7 @@ function buttonListener() {
 }
 
 function displayList() {
-  return new Promise ((resolve) => {
+  return new Promise((resolve) => {
     const newArray = [];
     for (i = 0; i < Object.keys(localStorage).length; i += 1) {
       if (localStorage.getItem(Object.keys(localStorage)[i]).charAt(0) === '<') {
@@ -182,7 +182,7 @@ function displayList() {
       document.getElementsByClassName('cart__item')[i].addEventListener('click', cartItemClickListener);
     }
     resolve();
-  })
+  });
 }
 
 function clean() {
@@ -196,8 +196,6 @@ function clean() {
     sumPrice();
   }, 1000);
 }
-
-
 
 async function asyncCall() {
   const respSetInd = await setInd();
