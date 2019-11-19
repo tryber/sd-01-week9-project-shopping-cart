@@ -1,8 +1,3 @@
-window.onload = function onload() {
-  saveNameUserInBrowser();
-  getApiKeyValues();
-};
-
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
   img.className = 'item__image';
@@ -85,3 +80,8 @@ function removeCartInLocalStorage() {
   const teste2 = JSON.parse(localStorage.getItem('itens'));
   console.log(itensArray);
 }
+
+window.onload = function onload() {
+  saveNameUserInBrowser();
+  getApiKeyValues();
+};
