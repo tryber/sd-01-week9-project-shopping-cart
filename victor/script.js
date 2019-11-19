@@ -69,4 +69,4 @@ function cartItemClickListener() {
 window.onload = function onload() {
   saveNameUserInBrowser();
   getApiKeyValues();
-}
+};
