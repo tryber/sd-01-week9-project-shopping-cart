@@ -77,7 +77,7 @@ function addCartInLocalStorage(sku) {
 }
 
 function removeCartInLocalStorage() {
-  const teste2 = JSON.parse(localStorage.getItem('itens'));
+  JSON.parse(localStorage.getItem('itens'));
   console.log(itensArray);
 }
 
