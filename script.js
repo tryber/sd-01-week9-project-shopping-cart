@@ -37,7 +37,7 @@ function createProductItemElement({ sku, name, image }) {
   section.appendChild(createCustomElement('span', 'item__title', name));
   section.appendChild(createProductImageElement(image));
   section.appendChild(
-    createCustomElement('button', 'item__add', 'Adicionar ao carrinho!')
+    createCustomElement('button', 'item__add', 'Adicionar ao carrinho!',)
   );
 
   return section;
@@ -66,7 +66,7 @@ catchApi()
       document.querySelector('.items').appendChild(product);
       product.lastChild.addEventListener('click', () => {
         fetch(
-          `https://api.bestbuy.com/v1/products(sku=${el.sku})?apiKey=${API_KEY}&sort=sku.asc&show=sku,name,salePrice&format=json`
+          `https://api.bestbuy.com/v1/products(sku=${el.sku})?apiKey=${API_KEY}&sort=sku.asc&show=sku,name,salePrice&format=json`,
         )
           .then(result => result.json())
           .then((data) => {
