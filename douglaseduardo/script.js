@@ -10,7 +10,7 @@ let contador = 0;
 function criadorKey() {
   let listaUniversal = '';
   const carrinho = document.getElementsByClassName('cart__item');
-  carrinho.map(select => {
+  carrinho.map((select) => {
     listaUniversal = `SKU_${select.innerText.substring(5, 13)}_Num_${contador}`;
     return listaUniversal;
   });
@@ -51,7 +51,7 @@ function criarListaElemento(respostaJson) {
 document.querySelector('.limparCarrinho').addEventListener('click', () => {
   const pai = document.querySelectorAll('.cart__item');
   pai.forEach(item => item.remove());
-  Object.keys(localStorage).forEach(chave => {
+  Object.keys(localStorage).forEach((chave) => {
     if (chave !== 'chave_API') localStorage.removeItem(chave);
   });
 });
@@ -82,7 +82,7 @@ function createProductItemElement({ sku, name, image }) {
   return section;
 }
 
-Object.keys(localStorage).forEach(chave => {
+Object.keys(localStorage).forEach((chave) => {
   fetch(apiKeyEx5(Number(localStorage.getItem(chave))), {
     headers: { Accept: 'application/json' },
   })
@@ -90,8 +90,8 @@ Object.keys(localStorage).forEach(chave => {
     .then(array => criarListaElemento(array.products));
 });
 
-const criarElemento = valoresParaCriar => {
-  valoresParaCriar.forEach(element => {
+const criarElemento = (valoresParaCriar) => {
+  valoresParaCriar.forEach((element) => {
     const filho = createProductItemElement(element);
     pgClss('items').appendChild(filho);
     filho.lastChild.addEventListener('click', () => {
