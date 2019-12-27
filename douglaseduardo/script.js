@@ -7,18 +7,30 @@ const apiKeyEx5 = SKU =>
 
 let contador = 0;
 
+const loadingOn = () => {
+  const h1 = document.createElement('h1');
+  h1.innerHTML = 'Carregando... Aguarde!!!';
+  criarDocClasse('top-bar').appendChild(h1);
+}
+
+loadingOn()
+
+const loadingOff = () => criarDocClasse('top-bar').lastChild.remove();
+
 function calculadoraDoCarrinho(value) {
   const preçoTotal = criarDocClasse('cart__title');
-  const valorAtual = preçoTotal.innerText.split('$')[1];
-  //console.log(valorAtual);
+  let valorAtual = preçoTotal.innerText.split('$')[1];
+  if (isNaN(valorAtual)) {
+    valorAtual = 0
+  }
   let preçoFinal = Number(valorAtual) + Number(value);
-  //console.log(Math.round(localStorage.price * 100) / 100);
   if (preçoFinal <= 0) {
     preçoFinal = 0;
   }
+  localStorage.setItem('price', preçoFinal);
   preçoTotal.innerText = `Carrinho de compras, 
     preço total: R$${Math.round(localStorage.price * 100) / 100}`;
-  localStorage.setItem('price', preçoFinal);
+
 }
 
 function cartItemClickListener(event) {
@@ -37,10 +49,6 @@ function createCartItemElement({ sku, name, salePrice }) {
   li.addEventListener('click', cartItemClickListener);
   return li;
 }
-const valorParaColocarNoSpan = () =>
-  (criarDocClasse('cart__items').innerText = `Carrinho de compras, 
-    preço total: R$${Math.round(localStorage.price * 100) / 100}`)
-
 
 function criarListaElemento(respostaJson) {
   respostaJson.forEach((element) =>
@@ -52,7 +60,11 @@ criarDocClasse('limparCarrinho').addEventListener('click', () => {
   const pai = document.querySelectorAll('.cart__item');
   pai.forEach(item => item.remove());
   Object.keys(localStorage).forEach((chave) => {
-    if (chave !== 'chave_API') localStorage.removeItem(chave);
+    if (chave !== 'chave_API') {
+      localStorage.removeItem(chave)
+      criarDocClasse('cart__title').innerText = `Carrinho de compras, 
+      preço total: R$0.00`
+    };
   });
 });
 
@@ -117,7 +129,8 @@ const usarAPI = () => {
     `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${api()}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`;
   fetch(endPoint(), { headers: { Accept: 'application/json' } })
     .then(response => response.json())
-    .then(array => criarElemento(array.products));
+    .then(array => criarElemento(array.products))
+    .then(() => loadingOff())
 };
 
 usarAPI();
