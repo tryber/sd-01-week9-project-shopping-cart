@@ -4,3 +4,10 @@
     "no-console": "off"
   }
 }
+// {
+//   "extends": ["airbnb", "prettier"],
+//   "plugins": ["prettier"],
+//   "rules": {
+//     "prettier/prettier": ["error"]
+//   },
+// }
