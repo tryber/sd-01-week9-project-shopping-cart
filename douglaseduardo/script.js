@@ -1,4 +1,4 @@
-const pgClss = classe => document.querySelector(`.${classe}`);
+const criarDocClasse = classe => document.querySelector(`.${classe}`);
 
 const api = () => localStorage.getItem('chave_API');
 
@@ -7,29 +7,25 @@ const apiKeyEx5 = SKU =>
 
 let contador = 0;
 
-function criadorKey() {
-  let listaUniversal = '';
-  const carrinho = document.getElementsByClassName('cart__item');
-  carrinho.map((select) => {
-    listaUniversal = `SKU_${select.innerText.substring(5, 13)}_Num_${contador}`;
-    return listaUniversal;
-  });
-
-  return listaUniversal;
-}
-
-function modificarLista() {
-  const olOrdenado = document.getElementsByClassName('cart__item');
-  for (let i = 0; i < olOrdenado.length; i += 1) {
-    localStorage[criadorKey()] = olOrdenado[i].innerText.substring(5, 13);
+function calculadoraDoCarrinho(value) {
+  const preçoTotal = criarDocClasse('cart__title');
+  const valorAtual = preçoTotal.innerText.split('$')[1];
+  //console.log(valorAtual);
+  let preçoFinal = Number(valorAtual) + Number(value);
+  //console.log(Math.round(localStorage.price * 100) / 100);
+  if (preçoFinal <= 0) {
+    preçoFinal = 0;
   }
-  return localStorage;
+  preçoTotal.innerText = `Carrinho de compras, 
+    preço total: R$${Math.round(localStorage.price * 100) / 100}`;
+  localStorage.setItem('price', preçoFinal);
 }
 
 function cartItemClickListener(event) {
   const chave = Object.keys(localStorage).find(
     item => localStorage[item] === event.target.innerText.substring(5, 13),
   );
+  calculadoraDoCarrinho(-event.target.innerHTML.split('$')[1]);
   localStorage.removeItem(chave);
   event.target.remove();
 }
@@ -41,14 +37,18 @@ function createCartItemElement({ sku, name, salePrice }) {
   li.addEventListener('click', cartItemClickListener);
   return li;
 }
+const valorParaColocarNoSpan = () =>
+  (criarDocClasse('cart__items').innerText = `Carrinho de compras, 
+    preço total: R$${Math.round(localStorage.price * 100) / 100}`)
+
 
 function criarListaElemento(respostaJson) {
-  respostaJson.forEach(element =>
-    pgClss('cart__items').appendChild(createCartItemElement(element)),
+  respostaJson.forEach((element) =>
+    criarDocClasse('cart__items').appendChild(createCartItemElement(element))
   );
 }
 
-document.querySelector('.limparCarrinho').addEventListener('click', () => {
+criarDocClasse('limparCarrinho').addEventListener('click', () => {
   const pai = document.querySelectorAll('.cart__item');
   pai.forEach(item => item.remove());
   Object.keys(localStorage).forEach((chave) => {
@@ -83,27 +83,31 @@ function createProductItemElement({ sku, name, image }) {
 }
 
 Object.keys(localStorage).forEach((chave) => {
-  fetch(apiKeyEx5(Number(localStorage.getItem(chave))), {
-    headers: { Accept: 'application/json' },
-  })
-    .then(response => response.json())
-    .then(array => criarListaElemento(array.products));
+  if (chave !== 'chave_API' && chave !== 'price') {
+    fetch(apiKeyEx5(Number(localStorage.getItem(chave))), {
+      headers: { Accept: 'application/json' },
+    })
+      .then(response => response.json())
+      .then(data => criarListaElemento(data.products))
+  };
 });
 
 const criarElemento = (valoresParaCriar) => {
   valoresParaCriar.forEach((element) => {
     const filho = createProductItemElement(element);
-    pgClss('items').appendChild(filho);
+    criarDocClasse('items').appendChild(filho);
     filho.lastChild.addEventListener('click', () => {
       fetch(apiKeyEx5(filho.firstChild.innerHTML), {
         headers: { Accept: 'application/json' },
       })
         .then(response => response.json())
-        .then(array => criarListaElemento(array.products))
-        .then(() => {
+        .then(data => {
           contador += 1;
+          data.products.map((select) => localStorage.setItem(`produto nº${contador} com sku nº ${select.sku}`, select.sku));
+          data.products.map((select) => calculadoraDoCarrinho(select.salePrice))
+
+          return criarListaElemento(data.products)
         })
-        .then(() => modificarLista());
     });
   });
 };
@@ -118,6 +122,19 @@ const usarAPI = () => {
 
 usarAPI();
 
-pgClss('input-name').addEventListener('blur', () => {
-  localStorage.nome = pgClss('input-name').value;
-});
+const salvaNomeBlur = () => {
+  const classe = criarDocClasse('input-name')
+  classe.addEventListener('blur', () => sessionStorage.setItem('name', classe.value));
+}
+
+salvaNomeBlur()
+
+//=> aguardando aprovação se vai usar cockie ou não, já que deu erro para todos os alunos por causo do navegador Chrome...
+// function setCookie() {
+//   const inputTermsAgree = criarDocClasse('input-terms');
+//   const diasTotais = 7;
+//   inputTermsAgree.addEventListener('change', () => {
+//     const expires = new Date(Date.now() + (diasTotais * 864e5)).toUTCString();
+//     document.cookie = `terms-agree =${encodeURIComponent(inputTermsAgree.checked)}; expires= ${expires}; path=/`;
+//   });
+// }
