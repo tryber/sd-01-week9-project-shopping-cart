@@ -120,7 +120,7 @@ const criarElemento = (valoresParaCriar) => {
         });
     });
   });
-}
+};
 
 const usarAPI = () => {
   const endPoint = () =>
@@ -134,7 +134,7 @@ const usarAPI = () => {
 usarAPI();
 
 const salvaNomeBlur = () => {
-  const classe = criarDocClasse('input-name')
+  const classe = criarDocClasse('input-name');
   classe.addEventListener('blur', () => sessionStorage.setItem('name', classe.value));
 };
 
