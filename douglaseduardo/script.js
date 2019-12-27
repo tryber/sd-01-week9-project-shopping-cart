@@ -51,7 +51,7 @@ function createCartItemElement({ sku, name, salePrice }) {
 
 function criarListaElemento(respostaJson) {
   respostaJson.forEach(element =>
-    criarDocClasse('cart__items').appendChild(createCartItemElement(element))
+    criarDocClasse('cart__items').appendChild(createCartItemElement(element)),
   );
 }
 
@@ -63,9 +63,9 @@ criarDocClasse('limparCarrinho').addEventListener('click', () => {
       localStorage.removeItem(chave);
       criarDocClasse('cart__title').innerText = `Carrinho de compras, 
       preço total: R$0.00`;
-    };
+    }
   });
-})
+});
 
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
@@ -99,9 +99,9 @@ Object.keys(localStorage).forEach((chave) => {
       headers: { Accept: 'application/json' },
     })
       .then(response => response.json())
-      .then(data => criarListaElemento(data.products))
-  };
-})
+      .then(data => criarListaElemento(data.products));
+  }
+});
 
 const criarElemento = (valoresParaCriar) => {
   valoresParaCriar.forEach((element) => {
@@ -128,7 +128,7 @@ const usarAPI = () => {
   fetch(endPoint(), { headers: { Accept: 'application/json' } })
     .then(response => response.json())
     .then(array => criarElemento(array.products))
-    .then(() => loadingOff())
+    .then(() => loadingOff());
 };
 
 usarAPI();
@@ -136,6 +136,6 @@ usarAPI();
 const salvaNomeBlur = () => {
   const classe = criarDocClasse('input-name')
   classe.addEventListener('blur', () => sessionStorage.setItem('name', classe.value));
-}
+};
 
-salvaNomeBlur()
+salvaNomeBlur();
