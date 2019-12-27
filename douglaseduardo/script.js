@@ -11,9 +11,9 @@ const loadingOn = () => {
   const h1 = document.createElement('h1');
   h1.innerHTML = 'Carregando... Aguarde!!!';
   criarDocClasse('top-bar').appendChild(h1);
-}
+};
 
-loadingOn()
+loadingOn();
 
 const loadingOff = () => criarDocClasse('top-bar').lastChild.remove();
 
@@ -21,7 +21,7 @@ function calculadoraDoCarrinho(value) {
   const preçoTotal = criarDocClasse('cart__title');
   let valorAtual = preçoTotal.innerText.split('$')[1];
   if (isNaN(valorAtual)) {
-    valorAtual = 0
+    valorAtual = 0;
   }
   let preçoFinal = Number(valorAtual) + Number(value);
   if (preçoFinal <= 0) {
@@ -30,7 +30,6 @@ function calculadoraDoCarrinho(value) {
   localStorage.setItem('price', preçoFinal);
   preçoTotal.innerText = `Carrinho de compras, 
     preço total: R$${Math.round(localStorage.price * 100) / 100}`;
-
 }
 
 function cartItemClickListener(event) {
@@ -51,7 +50,7 @@ function createCartItemElement({ sku, name, salePrice }) {
 }
 
 function criarListaElemento(respostaJson) {
-  respostaJson.forEach((element) =>
+  respostaJson.forEach(element =>
     criarDocClasse('cart__items').appendChild(createCartItemElement(element))
   );
 }
@@ -61,12 +60,12 @@ criarDocClasse('limparCarrinho').addEventListener('click', () => {
   pai.forEach(item => item.remove());
   Object.keys(localStorage).forEach((chave) => {
     if (chave !== 'chave_API') {
-      localStorage.removeItem(chave)
+      localStorage.removeItem(chave);
       criarDocClasse('cart__title').innerText = `Carrinho de compras, 
-      preço total: R$0.00`
+      preço total: R$0.00`;
     };
   });
-});
+})
 
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
@@ -102,7 +101,7 @@ Object.keys(localStorage).forEach((chave) => {
       .then(response => response.json())
       .then(data => criarListaElemento(data.products))
   };
-});
+})
 
 const criarElemento = (valoresParaCriar) => {
   valoresParaCriar.forEach((element) => {
@@ -113,16 +112,15 @@ const criarElemento = (valoresParaCriar) => {
         headers: { Accept: 'application/json' },
       })
         .then(response => response.json())
-        .then(data => {
+        .then((data) => {
           contador += 1;
-          data.products.map((select) => localStorage.setItem(`produto nº${contador} com sku nº ${select.sku}`, select.sku));
-          data.products.map((select) => calculadoraDoCarrinho(select.salePrice))
-
-          return criarListaElemento(data.products)
-        })
+          data.products.map(select => localStorage.setItem(`produto nº${contador} com sku nº ${select.sku}`, select.sku));
+          data.products.map(select => calculadoraDoCarrinho(select.salePrice));
+          return criarListaElemento(data.products);
+        });
     });
   });
-};
+}
 
 const usarAPI = () => {
   const endPoint = () =>
@@ -141,13 +139,3 @@ const salvaNomeBlur = () => {
 }
 
 salvaNomeBlur()
-
-//=> aguardando aprovação se vai usar cockie ou não, já que deu erro para todos os alunos por causo do navegador Chrome...
-// function setCookie() {
-//   const inputTermsAgree = criarDocClasse('input-terms');
-//   const diasTotais = 7;
-//   inputTermsAgree.addEventListener('change', () => {
-//     const expires = new Date(Date.now() + (diasTotais * 864e5)).toUTCString();
-//     document.cookie = `terms-agree =${encodeURIComponent(inputTermsAgree.checked)}; expires= ${expires}; path=/`;
-//   });
-// }
