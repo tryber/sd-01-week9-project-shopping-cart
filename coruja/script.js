@@ -1,16 +1,16 @@
-
 function addLoading() {
   newSpan = document.createElement('span');
   newSpan.className = 'loading';
   newSpan.innerHTML = 'Loading...';
   document.getElementsByClassName('top-bar')[0].appendChild(newSpan);
 }
+
 function removeLoading() {
   const loading = document.getElementsByClassName('loading')[0];
   if (loading) {
     loading.remove();
   }
-} 
+}
 
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
@@ -47,16 +47,48 @@ function saveNameInPage() {
   });
 }
 
-function cartItemClickListener(event, value) {
+function cartItemClickListener(event) {
+  const valueCar = document.getElementById('value-car');
+  const salePriceCar = document.getElementsByClassName('cart__title')[0];
+  salePriceCar.lastChild.remove();
+  if (valueCar) { valueCar.remove(); }
+  let decreaseValue = event.target.textContent.length
+  let decreaseValueCar = Number(event.target.textContent.substring(decreaseValue - 5, decreaseValue));
+  carTotal -= decreaseValueCar
+  paragrath.innerText = `${carTotal.toFixed(2)}`;
+  salePriceCar.appendChild(paragrath);
   event.target.remove();
+  localStorePrice();
+  newLocalStorage(event.target);
 }
 
 let carTotal = 0;
+const initialPrice = () => {
+  if (localStorage.price) {
+    const valueTotal = document.getElementById('value-total');
+    valueTotal.innerText = localStorage.price
+    carTotal = localStorage.price
+  } 
+}
+
 const paragrath = document.createElement('p');
 function valueOfProduts(salePrice) {
+  const salePriceCar = document.getElementsByClassName('cart__title')[0];
+  paragrath.className ="values"
+  salePriceCar.lastChild.remove();
   carTotal += salePrice;
   paragrath.innerText = `${carTotal.toFixed(2)}`;
-  return paragrath;
+  salePriceCar.appendChild(paragrath);
+  localStorePrice();
+}
+
+const localStorePrice = () => {
+  classValues = document.getElementsByClassName('values')[0];
+  if (classValues) {
+    localStorage.setItem('price', classValues.textContent);
+  } else {
+    localStorage.setItem('price', carTotal);
+  }
 }
 
 function clearCarItem() {
@@ -68,7 +100,11 @@ function clearCarItem() {
     }
     localStorage.removeItem('comments');
     carTotal = 0;
-    paragrath.innerText = '0';
+    paragrath.innerText = '0.00';
+    if (localStorage.price) {
+      localStorage.price = 0;
+      localStorage.removeItem('price');
+    }
   });
 }
 
@@ -89,7 +125,7 @@ function showList() {
   const tagOl = document.querySelector('.cart__items');
   if (localStorage.comments) {
     const local = JSON.parse(localStorage.comments);
-    for (let index = 0; index < local.length; index+= 1) {
+    for (let index = 0; index < local.length; index += 1) {
       const li = document.createElement('li');
       li.innerHTML = `SKU: ${local[index].sku} | NAME: ${local[index].name} | PRICE: $${local[index].salePrice}`;
       tagOl.appendChild(li);
@@ -97,6 +133,13 @@ function showList() {
       clearCarItem();
     }
   }
+}
+
+function newLocalStorage(item) {
+  const local = JSON.parse(localStorage.comments);
+  const newStorage = local.splice(item, 1);
+  localStorage.comments = JSON.stringify(newStorage);
+  console.log('amor')
 }
 
 function createCartItemElement({ sku, name, salePrice }) {
@@ -112,7 +155,6 @@ function listOfElementsAtpage() {
   const valueCar = document.getElementById('value-car');
   const elementosNoHtml = document.querySelector('.items');
   const skuNamePrice = document.querySelector('.cart__items');
-  const salePriceCar = document.getElementsByClassName('cart__title')[0];
   const API_URL = `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${API_KEY()}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`;
   fetch(API_URL)
   .then(response => response.json())
@@ -128,7 +170,7 @@ function listOfElementsAtpage() {
         .then((dados) => {
           skuNamePrice.appendChild(createCartItemElement(dados.products[0]));
           if (valueCar) { valueCar.remove(); }
-          salePriceCar.appendChild(valueOfProduts(dados.products[0].salePrice));
+          valueOfProduts(dados.products[0].salePrice)
         });
       });
     });
@@ -142,4 +184,5 @@ window.onload = function onload() {
   listOfElementsAtpage();
   clearCarItem();
   showList();
+  initialPrice();
 };
