@@ -24,6 +24,13 @@ function createCustomElement(element, className, innerText) {
   return e;
 }
 
+function createProductImageElement(imageSource) {
+  const img = document.createElement('img');
+  img.className = 'item__image';
+  img.src = imageSource;
+  return img;
+}
+
 function createProductItemElement({ sku, name, image }) {
   const section = document.createElement('section');
   section.className = 'item';
@@ -51,19 +58,12 @@ function getApiKeyValues() {
 
   fetch(API_URL, { headers: { Accept: 'application/json' } })
   .then(response => response.json())
-  .then(data => data.products.map((product) => {
+  .then(data => data.products.forEach((product) => {
     const addNewProduct = createProductItemElement(product);
     document.querySelectorAll('.items')[0].appendChild(addNewProduct);
     addNewProduct.addEventListener('click', addItemToShoppingCart(API_KEY, product.sku, addNewProduct));
   }))
   .catch(error => console.log(error));
-}
-
-function createProductImageElement(imageSource) {
-  const img = document.createElement('img');
-  img.className = 'item__image';
-  img.src = imageSource;
-  return img;
 }
 
 window.onload = function onload() {
