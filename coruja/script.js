@@ -59,7 +59,9 @@ function cartItemClickListener(event) {
   salePriceCar.appendChild(paragrath);
   event.target.remove();
   localStorePrice();
-  newLocalStorage(event.target);
+  const skuProduct = Number(event.target.innerText.substring(5, 13))
+  console.log(skuProduct)
+  newLocalStorage(skuProduct);
 }
 
 let carTotal = 0;
@@ -77,7 +79,7 @@ function valueOfProduts(salePrice) {
   paragrath.className ="values"
   salePriceCar.lastChild.remove();
   carTotal += salePrice;
-  paragrath.innerText = `${carTotal.toFixed(2)}`;
+  paragrath.innerText = `${carTotal}`;
   salePriceCar.appendChild(paragrath);
   localStorePrice();
 }
@@ -102,7 +104,6 @@ function clearCarItem() {
     carTotal = 0;
     paragrath.innerText = '0.00';
     if (localStorage.price) {
-      localStorage.price = 0;
       localStorage.removeItem('price');
     }
   });
@@ -135,11 +136,13 @@ function showList() {
   }
 }
 
-function newLocalStorage(item) {
+function newLocalStorage(items) {
   const local = JSON.parse(localStorage.comments);
-  const newStorage = local.splice(item, 1);
+  const newStorage = local.filter(item => {
+    return (item.sku !== items)
+  })
   localStorage.comments = JSON.stringify(newStorage);
-  console.log('amor')
+  console.log(newStorage)
 }
 
 function createCartItemElement({ sku, name, salePrice }) {
