@@ -61,7 +61,9 @@ const localStorePrice = () => {
 
 function newLocalStorage(items) {
   const local = JSON.parse(localStorage.comments);
-  const newStorage = local.find(item => { return item.sku === items });
+  const newStorage = local.find((item) => {
+    return item.sku === items;
+  });
   const removeItemLocalStorage = local.indexOf(newStorage);
   local.splice(removeItemLocalStorage, 1);
   localStorage.comments = JSON.stringify(local);
@@ -167,8 +169,8 @@ function listOfElementsAtpage() {
   const API_URL = `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${API_KEY()}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`;
   fetch(API_URL)
     .then(response => response.json())
-    .then(data => {
-      data.products.forEach(element => {
+    .then((data) => {
+      data.products.forEach((element) => {
         const child = createProductItemElement(element);
         elementosNoHtml.appendChild(child);
         removeLoading();
@@ -178,7 +180,7 @@ function listOfElementsAtpage() {
             .then(response => response.json())
             .then((dados) => {
               skuNamePrice.appendChild(createCartItemElement(dados.products[0]));
-              if (valueCar) { valueCar.remove() }
+              if (valueCar) { valueCar.remove() };
               valueOfProduts(dados.products[0].salePrice);
             });
         });
