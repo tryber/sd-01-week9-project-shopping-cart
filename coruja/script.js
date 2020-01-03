@@ -61,7 +61,7 @@ const localStorePrice = () => {
 
 function newLocalStorage(items) {
   const local = JSON.parse(localStorage.comments);
-  const newStorage = local.find((item) => item.sku === items);
+  const newStorage = local.find(item => item.sku === items);
   const removeItemLocalStorage = local.indexOf(newStorage);
   local.splice(removeItemLocalStorage, 1);
   localStorage.comments = JSON.stringify(local);
