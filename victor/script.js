@@ -9,11 +9,25 @@ function cartItemClickListener() {
   document.querySelectorAll('.cart__items')[0].removeChild(event.target);
 }
 
+function saveShoppingCartInLocalStorage(sku, name, salePrice) {
+  const products = { sku, name, salePrice };
+  if (!localStorage.products) {
+    const newProduct = JSON.stringify([products]);
+    localStorage.setItem('products', newProduct);
+  } else {
+    const actualComments = localStorage.products;
+    const formatedActualComments = JSON.parse(actualComments);
+    const finalComments = [...formatedActualComments, products];
+    localStorage.products = JSON.stringify(finalComments);
+  }
+}
+
 function createCartItemElement({ sku, name, salePrice }) {
   const li = document.createElement('li');
   li.className = 'cart__item';
   li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
   li.addEventListener('click', cartItemClickListener);
+  saveShoppingCartInLocalStorage(sku, name, salePrice);
   return li;
 }
 
