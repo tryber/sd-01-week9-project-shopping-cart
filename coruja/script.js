@@ -62,7 +62,7 @@ const localStorePrice = () => {
 function newLocalStorage(items) {
   const local = JSON.parse(localStorage.comments);
   const newStorage = local.find((item) => {
-    return item.sku === items;
+    item.sku === items;
   });
   const removeItemLocalStorage = local.indexOf(newStorage);
   local.splice(removeItemLocalStorage, 1);
@@ -180,7 +180,7 @@ function listOfElementsAtpage() {
             .then(response => response.json())
             .then((dados) => {
               skuNamePrice.appendChild(createCartItemElement(dados.products[0]));
-              if (valueCar) { valueCar.remove() };
+              if (valueCar) { valueCar.remove(); }
               valueOfProduts(dados.products[0].salePrice);
             });
         });
