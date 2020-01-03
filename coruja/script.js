@@ -95,16 +95,16 @@ const initialPrice = () => {
   if (localStorage.price) {
     const valueTotal = document.getElementById("value-total");
     valueTotal.innerText = localStorage.price;
-    carTotal = localStorage.price;
+    carTotal = parseFloat(localStorage.price);
   }
 };
 
 function valueOfProduts(salePrice) {
   const salePriceCar = document.getElementsByClassName("cart__title")[0];
-  paragrath.className = "values";
   salePriceCar.lastChild.remove();
+  paragrath.className = "values";
   carTotal += salePrice;
-  paragrath.innerText = `${carTotal}`;
+  paragrath.innerText = `${carTotal.toFixed(2)}`;
   salePriceCar.appendChild(paragrath);
   localStorePrice();
 }
@@ -120,7 +120,7 @@ function clearCarItem() {
     localStorage.removeItem("comments");
     carTotal = 0;
     paragrath.innerText = "0.00";
-    if(valueTotal) {
+    if (valueTotal) {
       valueTotal.textContent = "0.00";
     }
     if (localStorage.price) {
