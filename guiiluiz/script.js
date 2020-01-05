@@ -58,7 +58,7 @@ function cartItemClickListener(event) {
   const localStorageItem = Object.keys(localStorage)
     .find(item => localStorage[item] === event.target.innerText.substring(5, 13));
   cartPrice(-event.target.innerHTML.split('$')[1]);
-  localStorage.removeItem(localStorageItem)
+  localStorage.removeItem(localStorageItem);
   event.target.remove();
 }
 
@@ -71,6 +71,18 @@ function createCartItemElement({ sku, name, salePrice }) {
 }
 
 let cont = 0;
+
+function addProductToCart(product, apiKey) {
+  fetch(`https://api.bestbuy.com/v1/products(sku=${product.sku})?apiKey=${apiKey}&sort=sku.asc&show=sku,name,salePrice&format=json`)
+    .then(response => response.json())
+    .then((data) => {
+      document.getElementsByClassName('cart__items')[0].appendChild(createCartItemElement(data.products[0]));
+      localStorage.setItem(`produto${cont}`, data.products[0].sku);
+      cartPrice(data.products[0].salePrice);
+    })
+    .catch(error => console.log(error));
+}
+
 function listProducts() {
   const apiKey = localStorage.API;
   const url = `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${apiKey}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`;
@@ -89,17 +101,6 @@ function listProducts() {
     .catch(error => console.log(error));
 }
 
-function addProductToCart(product, apiKey) {
-  fetch(`https://api.bestbuy.com/v1/products(sku=${product.sku})?apiKey=${apiKey}&sort=sku.asc&show=sku,name,salePrice&format=json`)
-    .then(response => response.json())
-    .then((data) => {
-      document.getElementsByClassName('cart__items')[0].appendChild(createCartItemElement(data.products[0]));
-      localStorage.setItem(`produto${cont}`, data.products[0].sku);
-      cartPrice(data.products[0].salePrice);
-    })
-    .catch(error => console.log(error));
-}
-
 function loadCartItems() {
   Object.keys(localStorage).forEach((key) => {
     if (key !== 'API' && key !== 'price') {
@@ -109,7 +110,7 @@ function loadCartItems() {
         document.getElementsByClassName('cart__items')[0].appendChild(createCartItemElement(data.products[0]));
         document.getElementsByClassName('cart__title')[0].innerText = `Carrinho de compras
         Valor Final: $${Math.round(localStorage.price * 100) / 100}`;
-      })
+      });
     }
   });
 }
