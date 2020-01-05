@@ -19,8 +19,7 @@ function cartPrice(value) {
   let finalPrice = Number(currentPrice) + Number(value);
   if (finalPrice < 0) finalPrice = 0;
 
-  shopCart.innerText = `Carrinho de compras
-  Valor Final: $${Math.round(finalPrice * 100) / 100}`;
+  shopCart.innerText = `Carrinho de compras\nValor Final: $${Math.round(finalPrice * 100) / 100}`;
   localStorage.setItem('price', finalPrice);
 }
 
@@ -108,11 +107,24 @@ function loadCartItems() {
       .then(response => response.json())
       .then((data) => {
         document.getElementsByClassName('cart__items')[0].appendChild(createCartItemElement(data.products[0]));
-        document.getElementsByClassName('cart__title')[0].innerText = `Carrinho de compras
-        Valor Final: $${Math.round(localStorage.price * 100) / 100}`;
+        document.getElementsByClassName('cart__title')[0].innerText = `Carrinho de compras\nValor Final: $${Math.round(localStorage.price * 100) / 100}`;
       });
     }
   });
+}
+
+function clearCart() {
+  const clearButton = document.createElement('button');
+  clearButton.innerHTML = 'Limpar Carrinho de Compras';
+  clearButton.addEventListener('click', () => {
+    const cartItems = document.getElementsByClassName('cart__item');
+    Object.values(cartItems).forEach(item => item.remove());
+    document.getElementsByClassName('cart__title')[0].innerText = 'Carrinho de compras\nValor Final: $0';
+    const apiKey = localStorage.API;
+    localStorage.clear();
+    localStorage.API = apiKey;
+  });
+  document.getElementsByClassName('cart')[0].appendChild(clearButton);
 }
 
 window.onload = function onload() {
@@ -120,4 +132,5 @@ window.onload = function onload() {
   saveName();
   listProducts();
   loadCartItems();
+  clearCart();
 };
