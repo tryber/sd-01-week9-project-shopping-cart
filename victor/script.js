@@ -1,3 +1,11 @@
+function addLoading() {
+  createLoading = document.createElement('h1');
+  createLoading.innerHTML = 'Loading...';
+  document.getElementsByClassName('top-bar')[0].appendChild(createLoading);
+}
+
+const removeLoading = () => document.getElementsByClassName('top-bar')[0].lastChild.remove();
+
 function saveNameUserInBrowser() {
   document.querySelector('.input-terms').addEventListener('click', () => {
     const nameUser = document.querySelector('.input-name').value;
@@ -5,21 +13,24 @@ function saveNameUserInBrowser() {
   });
 }
 
-function cartItemClickListener() {
-  document.querySelectorAll('.cart__items')[0].removeChild(event.target);
+function cartPrice(value) {
+  const shopCart = document.getElementsByClassName('cart__title')[0];
+  let currentPrice = shopCart.innerText.split('$')[1];
+  if (isNaN(currentPrice)) currentPrice = 0;
+  let totalPrice = Number(currentPrice) + Number(value);
+  if (totalPrice < 0) totalPrice = 0;
+
+  shopCart.innerText = `Carrinho de compras
+  Valor Final: $${Math.round(totalPrice * 100) / 100}`;
+  localStorage.setItem('price', totalPrice);
 }
 
-function saveShoppingCartInLocalStorage(sku, name, salePrice) {
-  const products = { sku, name, salePrice };
-  if (!localStorage.products) {
-    const newProduct = JSON.stringify([products]);
-    localStorage.setItem('products', newProduct);
-  } else {
-    const actualComments = localStorage.products;
-    const formatedActualComments = JSON.parse(actualComments);
-    const finalComments = [...formatedActualComments, products];
-    localStorage.products = JSON.stringify(finalComments);
-  }
+function cartItemClickListener(event) {
+  const localStorageItem = Object.keys(localStorage)
+    .find(item => localStorage[item] === event.target.innerText.substring(5, 13));
+  cartPrice(-event.target.innerHTML.split('$')[1]);
+  localStorage.removeItem(localStorageItem);
+  event.target.remove();
 }
 
 function createCartItemElement({ sku, name, salePrice }) {
@@ -27,7 +38,6 @@ function createCartItemElement({ sku, name, salePrice }) {
   li.className = 'cart__item';
   li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
   li.addEventListener('click', cartItemClickListener);
-  saveShoppingCartInLocalStorage(sku, name, salePrice);
   return li;
 }
 
@@ -57,13 +67,20 @@ function createProductItemElement({ sku, name, image }) {
   return section;
 }
 
+let cont = 0;
+
 function addItemToShoppingCart(API_KEY, sku, addNewProduct) {
   addNewProduct.addEventListener('click', () => {
     API_URL = `https://api.bestbuy.com/v1/products(sku=${sku})?apiKey=${API_KEY}&sort=sku.asc&show=sku,name,salePrice&format=json`;
     fetch(API_URL, { headers: { Accept: 'application/json' } })
-    .then(response => response.json())
-    .then(data => document.querySelectorAll('.cart__items')[0].appendChild(createCartItemElement(data.products[0])));
-  });
+      .then(response => response.json())
+      .then((data) => {
+        document.querySelectorAll('.cart__items')[0].appendChild(createCartItemElement(data.products[0]));
+        localStorage.setItem(`produto${cont}`, data.products[0].sku);
+        cartPrice(data.products[0].salePrice);
+      })
+      .catch(error => console.log(error));
+  })
 }
 
 function getApiKeyValues() {
@@ -71,16 +88,38 @@ function getApiKeyValues() {
   const API_URL = `https://api.bestbuy.com/v1/products(releaseDate>today&categoryPath.id in(cat02001))?apiKey=${API_KEY}&format=json&pageSize=30&show=sku,name,image,customerTopRated&sort=bestSellingRank`;
 
   fetch(API_URL, { headers: { Accept: 'application/json' } })
-  .then(response => response.json())
-  .then(data => data.products.forEach((product) => {
-    const addNewProduct = createProductItemElement(product);
-    document.querySelectorAll('.items')[0].appendChild(addNewProduct);
-    addNewProduct.addEventListener('click', addItemToShoppingCart(API_KEY, product.sku, addNewProduct));
-  }))
-  .catch(error => console.log(error));
+    .then(response => response.json())
+    .then(data => data.products.forEach((product) => {
+      const addNewProduct = createProductItemElement(product);
+      document.querySelectorAll('.items')[0].appendChild(addNewProduct);
+      addNewProduct.lastChild.addEventListener('click', () => {
+        if (localStorage.length <= 2) cont = 0;
+        addItemToShoppingCart(API_KEY, product.sku, addNewProduct);
+        cont += 1;
+      });
+    }))
+    .then(() => removeLoading())
+    .catch(error => console.log(error));
+}
+
+function loadCart() {
+  const API_KEY = localStorage.getItem('APIKey');
+  Object.keys(localStorage).forEach((key) => {
+    if (key !== 'API' && key !== 'price') {
+      fetch(`https://api.bestbuy.com/v1/products(sku=${localStorage[key]})?apiKey=${API_KEY}&sort=sku.asc&show=sku,name,salePrice&format=json`)
+      .then(response => response.json())
+      .then((data) => {
+        document.getElementsByClassName('cart__items')[0].appendChild(createCartItemElement(data.products[0]));
+        document.getElementsByClassName('cart__title')[0].innerText = `Carrinho de compras
+        Valor Final: $${Math.round(localStorage.price * 100) / 100}`;
+      });
+    }
+  });
 }
 
 window.onload = function onload() {
   saveNameUserInBrowser();
   getApiKeyValues();
+  addLoading();
+  loadCart();
 };
