@@ -80,7 +80,7 @@ function addItemToShoppingCart(API_KEY, sku, addNewProduct) {
         cartPrice(data.products[0].salePrice);
       })
       .catch(error => console.log(error));
-  })
+  });
 }
 
 function getApiKeyValues() {
@@ -117,9 +117,29 @@ function loadCart() {
   });
 }
 
+function clearStorage() {
+  const apiKey = localStorage.apiKey;
+  localStorage.clear();
+  localStorage.apiKey = apiKey;
+}
+
+function deleteCartButton() {
+  const cart = document.getElementsByClassName('cart')[0];
+  const newButton = document.createElement('button');
+  newButton.innerHTML = 'Limpar Carrinho de Compras';
+  newButton.addEventListener('click', () => {
+    const productsArray = document.getElementsByClassName('cart__item');
+    Object.values(productsArray).forEach(product => product.remove());
+    document.getElementsByClassName('cart__title')[0].innerText = 'Carrinho de compras, preço total: $0';
+    clearStorage();
+  });
+  cart.appendChild(newButton);
+}
+
 window.onload = function onload() {
   saveNameUserInBrowser();
   getApiKeyValues();
   addLoading();
   loadCart();
+  deleteCartButton();
 };
